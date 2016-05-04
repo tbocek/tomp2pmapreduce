@@ -1,0 +1,11 @@
+Job execution time from Map: 26601ms
+==================READLOG.READLOG1()====================
+Overall size: [0.0]MB
+==================READLOG.READLOG2()====================
+Overall size: [0.0]MB
+======================Jobdetails for job [6096075931020299976_peer[1]_pcs[2]]
+Task [StartTask] was started #[0] and finished #[0].
+Task [MapTask] was started #[24] and finished #[24].
+Task [ReduceTask] was started #[24] and finished #[1].
+Task [PrintTask] was started #[1] and finished #[1].
+Task [ShutdownTask] was started #[1] and finished #[1].

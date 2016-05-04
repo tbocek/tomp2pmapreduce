@@ -1,0 +1,174 @@
+/* 
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package net.tomp2p.mapreduce;
+
+import java.io.IOException;
+import java.util.NavigableMap;
+import java.util.Random;
+
+import net.tomp2p.p2p.Peer;
+import net.tomp2p.p2p.PeerBuilder;
+import net.tomp2p.peers.Number160;
+import net.tomp2p.peers.Number640;
+import net.tomp2p.storage.Data;
+
+/**
+ * Main connection point to the network. Get and Put methods can be used to store and retrieve serialised data to and from the DHT. Furthermore, the contained <code>Peer</code> can directly be
+ * accessed to allow for broadcast emissions.
+ * 
+ * @author Oliver Zihler
+ *
+ */
+public class PeerMapReduce {
+	private static final int DEFAULT_PORT = 4444;
+	private static final Random RND = new Random();
+
+	/** Peer to connect to the DHT and other peers */
+	private Peer peer;
+	/** Broadcast handler that receives broadcast messages and executes IMapReduceBroadcastReceiver instances */
+	private MapReduceBroadcastHandler broadcastHandler;
+	/** Actual network access */
+	private TaskRPC taskRPC;
+	/** Waiting time before the actual get request is conducted */
+	private int waitingTime = 3000;
+
+	public PeerMapReduce(Peer peer, MapReduceBroadcastHandler broadcastHandler) {
+		// PeerMapReduce.numberOfExpectedComputers = numberOfExpectedComputers;
+		this.peer = peer;
+		if (broadcastHandler != null) {
+			this.broadcastHandler = broadcastHandler;
+			this.broadcastHandler.peerMapReduce(this);
+		}
+		this.taskRPC = new TaskRPC(this);
+	}
+
+	/**
+	 * Only for testing purposed as peers are not configured
+	 */
+	public PeerMapReduce() {
+		try {
+			// PeerMapReduce.numberOfExpectedComputers = numberOfExpectedComputers;
+			this.broadcastHandler = new MapReduceBroadcastHandler();
+			this.peer = new PeerBuilder(new Number160(RND)).ports(DEFAULT_PORT).broadcastHandler(broadcastHandler).start();
+			this.broadcastHandler.peerMapReduce(this);
+			this.taskRPC = new TaskRPC(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public PeerMapReduce(PeerBuilder peerBuilder) {
+		try {
+			this.broadcastHandler = new MapReduceBroadcastHandler();
+			this.peer = peerBuilder.broadcastHandler(broadcastHandler).start();
+			this.broadcastHandler.peerMapReduce(this);
+			this.taskRPC = new TaskRPC(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * @param peerBuilder
+	 *            instance to configure a peer outside
+	 * @param waitingTime
+	 *            until get is invoked
+	 */
+	public PeerMapReduce(PeerBuilder peerBuilder, int waitingTime) {
+		try {
+			this.waitingTime = waitingTime;
+			this.broadcastHandler = new MapReduceBroadcastHandler();
+			this.peer = peerBuilder.broadcastHandler(broadcastHandler).start();
+			this.broadcastHandler.peerMapReduce(this);
+			this.taskRPC = new TaskRPC(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public PeerMapReduce(PeerBuilder peerBuilder, MapReduceBroadcastHandler broadcastHandler) {
+		try {
+			this.broadcastHandler = broadcastHandler;
+			this.peer = peerBuilder.broadcastHandler(broadcastHandler).start();
+			this.broadcastHandler.peerMapReduce(this);
+			this.taskRPC = new TaskRPC(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Puts serialised data into the DHT
+	 * 
+	 * @param locationKey
+	 *            main key, specifies on which peer the data resides
+	 * @param domainKey
+	 *            used to distinguish the same locationKey
+	 * @param value
+	 *            the actual value to put in the DHT.
+	 * @param nrOfExecutions
+	 *            how many time the value put into the DHT can be accessed
+	 * @return
+	 */
+	public MapReducePutBuilder put(Number160 locationKey, Number160 domainKey, Object value, int nrOfExecutions) {
+		return new MapReducePutBuilder(this, locationKey, domainKey).data(value, nrOfExecutions);
+	}
+
+	/**
+	 * Get the data from the DHT. If the peer requesting the data fails, the same broadcast as before needs to be distributed again for other peers to execute the failed task. This requires the
+	 * complete input the task that invokes this method received.
+	 * 
+	 * @param locationKey
+	 *            main key, specifies on which peer the data resides
+	 * @param domainKey
+	 *            used to distinguish the same locationKey
+	 * @param broadcastInput
+	 *            complete input the task that invokes this method received.
+	 * @return
+	 */
+	public MapReduceGetBuilder get(Number160 locationKey, Number160 domainKey, NavigableMap<Number640, Data> broadcastInput) {
+		try {
+			int nextInt = new Random().nextInt(waitingTime);
+			System.err.println("Waiting " + nextInt + " ms till get");
+			Thread.sleep(nextInt);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new MapReduceGetBuilder(this, locationKey, domainKey).broadcastInput(broadcastInput);
+	}
+
+	/**
+	 * 
+	 * @return peer to send broadcast or configure
+	 */
+	public Peer peer() {
+		return this.peer;
+	}
+
+	public MapReduceBroadcastHandler broadcastHandler() {
+		return this.broadcastHandler;
+	}
+
+	/**
+	 * 
+	 * @return can be accessed to use e.g. the storage object directly.
+	 */
+	public TaskRPC taskRPC() {
+		return this.taskRPC;
+	}
+
+}
