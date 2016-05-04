@@ -1,3 +1,17 @@
+/* 
+ * Copyright 2016 Oliver Zihler 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package net.tomp2p.mapreduce.examplejob;
 
 import java.io.File;
@@ -18,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import net.tomp2p.futures.BaseFuture;
 import net.tomp2p.futures.BaseFutureAdapter;
-import net.tomp2p.mapreduce.FutureTask;
+import net.tomp2p.mapreduce.FutureMapReduceData;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
 import net.tomp2p.mapreduce.utils.FileSize;
@@ -86,7 +100,7 @@ public class StartTask extends Task {
 		// ===== FINISHED GET ALL THE FILES =================
 
 		// ===== SPLIT AND DISTRIBUTE ALL THE DATA ==========
-		final List<FutureTask> futurePuts = Collections.synchronizedList(new ArrayList<>());
+		final List<FutureMapReduceData> futurePuts = Collections.synchronizedList(new ArrayList<>());
 		// Map<Number160, FutureTask> all = Collections.synchronizedMap(new HashMap<>());
 		int nrOfFiles = (int) input.get(NumberUtils.allSameKey("NUMBEROFFILES")).object();
 		ThreadPoolExecutor e = new ThreadPoolExecutor(nrOfFiles, nrOfFiles, Long.MAX_VALUE, TimeUnit.DAYS, new LinkedBlockingQueue<>());
@@ -98,7 +112,7 @@ public class StartTask extends Task {
 				public void run() {
 					try {
 
-						Map<Number160, FutureTask> tmp = FileSplitter.splitWithWordsAndWrite(filePath, pmr, nrOfExecutions, filesDomainKey, FileSize.THIRTY_TWO_MEGA_BYTES.value(), "UTF-8");
+						Map<Number160, FutureMapReduceData> tmp = FileSplitter.splitWithWordsAndWrite(filePath, pmr, nrOfExecutions, filesDomainKey, FileSize.THIRTY_TWO_MEGA_BYTES.value(), "UTF-8");
 						TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> EXECUTING START TASK [" + execID + "]");
 
 						futurePuts.addAll(tmp.values());

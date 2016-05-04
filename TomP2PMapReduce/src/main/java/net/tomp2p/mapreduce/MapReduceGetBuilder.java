@@ -41,7 +41,7 @@ public class MapReduceGetBuilder extends BaseMapReduceBuilder<MapReduceGetBuilde
 		return broadcastInput;
 	}
 
-	public FutureTask start() {
+	public FutureMapReduceData start() {
 		return new DistributedTask(peerMapReduce.peer().distributedRouting(), peerMapReduce.taskRPC()).getTaskData(this, super.start());
 	}
 

@@ -34,10 +34,11 @@ import net.tomp2p.mapreduce.utils.TestInformationGatherUtils;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
-public class ShutdownTask extends Task {
+/*COPY FROM THE ORIGINAL USED DURING EVALUATION*/
+public class ShutdownTask2 extends Task {
 	private static int counter = 0;
 
-	private static Logger logger = LoggerFactory.getLogger(ShutdownTask.class);
+	private static Logger logger = LoggerFactory.getLogger(ShutdownTask2.class);
 
 	/**
 	 * 
@@ -54,7 +55,7 @@ public class ShutdownTask extends Task {
 
 	private long nrOfNodes;
 
-	public ShutdownTask(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers, int sleepingTimeReps, long sleepingTime, long nrOfNodes) {
+	public ShutdownTask2(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers, int sleepingTimeReps, long sleepingTime, long nrOfNodes) {
 		super(previousId, currentId);
 		this.nrOfNodes = nrOfNodes;
 		this.nrOfParticipatingPeers = nrOfParticipatingPeers;
@@ -62,50 +63,50 @@ public class ShutdownTask extends Task {
 		this.sleepingTime = sleepingTime;
 	}
 
-	public ShutdownTask(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers, long nrOfNodes) {
+	public ShutdownTask2(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers, long nrOfNodes) {
 		this(previousId, currentId, nrOfParticipatingPeers, DEFAULT_SLEEPING_TIME_REPS, DEFAULT_SLEEPING_TIME, nrOfNodes);
 	}
 
 	@Override
 	public void broadcastReceiver(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
-		startTaskCounter.incrementAndGet();
-
-		int execID = counter++;
-		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING SHUTDOWNTASK [" + execID + "]");
-		if (!input.containsKey(NumberUtils.OUTPUT_STORAGE_KEY)) {
-			logger.info("Received shutdown but not for the printing task. Ignored");
-			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING SHUTDOWNTASK [" + execID + "]");
-			return;
-		}
-		logger.info("Received REAL shutdown from ACTUAL PRINTING TASK. shutdown initiated.");
-
-		if (shutdownInitiated.get()) {
-			logger.info("Shutdown already initiated. ignored");
-			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING SHUTDOWNTASK [" + execID + "]");
-			return;
-		}
-		++retrievalCounter;
-		logger.info("Retrieval counter: " + retrievalCounter + ", (" + retrievalCounter + " >= " + nrOfParticipatingPeers + ")? " + (retrievalCounter >= nrOfParticipatingPeers));
-		if (retrievalCounter >= nrOfParticipatingPeers) {
-			shutdownInitiated.set(true);
-			logger.info("Received shutdown message. Counter is: " + retrievalCounter + ": SHUTDOWN IN 5 SECONDS");
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-
-					int cnt = 0;
-					while (cnt < sleepingTimeReps) {
-						logger.info("[" + (cnt++) + "/" + sleepingTimeReps + "] times slept for " + (sleepingTime / 1000) + "s");
-						try {
-							Thread.sleep(sleepingTime);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					finishedTaskCounter.incrementAndGet();
-
+//		startTaskCounter.incrementAndGet();
+//
+//		int execID = counter++;
+//		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING SHUTDOWNTASK [" + execID + "]");
+//		if (!input.containsKey(NumberUtils.OUTPUT_STORAGE_KEY)) {
+//			logger.info("Received shutdown but not for the printing task. Ignored");
+//			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING SHUTDOWNTASK [" + execID + "]");
+//			return;
+//		}
+//		logger.info("Received REAL shutdown from ACTUAL PRINTING TASK. shutdown initiated.");
+//
+//		if (shutdownInitiated.get()) {
+//			logger.info("Shutdown already initiated. ignored");
+//			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING SHUTDOWNTASK [" + execID + "]");
+//			return;
+//		}
+//		++retrievalCounter;
+//		logger.info("Retrieval counter: " + retrievalCounter + ", (" + retrievalCounter + " >= " + nrOfParticipatingPeers + ")? " + (retrievalCounter >= nrOfParticipatingPeers));
+//		if (retrievalCounter >= nrOfParticipatingPeers) {
+//			shutdownInitiated.set(true);
+//			logger.info("Received shutdown message. Counter is: " + retrievalCounter + ": SHUTDOWN IN 5 SECONDS");
+//			new Thread(new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					// TODO Auto-generated method stub
+//
+//					int cnt = 0;
+//					while (cnt < sleepingTimeReps) {
+//						logger.info("[" + (cnt++) + "/" + sleepingTimeReps + "] times slept for " + (sleepingTime / 1000) + "s");
+//						try {
+//							Thread.sleep(sleepingTime);
+//						} catch (InterruptedException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//					finishedTaskCounter.incrementAndGet();
+//
 //					List<String> taskDetails = pmr.broadcastHandler().shutdown();
 //					TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING SHUTDOWNTASK [" + execID + "]");
 //					try {
@@ -122,33 +123,33 @@ public class ShutdownTask extends Task {
 //					} catch (Exception e) {
 //
 //					}
-					// ReadLog.main(null);
-
-					try {
-						pmr.peer().shutdown().await().addListener(new BaseFutureAdapter<BaseFuture>() {
-
-							@Override
-							public void operationComplete(BaseFuture future) throws Exception {
-								// TODO Auto-generated method stub
-								if (future.isSuccess()) {
-									logger.info("Success on shutdown peer [" + pmr.peer().peerID().shortValue() + "]");
-								} else {
-									logger.info("NOOO SUCCEESSS on shutdown peer [" + pmr.peer().peerID().shortValue() + "], reason: " + future.failedReason());
-								}
-								System.exit(0);
-							}
-						});
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					logger.info("Shutdown peer.");
-
-				}
-			}).start();
-		} else {
-			logger.info("RetrievalCounter is only: " + retrievalCounter);
-		}
+//					// ReadLog.main(null);
+//
+//					try {
+//						pmr.peer().shutdown().await().addListener(new BaseFutureAdapter<BaseFuture>() {
+//
+//							@Override
+//							public void operationComplete(BaseFuture future) throws Exception {
+//								// TODO Auto-generated method stub
+//								if (future.isSuccess()) {
+//									logger.info("Success on shutdown peer [" + pmr.peer().peerID().shortValue() + "]");
+//								} else {
+//									logger.info("NOOO SUCCEESSS on shutdown peer [" + pmr.peer().peerID().shortValue() + "], reason: " + future.failedReason());
+//								}
+//								System.exit(0);
+//							}
+//						});
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					logger.info("Shutdown peer.");
+//
+//				}
+//			}).start();
+//		} else {
+//			logger.info("RetrievalCounter is only: " + retrievalCounter);
+//		}
 	}
 
 }

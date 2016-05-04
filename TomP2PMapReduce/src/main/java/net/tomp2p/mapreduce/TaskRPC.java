@@ -205,8 +205,8 @@ public class TaskRPC extends DispatchHandler {
 					// LOG.info("Acquired data from myself");
 				} else {
 
-					PeerAddressStorageKeyTuple senderTriple = new PeerAddressStorageKeyTuple(peerConnection.remotePeer(), storageKey);
-					Set<PeerAddressStorageKeyTuple> receivedButNotFound = peerMapReduce.broadcastHandler().receivedButNotFound();
+					MapReducePeerAddressStorageKeyTuple senderTriple = new MapReducePeerAddressStorageKeyTuple(peerConnection.remotePeer(), storageKey);
+					Set<MapReducePeerAddressStorageKeyTuple> receivedButNotFound = peerMapReduce.broadcastHandler().receivedButNotFound();
 					synchronized (receivedButNotFound) {
 						if (receivedButNotFound.contains(senderTriple)) { // this means we received the broadcast before we received the get request for this item from this sender --> invalid/outdated
 																			// request
@@ -219,10 +219,10 @@ public class TaskRPC extends DispatchHandler {
 																					// job
 								// LOG.info("Will add senderTriple [" + senderTriple + "] to bc handler");
 								final AtomicBoolean activeOnDataFlag = new AtomicBoolean(true);
-								peerMapReduce.broadcastHandler().addPeerConnectionRemoveActiveFlageListener(new PeerConnectionActiveFlagRemoveListener(senderTriple, activeOnDataFlag));
+								peerMapReduce.broadcastHandler().addPeerConnectionRemoveActiveFlageListener(new MapReducePeerConnectionActiveFlagRemoveListener(senderTriple, activeOnDataFlag));
 								NavigableMap<Number640, Data> oldBCInput = MapReduceGetBuilder
 										.reconvertByteArrayToData((NavigableMap<Number640, byte[]>) dataMap.get(NumberUtils.OLD_BROADCAST).object());
-								peerConnection.closeFuture().addListener(new PeerConnectionCloseListener(activeOnDataFlag, senderTriple, storage, oldBCInput, peerMapReduce.peer(), value));
+								peerConnection.closeFuture().addListener(new MapReducePeerConnectionCloseListener(activeOnDataFlag, senderTriple, storage, oldBCInput, peerMapReduce.peer(), value));
 							}
 						}
 

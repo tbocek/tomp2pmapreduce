@@ -67,7 +67,7 @@ public class DistributedTask {
 	 * @param connectionReservation
 	 * @return
 	 */
-	public FutureTask putTaskData(final MapReducePutBuilder builder, final FutureTask futureTask) {
+	public FutureMapReduceData putTaskData(final MapReducePutBuilder builder, final FutureMapReduceData futureTask) {
 		builder.futureChannelCreator().addListener(new BaseFutureAdapter<FutureChannelCreator>() {
 			@Override
 			public void operationComplete(final FutureChannelCreator future) throws Exception {
@@ -93,7 +93,7 @@ public class DistributedTask {
 									}
 
 									@Override
-									public void response(FutureTask futureTask, FutureDone<Void> futuresCompleted) {
+									public void response(FutureMapReduceData futureTask, FutureDone<Void> futuresCompleted) {
 
 										// logger.info(builder.execId + " in response: futuresCompleted: " + futuresCompleted);
 										futureTask.done(futuresCompleted); // give raw data
@@ -118,7 +118,7 @@ public class DistributedTask {
 					});
 					futureTask.addFutureDHTReleaseListener(future.channelCreator());
 				} else {
-					logger.info(builder.execId + " in else of: futureChannelCreator: future.isSuccess()?" + future.isSuccess());
+//					logger.info(builder.execId + " in else of: futureChannelCreator: future.isSuccess()?" + future.isSuccess());
 					futureTask.failed(future);
 				}
 			}
@@ -152,7 +152,7 @@ public class DistributedTask {
 	 * @param connectionReservation
 	 * @return
 	 */
-	public FutureTask getTaskData(final MapReduceGetBuilder builder, final FutureTask futureTask) {
+	public FutureMapReduceData getTaskData(final MapReduceGetBuilder builder, final FutureMapReduceData futureTask) {
 		builder.futureChannelCreator().addListener(new BaseFutureAdapter<FutureChannelCreator>() {
 			@Override
 			public void operationComplete(final FutureChannelCreator future) throws Exception {
@@ -177,7 +177,7 @@ public class DistributedTask {
 									}
 
 									@Override
-									public void response(FutureTask futureTask, FutureDone<Void> futuresCompleted) {
+									public void response(FutureMapReduceData futureTask, FutureDone<Void> futuresCompleted) {
 										// futureTask.done(futuresCompleted);
 										// give raw data
 										// logger.info("RESPONSE: rawData: "+rawData.size());
@@ -285,8 +285,8 @@ public class DistributedTask {
 	 * @param operation
 	 *            The operation that creates the request
 	 */
-	public static FutureTask parallelRequests(final RequestP2PConfiguration p2pConfiguration, final NavigableSet<PeerAddress> directHit, final NavigableSet<PeerAddress> potentialHit, final boolean cancleOnFinish, final FutureChannelCreator futureChannelCreator,
-			final MapReduceOperationMapper operation, final FutureTask futureTask) {
+	public static FutureMapReduceData parallelRequests(final RequestP2PConfiguration p2pConfiguration, final NavigableSet<PeerAddress> directHit, final NavigableSet<PeerAddress> potentialHit, final boolean cancleOnFinish, final FutureChannelCreator futureChannelCreator,
+			final MapReduceOperationMapper operation, final FutureMapReduceData futureTask) {
 
 		futureChannelCreator.addListener(new BaseFutureAdapter<FutureChannelCreator>() {
 			@Override
@@ -310,15 +310,15 @@ public class DistributedTask {
 	 * @param baseFutures
 	 *            The futures to listen to. If all the futures finished, then the channel creator is shutdown. If null provided, the channel creator is shutdown immediately.
 	 */
-	public static void addReleaseListener(final ChannelCreator channelCreator, final FutureTask futureTask) {
+	public static void addReleaseListener(final ChannelCreator channelCreator, final FutureMapReduceData futureTask) {
 		if (futureTask == null) {
 			channelCreator.shutdown();
 			return;
 		}
 
-		futureTask.addListener(new BaseFutureAdapter<FutureTask>() {
+		futureTask.addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 			@Override
-			public void operationComplete(final FutureTask future) throws Exception {
+			public void operationComplete(final FutureMapReduceData future) throws Exception {
 				FutureDone<Void> futuresCompleted = futureTask.futuresCompleted();
 				if (futuresCompleted != null) {
 					futureTask.futuresCompleted().addListener(new BaseFutureAdapter<FutureDone<Void>>() {
@@ -335,7 +335,7 @@ public class DistributedTask {
 	}
 
 	// TODO: have two queues, direct queue + potential queue.
-	private static <K extends BaseFuture> void parallelRequests(RequestP2PConfiguration p2pConfiguration, NavigableSet<PeerAddress> directHit, NavigableSet<PeerAddress> potentialHit, FutureTask future, boolean cancleOnFinish, ChannelCreator channelCreator, MapReduceOperationMapper operation) {
+	private static <K extends BaseFuture> void parallelRequests(RequestP2PConfiguration p2pConfiguration, NavigableSet<PeerAddress> directHit, NavigableSet<PeerAddress> potentialHit, FutureMapReduceData future, boolean cancleOnFinish, ChannelCreator channelCreator, MapReduceOperationMapper operation) {
 		// the potential hits may contain same values as in directHit, so remove it from potentialHit
 		for (PeerAddress peerAddress : directHit) {
 			potentialHit.remove(peerAddress);
@@ -350,7 +350,7 @@ public class DistributedTask {
 		loopRec(directHit, potentialHit, p2pConfiguration.minimumResults(), new AtomicInteger(0), p2pConfiguration.maxFailure(), p2pConfiguration.parallelDiff(), new AtomicReferenceArray<FutureResponse>(futures), future, cancleOnFinish, channelCreator, operation);
 	}
 
-	private static void loopRec(final NavigableSet<PeerAddress> directHit, final NavigableSet<PeerAddress> potentialHit, final int min, final AtomicInteger nrFailure, final int maxFailure, final int parallelDiff, final AtomicReferenceArray<FutureResponse> futures, final FutureTask futureDHT,
+	private static void loopRec(final NavigableSet<PeerAddress> directHit, final NavigableSet<PeerAddress> potentialHit, final int min, final AtomicInteger nrFailure, final int maxFailure, final int parallelDiff, final AtomicReferenceArray<FutureResponse> futures, final FutureMapReduceData futureDHT,
 			final boolean cancelOnFinish, final ChannelCreator channelCreator, final MapReduceOperationMapper operation) {
 		// final int parallel=min+parallelDiff;
 		int active = 0;

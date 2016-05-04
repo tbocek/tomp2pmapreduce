@@ -183,9 +183,9 @@ public class TaskRPCTest {
 			// Now try to invoke one listener and then try to get the data again
 			Field peerConnectionActiveFlagRemoveListenersField = MapReduceBroadcastHandler.class.getDeclaredField("peerConnectionActiveFlagRemoveListeners");
 			peerConnectionActiveFlagRemoveListenersField.setAccessible(true);
-			List<PeerConnectionActiveFlagRemoveListener> listeners = (List<PeerConnectionActiveFlagRemoveListener>) peerConnectionActiveFlagRemoveListenersField.get(receiver.broadcastHandler());
+			List<MapReducePeerConnectionActiveFlagRemoveListener> listeners = (List<MapReducePeerConnectionActiveFlagRemoveListener>) peerConnectionActiveFlagRemoveListenersField.get(receiver.broadcastHandler());
 			int listenerIndex = new Random().nextInt(listeners.size());
-			listeners.get(listenerIndex).turnOffActiveOnDataFlag(new PeerAddressStorageKeyTuple(se.peerAddress(), actualKey));
+			listeners.get(listenerIndex).turnOffActiveOnDataFlag(new MapReducePeerAddressStorageKeyTuple(se.peerAddress(), actualKey));
 			listeners.remove(listeners.get(listenerIndex));
 			// ==========================================================
 
@@ -227,20 +227,20 @@ public class TaskRPCTest {
 		// also check the state of the listeners...
 		Field peerConnectionActiveFlagRemoveListenersField = MapReduceBroadcastHandler.class.getDeclaredField("peerConnectionActiveFlagRemoveListeners");
 		peerConnectionActiveFlagRemoveListenersField.setAccessible(true);
-		List<PeerConnectionActiveFlagRemoveListener> listeners = (List<PeerConnectionActiveFlagRemoveListener>) peerConnectionActiveFlagRemoveListenersField.get(mrBCHandler1);
+		List<MapReducePeerConnectionActiveFlagRemoveListener> listeners = (List<MapReducePeerConnectionActiveFlagRemoveListener>) peerConnectionActiveFlagRemoveListenersField.get(mrBCHandler1);
 		System.err.println("checkListeners:" + listeners);
 		assertEquals(nrOfListeners, listeners.size());
 		/*
 		 * private AtomicBoolean activeOnDataFlag; private Number640 keyToObserve; private PeerAddress peerAddressToObserve;
 		 */
-		for (PeerConnectionActiveFlagRemoveListener l : listeners) {
+		for (MapReducePeerConnectionActiveFlagRemoveListener l : listeners) {
 			Field toAcquireField = l.getClass().getDeclaredField("toAcquire");
 			toAcquireField.setAccessible(true);
 			Field activeOnDataFlagField = l.getClass().getDeclaredField("activeOnDataFlag");
 			activeOnDataFlagField.setAccessible(true);
 			// Field peerAddressToObserveField = l.getClass().getDeclaredField("peerAddressToObserve");
 			// peerAddressToObserveField.setAccessible(true);
-			PeerAddressStorageKeyTuple toAcquire = (PeerAddressStorageKeyTuple) toAcquireField.get(l);
+			MapReducePeerAddressStorageKeyTuple toAcquire = (MapReducePeerAddressStorageKeyTuple) toAcquireField.get(l);
 
 			assertEquals(true, ((AtomicBoolean) activeOnDataFlagField.get(l)).get());
 			assertEquals(new Number640(Number160.createHash(value), Number160.createHash(value), Number160.ZERO, Number160.ZERO), toAcquire.storageKey);

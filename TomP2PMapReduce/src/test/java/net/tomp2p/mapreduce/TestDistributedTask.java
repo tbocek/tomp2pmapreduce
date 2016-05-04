@@ -77,7 +77,7 @@ public class TestDistributedTask {
 		Number160 key = Number160.createHash("VALUE1");
 		Number640 storageKey = new Number640(key, key, Number160.ZERO, Number160.ZERO);
 		PeerMapReduce peer = peers[rnd.nextInt(peers.length)];
-		FutureTask start = peer.put(key, key, "VALUE1", nrOfAcquires).start();
+		FutureMapReduceData start = peer.put(key, key, "VALUE1", nrOfAcquires).start();
 		start.awaitUninterruptibly();
 		final List<Integer> counts = Collections.synchronizedList(new ArrayList<>());
 		List<FutureDone<Void>> all = new ArrayList<>();
@@ -86,10 +86,10 @@ public class TestDistributedTask {
 				int i2 = i;
 				PeerMapReduce getter = peers[rnd.nextInt(peers.length)];
 				System.err.println("ALL SIZE: " + all.size());
-				all.add(getter.get(key, key, new TreeMap<>()).start().addListener(new BaseFutureAdapter<FutureTask>() {
+				all.add(getter.get(key, key, new TreeMap<>()).start().addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 					@Override
-					public void operationComplete(FutureTask future) throws Exception {
+					public void operationComplete(FutureMapReduceData future) throws Exception {
 						if (future.isSuccess()) {
 							Map<Number640, Data> dataMap = future.dataMap();
 							for (Number640 n : dataMap.keySet()) {

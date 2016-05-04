@@ -1,3 +1,17 @@
+/* 
+ * Copyright 2016 Oliver Zihler 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package net.tomp2p.mapreduce.examplejob;
 
 import java.io.File;
@@ -19,7 +33,7 @@ import net.tomp2p.futures.BaseFutureAdapter;
 import net.tomp2p.futures.FutureBootstrap;
 import net.tomp2p.mapreduce.IMapReduceBroadcastReceiver;
 import net.tomp2p.mapreduce.Job;
-import net.tomp2p.mapreduce.PeerConnectionCloseListener;
+import net.tomp2p.mapreduce.MapReducePeerConnectionCloseListener;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
 import net.tomp2p.mapreduce.utils.FileSize;
@@ -78,7 +92,7 @@ public class MainJobSubmitter {
 		ConnectionBean.DEFAULT_CONNECTION_TIMEOUT_TCP = Integer.MAX_VALUE;
 		// ConnectionBean.DEFAULT_UDP_IDLE_MILLIS = 10000;
 
-		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time (reps*sleepingTime)
+		MapReducePeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time (reps*sleepingTime)
 
 		int bootstrapperPortToConnectTo = 4004;
 		// String bootstrapperToConnectTo = "192.168.1.172"; //T410
@@ -163,7 +177,7 @@ public class MainJobSubmitter {
 					// String filesPath = "C:/Users/Oliver/Desktop/testFiles/1";
 
 					System.err.println("MainJobSubmitter: nrOfShutdownMessagesToAwait[" + nrOfShutdownMessagesToAwait + "], nrOfExecutions[" + nrOfExecutions + "], ConnectionBean.DEFAULT_TCP_IDLE_MILLIS[" + ConnectionBean.DEFAULT_TCP_IDLE_MILLIS + "], PeerConnectionCloseListener.WAITING_TIME ["
-							+ PeerConnectionCloseListener.WAITING_TIME + "], filesPath[" + filesPath + "], nrOfFiles [" + nrOfFiles + "]");
+							+ MapReducePeerConnectionCloseListener.WAITING_TIME + "], filesPath[" + filesPath + "], nrOfFiles [" + nrOfFiles + "]");
 					System.err.println("MainJobSubmitter: START JOB");
 
 					Job job = new Job(new Number640(new Random()));

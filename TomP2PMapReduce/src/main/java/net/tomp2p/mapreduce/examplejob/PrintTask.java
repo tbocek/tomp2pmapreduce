@@ -1,3 +1,17 @@
+/* 
+ * Copyright 2016 Oliver Zihler 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package net.tomp2p.mapreduce.examplejob;
 
 import java.io.BufferedWriter;
@@ -20,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.tomp2p.futures.BaseFutureAdapter;
-import net.tomp2p.mapreduce.FutureTask;
+import net.tomp2p.mapreduce.FutureMapReduceData;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
 import net.tomp2p.mapreduce.utils.NumberUtils;
@@ -68,10 +82,10 @@ public class PrintTask extends Task {
 		Data storageKeyData = input.get(NumberUtils.OUTPUT_STORAGE_KEY);
 		if (storageKeyData != null) {
 			Number640 storageKey = (Number640) storageKeyData.object();
-			pmr.get(storageKey.locationKey(), storageKey.domainKey(), new TreeMap<>()/*input*/).start().addListener(new BaseFutureAdapter<FutureTask>() {
+			pmr.get(storageKey.locationKey(), storageKey.domainKey(), new TreeMap<>()/*input*/).start().addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 				@Override
-				public void operationComplete(FutureTask future) throws Exception {
+				public void operationComplete(FutureMapReduceData future) throws Exception {
 					if (future.isSuccess()) {
 						Map<String, Integer> reduceResults = new TreeMap<>((Map<String, Integer>) future.data().object());
 						// logger.info("==========WORDCOUNT RESULTS OF PEER WITH ID: " + pmr.peer().peerID().intValue() + ", time [" + time + "]==========");

@@ -17,11 +17,11 @@ package net.tomp2p.mapreduce;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
 
-public class PeerAddressStorageKeyTuple {
+public class MapReducePeerAddressStorageKeyTuple {
 	PeerAddress peerAddress;
 	Number640 storageKey;
 
-	public PeerAddressStorageKeyTuple(PeerAddress peerAddress, Number640 storageKey) {
+	public MapReducePeerAddressStorageKeyTuple(PeerAddress peerAddress, Number640 storageKey) {
 		this.peerAddress = peerAddress;
 		this.storageKey = storageKey;
 	}
@@ -41,7 +41,7 @@ public class PeerAddressStorageKeyTuple {
 			return true;
 		if (obj == null)
 			return false;
-		PeerAddressStorageKeyTuple other = (PeerAddressStorageKeyTuple) obj;
+		MapReducePeerAddressStorageKeyTuple other = (MapReducePeerAddressStorageKeyTuple) obj;
 		if (peerAddress == null) {
 			if (other.peerAddress != null)
 				return false;

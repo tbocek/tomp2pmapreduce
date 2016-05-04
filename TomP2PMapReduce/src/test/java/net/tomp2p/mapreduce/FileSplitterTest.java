@@ -19,28 +19,27 @@ import net.tomp2p.peers.Number160;
 public class FileSplitterTest {
 
 	@Test
-	public void test() throws Exception {
-		// Put data
+	public void test() throws Exception { 
 		PeerMapReduce[] peer = TestExampleJob.createAndAttachNodes(1, 4253);
 
-//		TestExampleJob.bootstrap(peer);
-//		TestExampleJob.perfectRouting(peer);
+		TestExampleJob.bootstrap(peer);
+		TestExampleJob.perfectRouting(peer);
 		String filesPath = new File("").getAbsolutePath() + "/src/test/java/net/tomp2p/mapreduce/testfiles/";
  		List<Number160> fileKeys = Collections.synchronizedList(new ArrayList<>());
-		List<FutureTask> filePuts = Collections.synchronizedList(new ArrayList<>());
+		List<FutureMapReduceData> filePuts = Collections.synchronizedList(new ArrayList<>());
 
 		List<String> pathVisitor = Collections.synchronizedList(new ArrayList<>());
 		FileUtils.INSTANCE.getFiles(new File(filesPath), pathVisitor);
 		assertEquals(7, pathVisitor.size());
 
 		for (String filePath : pathVisitor) {
-			Map<Number160, FutureTask> tmp = FileSplitter.splitWithWordsAndWrite(filePath, peer[0], 3, Number160.createHash("DOMAINKEY"), FileSize.MEGA_BYTE.value(), "UTF-8");
+			Map<Number160, FutureMapReduceData> tmp = FileSplitter.splitWithWordsAndWrite(filePath, peer[0], 3, Number160.createHash("DOMAINKEY"), FileSize.MEGA_BYTE.value(), "UTF-8");
 			assertEquals(1, tmp.keySet().size());
 			fileKeys.addAll(tmp.keySet());
 			filePuts.addAll(tmp.values());
 		}
-		assertEquals(7, fileKeys.size());
-		assertEquals(7, filePuts.size());
+		assertEquals(pathVisitor.size(), fileKeys.size());
+		assertEquals(pathVisitor.size(), filePuts.size());
 		
 		for(PeerMapReduce p: peer){
 			p.peer().shutdown().await();

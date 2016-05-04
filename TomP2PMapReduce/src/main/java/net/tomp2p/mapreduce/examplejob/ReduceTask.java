@@ -1,3 +1,17 @@
+/* 
+ * Copyright 2016 Oliver Zihler 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package net.tomp2p.mapreduce.examplejob;
 
 import java.util.Collections;
@@ -17,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import net.tomp2p.futures.BaseFuture;
 import net.tomp2p.futures.BaseFutureAdapter;
 import net.tomp2p.futures.FutureDone;
-import net.tomp2p.mapreduce.FutureTask;
+import net.tomp2p.mapreduce.FutureMapReduceData;
 import net.tomp2p.mapreduce.MapReducePutBuilder;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
@@ -149,10 +163,10 @@ public class ReduceTask extends Task {
 					// Map<String, Integer> reduceResults = fileResults.get(index);
 					// ++index;
 					Number160 domainKey = aggregatedFileKeys.get(locationKey).iterator().next();
-					pmr.get(locationKey, domainKey, new TreeMap<>()/* input */).start().addListener(new BaseFutureAdapter<FutureTask>() {
+					pmr.get(locationKey, domainKey, new TreeMap<>()/* input */).start().addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 						@Override
-						public void operationComplete(FutureTask future) throws Exception {
+						public void operationComplete(FutureMapReduceData future) throws Exception {
 							if (future.isSuccess()) {
 								synchronized (reduceResults) {
 									Map<String, Integer> fileResults = (Map<String, Integer>) future.data().object();
@@ -200,11 +214,11 @@ public class ReduceTask extends Task {
 							Number160 outputDomainKey = Number160.createHash(pmr.peer().peerID() + "_" + (new Random().nextLong()));
 							Number640 storageKey = new Number640(resultKey, outputDomainKey, Number160.ZERO, Number160.ZERO);
 							MapReducePutBuilder put = pmr.put(resultKey, outputDomainKey, reduceResults, nrOfExecutions);
-							put.execId = "REDUCETASK [" + execID + "]_Peer[" + pmr.peer().peerID().shortValue() + "]";
-							put.start().addListener(new BaseFutureAdapter<FutureTask>() {
+//							put.execId = "REDUCETASK [" + execID + "]_Peer[" + pmr.peer().peerID().shortValue() + "]";
+							put.start().addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 								@Override
-								public void operationComplete(FutureTask future) throws Exception {
+								public void operationComplete(FutureMapReduceData future) throws Exception {
 									if (future.isSuccess()) {
 										// for (Number160 locationKey : aggregatedFileKeys.keySet()) {
 										// for (Number160 domainKey : aggregatedFileKeys.get(locationKey)) {

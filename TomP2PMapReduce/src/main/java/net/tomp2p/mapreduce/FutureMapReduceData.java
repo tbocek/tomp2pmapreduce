@@ -31,7 +31,7 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 
-public class FutureTask extends FutureDone<Void> {
+public class FutureMapReduceData extends FutureDone<Void> {
 
 	// Stores futures of DHT operations, 6 is the maximum of futures being
 	// generates as seen in Configurations (min.res + parr.diff)
@@ -42,7 +42,7 @@ public class FutureTask extends FutureDone<Void> {
 	private Map<PeerAddress, Map<Number640, Data>> rawData;
 	private EvaluatingSchemeDHT evaluationScheme = new VotingSchemeDHT();
 
-	public FutureTask() {
+	public FutureMapReduceData() {
 		self(this);
 	}
 
@@ -84,9 +84,9 @@ public class FutureTask extends FutureDone<Void> {
 	 *            The channel creator that will be shutdown and all connections will be closed
 	 */
 	public void addFutureDHTReleaseListener(final ChannelCreator channelCreator) {
-		addListener(new BaseFutureAdapter<FutureTask>() {
+		addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 			@Override
-			public void operationComplete(final FutureTask future) throws Exception {
+			public void operationComplete(final FutureMapReduceData future) throws Exception {
 				futureRequests().addListener(new BaseFutureAdapter<FutureForkJoin<FutureResponse>>() {
 					@Override
 					public void operationComplete(FutureForkJoin<FutureResponse> future) throws Exception {

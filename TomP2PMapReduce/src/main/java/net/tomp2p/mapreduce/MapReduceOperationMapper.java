@@ -25,6 +25,6 @@ public interface MapReduceOperationMapper {
 
 	void interMediateResponse(FutureResponse futureResponse);
 
-	void response(FutureTask futureTask, FutureDone<Void> futuresCompleted);
+	void response(FutureMapReduceData futureTask, FutureDone<Void> futuresCompleted);
 
 }

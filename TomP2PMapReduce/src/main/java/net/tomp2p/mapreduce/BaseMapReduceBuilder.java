@@ -29,7 +29,7 @@ public abstract class BaseMapReduceBuilder<K extends BaseMapReduceBuilder<K>> ex
 	private K self;
 	private Number160 domainKey;
 	private Number160 locationKey;//
-	protected PeerMapReduce peerMapReduce; 
+	protected PeerMapReduce peerMapReduce;
 
 	public BaseMapReduceBuilder(PeerMapReduce peerMapReduce, Number160 locationKey, Number160 domainKey) {
 		this.peerMapReduce = peerMapReduce;
@@ -38,7 +38,6 @@ public abstract class BaseMapReduceBuilder<K extends BaseMapReduceBuilder<K>> ex
 		this.idleTCPMillis(Integer.MAX_VALUE);
 		this.connectionTimeoutTCPMillis(Integer.MAX_VALUE);
 		this.slowResponseTimeoutSeconds(Integer.MAX_VALUE);
-		// this.idleUDPMillis(10000);
 	}
 
 	protected void self(K self) {
@@ -113,16 +112,8 @@ public abstract class BaseMapReduceBuilder<K extends BaseMapReduceBuilder<K>> ex
 		this.domainKey = domainKey;
 		return self;
 	}
-	// public K storageKey(Number640 storageKey) {
-	// this.storageKey = storageKey;
-	// return self;
-	// }
-	//
-	// public Number640 storageKey() {
-	// return this.storageKey;
-	// }
 
-	public FutureTask start() {
+	public FutureMapReduceData start() {
 		if (this.peerMapReduce.peer().isShutdown()) {
 			return null;
 		}
@@ -134,10 +125,12 @@ public abstract class BaseMapReduceBuilder<K extends BaseMapReduceBuilder<K>> ex
 		}
 		int size = peerMapReduce.peer().peerBean().peerMap().size() + 1;
 		requestP2PConfiguration = requestP2PConfiguration.adjustMinimumResult(size);
-		if (futureChannelCreator == null || (futureChannelCreator.channelCreator() != null && futureChannelCreator.channelCreator().isShutdown())) {
-			futureChannelCreator = peerMapReduce.peer().connectionBean().reservation().create(routingConfiguration, requestP2PConfiguration, this);
+		if (futureChannelCreator == null || (futureChannelCreator.channelCreator() != null
+				&& futureChannelCreator.channelCreator().isShutdown())) {
+			futureChannelCreator = peerMapReduce.peer().connectionBean().reservation().create(routingConfiguration,
+					requestP2PConfiguration, this);
 		}
-		final FutureTask futureTask = new FutureTask();
+		final FutureMapReduceData futureTask = new FutureMapReduceData();
 		return futureTask;
 	}
 }

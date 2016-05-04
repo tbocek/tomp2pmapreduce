@@ -1,5 +1,5 @@
 /* 
- * Copyright Oliver Zihler 2016
+ * Copyright 2016 Oliver Zihler 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -33,8 +33,8 @@ import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
-public class PeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
-	private static final Logger LOG = LoggerFactory.getLogger(PeerConnectionCloseListener.class);
+public class MapReducePeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
+	private static final Logger LOG = LoggerFactory.getLogger(MapReducePeerConnectionCloseListener.class);
 
 	public static long WAITING_TIME = 10000;
 
@@ -48,11 +48,11 @@ public class PeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
 
 //	private Object value;
 
-	private PeerAddressStorageKeyTuple requester;
+	private MapReducePeerAddressStorageKeyTuple requester;
 
 	private Timer timer;
 
-	public PeerConnectionCloseListener(AtomicBoolean activeOnDataFlag, PeerAddressStorageKeyTuple requester, Storage storage, NavigableMap<Number640, Data> broadcastData, Peer peer, Object value) {
+	public MapReducePeerConnectionCloseListener(AtomicBoolean activeOnDataFlag, MapReducePeerAddressStorageKeyTuple requester, Storage storage, NavigableMap<Number640, Data> broadcastData, Peer peer, Object value) {
 		this.activeOnDataFlag = activeOnDataFlag;
 		this.requester = requester;
 		this.storage = storage;

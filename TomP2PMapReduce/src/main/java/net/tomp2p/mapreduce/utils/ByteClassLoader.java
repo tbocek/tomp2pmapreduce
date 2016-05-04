@@ -1,5 +1,5 @@
 /* 
- *
+ * Copyright 2016 Oliver Zihler 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * 
- * Custom class loader to load class files from byte arrays.
+ * Custom class loader to load classes from serialised (byte arrays) classes.
  * 
  * @author Oliver Zihler
  *

@@ -1,3 +1,17 @@
+/* 
+ * Copyright 2016 Oliver Zihler 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package net.tomp2p.mapreduce.examplejob;
 
 import static org.junit.Assert.assertEquals;
@@ -15,7 +29,7 @@ import org.junit.Test;
 
 import net.tomp2p.futures.BaseFutureAdapter;
 import net.tomp2p.futures.FutureBootstrap;
-import net.tomp2p.mapreduce.FutureTask;
+import net.tomp2p.mapreduce.FutureMapReduceData;
 import net.tomp2p.mapreduce.Job;
 import net.tomp2p.mapreduce.MapReduceBroadcastHandler;
 import net.tomp2p.mapreduce.PeerMapReduce;
@@ -146,11 +160,11 @@ public class TestExampleJob {
 		startTask.broadcastReceiver(input, peers[0]);
 
 		Thread.sleep(1000);
-		FutureTask get = peers[10].get(Number160.createHash(filesPath + "/testfile.txt"), Number160.createHash(peers[0].peer().peerID() + "_" + 0), input).start();
-		get.addListener(new BaseFutureAdapter<FutureTask>() {
+		FutureMapReduceData get = peers[10].get(Number160.createHash(filesPath + "/testfile.txt"), Number160.createHash(peers[0].peer().peerID() + "_" + 0), input).start();
+		get.addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 			@Override
-			public void operationComplete(FutureTask future) throws Exception {
+			public void operationComplete(FutureMapReduceData future) throws Exception {
 				if (future.isSuccess()) {
 					String content = (String) future.data().object();
 					System.err.println("Content : [" + content + "]");
@@ -161,10 +175,10 @@ public class TestExampleJob {
 
 		}).awaitUninterruptibly();
 		get = peers[18].get(Number160.createHash(filesPath + "/testfile2.txt"), Number160.createHash(peers[0].peer().peerID() + "_" + 0), input).start();
-		get.addListener(new BaseFutureAdapter<FutureTask>() {
+		get.addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 			@Override
-			public void operationComplete(FutureTask future) throws Exception {
+			public void operationComplete(FutureMapReduceData future) throws Exception {
 				if (future.isSuccess()) {
 					String content = (String) future.data().object();
 					System.err.println("Content : [" + content + "]");
@@ -175,10 +189,10 @@ public class TestExampleJob {
 
 		}).awaitUninterruptibly();
 		get = peers[85].get(Number160.createHash(filesPath + "/testfile3.txt"), Number160.createHash(peers[0].peer().peerID() + "_" + 0), input).start();
-		get.addListener(new BaseFutureAdapter<FutureTask>() {
+		get.addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 			@Override
-			public void operationComplete(FutureTask future) throws Exception {
+			public void operationComplete(FutureMapReduceData future) throws Exception {
 				if (future.isSuccess()) {
 					String content = (String) future.data().object();
 					System.err.println("Content : [" + content + "]");
@@ -221,11 +235,11 @@ public class TestExampleJob {
 		maptask.broadcastReceiver(input, peers[0]);
 
 		Thread.sleep(1000);
-		FutureTask get = peers[10].get(fileLocationKey, Number160.createHash(peers[0].peer().peerID() + "_" + (0)), input).start();
-		get.addListener(new BaseFutureAdapter<FutureTask>() {
+		FutureMapReduceData get = peers[10].get(fileLocationKey, Number160.createHash(peers[0].peer().peerID() + "_" + (0)), input).start();
+		get.addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 			@Override
-			public void operationComplete(FutureTask future) throws Exception {
+			public void operationComplete(FutureMapReduceData future) throws Exception {
 				if (future.isSuccess()) {
 					Map<String, Integer> fileWords = (Map<String, Integer>) future.data().object();
 					System.out.println(fileWords);
@@ -285,11 +299,11 @@ public class TestExampleJob {
 		}
 
 		Thread.sleep(1000);
-		FutureTask get = peers[10].get(Number160.createHash("FINALRESULT"), Number160.createHash(peers[0].peer().peerID() + "_" + (0)), input).start();
-		get.addListener(new BaseFutureAdapter<FutureTask>() {
+		FutureMapReduceData get = peers[10].get(Number160.createHash("FINALRESULT"), Number160.createHash(peers[0].peer().peerID() + "_" + (0)), input).start();
+		get.addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 			@Override
-			public void operationComplete(FutureTask future) throws Exception {
+			public void operationComplete(FutureMapReduceData future) throws Exception {
 				if (future.isSuccess()) {
 					Map<String, Integer> fileWords = (Map<String, Integer>) future.data().object();
 					System.err.println(fileWords);

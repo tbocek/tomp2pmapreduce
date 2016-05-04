@@ -1,4 +1,5 @@
 /* 
+ * Copyright 2016 Oliver Zihler 
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -25,7 +26,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.tomp2p.mapreduce.FutureTask;
+import net.tomp2p.mapreduce.FutureMapReduceData;
 import net.tomp2p.mapreduce.MapReducePutBuilder;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.peers.Number160;
@@ -44,8 +45,8 @@ public class FileSplitter {
 	 *            (e.g. UTF-8)
 	 * @return a map containing all generated dht keys of the file splits to retrieve them together with the FuturePut to be called in Futures.whenAllSucess(...)
 	 */
-	public static Map<Number160, FutureTask> splitWithWordsAndWrite(String keyfilePath, PeerMapReduce pmr, int nrOfExecutions, Number160 domainKey, int maxFileSize, String fileEncoding) {
-		Map<Number160, FutureTask> dataKeysAndFuturePuts = Collections.synchronizedMap(new HashMap<>());
+	public static Map<Number160, FutureMapReduceData> splitWithWordsAndWrite(String keyfilePath, PeerMapReduce pmr, int nrOfExecutions, Number160 domainKey, int maxFileSize, String fileEncoding) {
+		Map<Number160, FutureMapReduceData> dataKeysAndFuturePuts = Collections.synchronizedMap(new HashMap<>());
 		// System.err.println("Filepath: " + keyfilePath);
 		try {
 			RandomAccessFile aFile = new RandomAccessFile(keyfilePath, "r");
@@ -55,6 +56,7 @@ public class FileSplitter {
 			String split = "";
 			String actualData = "";
 			String remaining = "";
+//			Integer.parseInt(remaining);
 			while (inChannel.read(buffer) > 0) {
 				buffer.flip();
 				// String all = "";
@@ -82,12 +84,12 @@ public class FileSplitter {
 				// System.err.println("Put data: " + actualData + ", remaining data: " + remaining);
 				Number160 dataKey = Number160.createHash(keyfilePath);
 				MapReducePutBuilder put = pmr.put(dataKey, domainKey, actualData, nrOfExecutions);
-				logger.info("put[k[" + dataKey + "], d[" + domainKey + "]");
-				TestInformationGatherUtils
-				.addLogEntry("put[k[" + dataKey + "], d[" + domainKey + "]");
-				put.execId = "STARTTASK [" + dataKey.shortValue() + "]";
+//				logger.info("put[k[" + dataKey + "], d[" + domainKey + "]");
+//				TestInformationGatherUtils
+//				.addLogEntry("put[k[" + dataKey + "], d[" + domainKey + "]");
+//				put.execId = "STARTTASK [" + dataKey.shortValue() + "]";
 
-				FutureTask futureTask = put.start();
+				FutureMapReduceData futureTask = put.start();
 
 				dataKeysAndFuturePuts.put(dataKey, futureTask);
 
