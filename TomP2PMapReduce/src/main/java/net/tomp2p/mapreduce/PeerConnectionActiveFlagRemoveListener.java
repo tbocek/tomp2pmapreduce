@@ -23,14 +23,14 @@ public class PeerConnectionActiveFlagRemoveListener {
 	private static final Logger LOG = LoggerFactory.getLogger(PeerConnectionActiveFlagRemoveListener.class);
 
 	private AtomicBoolean activeOnDataFlag;
-	private Triple toAcquire;
+	private PeerAddressStorageKeyTuple toAcquire;
 
-	public PeerConnectionActiveFlagRemoveListener(Triple toAcquire, AtomicBoolean activeOnDataFlag) {
+	public PeerConnectionActiveFlagRemoveListener(PeerAddressStorageKeyTuple toAcquire, AtomicBoolean activeOnDataFlag) {
 		this.toAcquire = toAcquire;
 		this.activeOnDataFlag = activeOnDataFlag;
 	}
 
-	public boolean turnOffActiveOnDataFlag(Triple received) throws Exception {
+	public boolean turnOffActiveOnDataFlag(PeerAddressStorageKeyTuple received) throws Exception {
 		if (this.toAcquire.equals(received)) {
 			LOG.info("Received triple I'm observing: active set to false for triple [" + toAcquire + "]!");
 			activeOnDataFlag.set(false);
@@ -41,7 +41,7 @@ public class PeerConnectionActiveFlagRemoveListener {
 		}
 	}
 
-	public Triple triple() { 
+	public PeerAddressStorageKeyTuple triple() { 
 		return toAcquire;
 	}
 

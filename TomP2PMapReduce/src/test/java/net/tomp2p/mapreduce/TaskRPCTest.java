@@ -185,7 +185,7 @@ public class TaskRPCTest {
 			peerConnectionActiveFlagRemoveListenersField.setAccessible(true);
 			List<PeerConnectionActiveFlagRemoveListener> listeners = (List<PeerConnectionActiveFlagRemoveListener>) peerConnectionActiveFlagRemoveListenersField.get(receiver.broadcastHandler());
 			int listenerIndex = new Random().nextInt(listeners.size());
-			listeners.get(listenerIndex).turnOffActiveOnDataFlag(new Triple(se.peerAddress(), actualKey));
+			listeners.get(listenerIndex).turnOffActiveOnDataFlag(new PeerAddressStorageKeyTuple(se.peerAddress(), actualKey));
 			listeners.remove(listeners.get(listenerIndex));
 			// ==========================================================
 
@@ -240,7 +240,7 @@ public class TaskRPCTest {
 			activeOnDataFlagField.setAccessible(true);
 			// Field peerAddressToObserveField = l.getClass().getDeclaredField("peerAddressToObserve");
 			// peerAddressToObserveField.setAccessible(true);
-			Triple toAcquire = (Triple) toAcquireField.get(l);
+			PeerAddressStorageKeyTuple toAcquire = (PeerAddressStorageKeyTuple) toAcquireField.get(l);
 
 			assertEquals(true, ((AtomicBoolean) activeOnDataFlagField.get(l)).get());
 			assertEquals(new Number640(Number160.createHash(value), Number160.createHash(value), Number160.ZERO, Number160.ZERO), toAcquire.storageKey);

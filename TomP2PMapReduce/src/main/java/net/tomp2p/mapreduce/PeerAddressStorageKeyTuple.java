@@ -17,12 +17,13 @@ package net.tomp2p.mapreduce;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
 
-public class Triple {
+public class PeerAddressStorageKeyTuple {
 	PeerAddress peerAddress;
-	Number640 storageKey; 
-	public Triple(PeerAddress peerAddress, Number640 storageKey) {
- 		this.peerAddress = peerAddress;
-		this.storageKey = storageKey; 
+	Number640 storageKey;
+
+	public PeerAddressStorageKeyTuple(PeerAddress peerAddress, Number640 storageKey) {
+		this.peerAddress = peerAddress;
+		this.storageKey = storageKey;
 	}
 
 	@Override
@@ -39,8 +40,8 @@ public class Triple {
 		if (this == obj)
 			return true;
 		if (obj == null)
-			return false; 
-		Triple other = (Triple) obj;
+			return false;
+		PeerAddressStorageKeyTuple other = (PeerAddressStorageKeyTuple) obj;
 		if (peerAddress == null) {
 			if (other.peerAddress != null)
 				return false;
@@ -56,10 +57,8 @@ public class Triple {
 
 	@Override
 	public String toString() {
-		return "Triple [peerAddress=" + peerAddress.peerId().shortValue() + ", storageKey=" + storageKey.locationAndDomainKey().intValue() + "]";
+		return "Triple [peerAddress=" + peerAddress.peerId().shortValue() + ", storageKey="
+				+ storageKey.locationAndDomainKey().intValue() + "]";
 	}
-	
-	
 
- 
 }

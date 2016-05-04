@@ -1,5 +1,5 @@
 /* 
- *
+ * Copyright Oliver Zihler 2016
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -48,11 +48,11 @@ public class PeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
 
 //	private Object value;
 
-	private Triple requester;
+	private PeerAddressStorageKeyTuple requester;
 
 	private Timer timer;
 
-	public PeerConnectionCloseListener(AtomicBoolean activeOnDataFlag, Triple requester, Storage storage, NavigableMap<Number640, Data> broadcastData, Peer peer, Object value) {
+	public PeerConnectionCloseListener(AtomicBoolean activeOnDataFlag, PeerAddressStorageKeyTuple requester, Storage storage, NavigableMap<Number640, Data> broadcastData, Peer peer, Object value) {
 		this.activeOnDataFlag = activeOnDataFlag;
 		this.requester = requester;
 		this.storage = storage;

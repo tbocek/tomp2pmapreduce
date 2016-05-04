@@ -3,7 +3,7 @@ package net.tomp2p.mapreduce.utils;
 /**
  * Determines some standard file sizes to be used without knowing the actual value... Simply for convenience and readability.
  * 
- * @author Oliver
+ * @author Oliver Zihler
  *
  */
 public enum FileSize {

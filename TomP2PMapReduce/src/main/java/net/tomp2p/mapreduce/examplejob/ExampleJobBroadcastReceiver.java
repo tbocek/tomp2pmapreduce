@@ -52,8 +52,11 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 					Job job = Job.deserialize(serializedJob);
 					// jobs.add(j);
 					if (!job.id().equals(jobId)) {
-						System.err.println("Received job for wrong id: observing job [" + jobId.locationKey().shortValue() + "], received job[" + job.id().locationKey().shortValue() + "]");
-						logger.info("Received job for wrong id: observing job [" + jobId.locationKey().shortValue() + "], received job[" + job.id().locationKey().shortValue() + "]");
+						System.err
+								.println("Received job for wrong id: observing job [" + jobId.locationKey().shortValue()
+										+ "], received job[" + job.id().locationKey().shortValue() + "]");
+						logger.info("Received job for wrong id: observing job [" + jobId.locationKey().shortValue()
+								+ "], received job[" + job.id().locationKey().shortValue() + "]");
 						return;
 					}
 
@@ -74,9 +77,12 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 							}
 						}
 					}
-					// peerMapReduce.get(jobKey.locationKey(), jobKey.domainKey(), null).start().addListener(new BaseFutureAdapter<FutureTask>() {
+					// peerMapReduce.get(jobKey.locationKey(),
+					// jobKey.domainKey(), null).start().addListener(new
+					// BaseFutureAdapter<FutureTask>() {
 					//
-					// public void operationComplete(FutureTask future) throws Exception {
+					// public void operationComplete(FutureTask future) throws
+					// Exception {
 					// if (future.isSuccess()) {
 					// synchronized (jobs) {
 					// boolean containsJob = false;
@@ -86,7 +92,8 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 					// }
 					// }
 					// if (!containsJob) {
-					// JobTransferObject serialized = (JobTransferObject) future.data().object();
+					// JobTransferObject serialized = (JobTransferObject)
+					// future.data().object();
 					// Job j = Job.deserialize(serialized);
 					// jobs.add(j);
 					// }
@@ -94,7 +101,9 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 					//
 					// }
 					// if (job != null) {
-					// logger.info("[" + peerMapReduce.peer().peerID().shortValue() + "]: Success on job retrieval. Job = " + job);
+					// logger.info("[" +
+					// peerMapReduce.peer().peerID().shortValue() + "]: Success
+					// on job retrieval. Job = " + job);
 					if (input.containsKey(NumberUtils.NEXT_TASK)) {
 						Number640 nextTaskId = (Number640) input.get(NumberUtils.NEXT_TASK).object();
 						Task task = job.findTask(nextTaskId);
@@ -107,9 +116,12 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 
 				// });
 				// }else{
-				//// logger.info("[" + peerMapReduce.peer().peerID().shortValue() + "]: Success on job retrieval. Job = " + job);
+				//// logger.info("[" +
+				// peerMapReduce.peer().peerID().shortValue() + "]: Success on
+				// job retrieval. Job = " + job);
 				// if (input.containsKey(NumberUtils.NEXT_TASK)) {
-				// Number640 nextTaskId = (Number640) input.get(NumberUtils.NEXT_TASK).object();
+				// Number640 nextTaskId = (Number640)
+				// input.get(NumberUtils.NEXT_TASK).object();
 				// Task task = job.findTask(nextTaskId);
 				// task.broadcastReceiver(input, peerMapReduce);
 				// }

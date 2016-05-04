@@ -205,8 +205,8 @@ public class TaskRPC extends DispatchHandler {
 					// LOG.info("Acquired data from myself");
 				} else {
 
-					Triple senderTriple = new Triple(peerConnection.remotePeer(), storageKey);
-					Set<Triple> receivedButNotFound = peerMapReduce.broadcastHandler().receivedButNotFound();
+					PeerAddressStorageKeyTuple senderTriple = new PeerAddressStorageKeyTuple(peerConnection.remotePeer(), storageKey);
+					Set<PeerAddressStorageKeyTuple> receivedButNotFound = peerMapReduce.broadcastHandler().receivedButNotFound();
 					synchronized (receivedButNotFound) {
 						if (receivedButNotFound.contains(senderTriple)) { // this means we received the broadcast before we received the get request for this item from this sender --> invalid/outdated
 																			// request

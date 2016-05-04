@@ -43,7 +43,7 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 
 	private static Set<Number640> messages = Collections.synchronizedSet(new HashSet<>());
 	private List<IMapReduceBroadcastReceiver> receivers = Collections.synchronizedList(new ArrayList<>());;
-	private Set<Triple> receivedButNotFound = Collections.synchronizedSet(new HashSet<>());
+	private Set<PeerAddressStorageKeyTuple> receivedButNotFound = Collections.synchronizedSet(new HashSet<>());
 	private List<PeerConnectionActiveFlagRemoveListener> peerConnectionActiveFlagRemoveListeners = Collections.synchronizedList(new ArrayList<>());
 
 	private ThreadPoolExecutor executor;
@@ -125,7 +125,7 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 	private void informPeerConnectionActiveFlagRemoveListeners(PeerAddress sender, Number640 storageKey) throws ClassNotFoundException, IOException {
 		List<PeerConnectionActiveFlagRemoveListener> toRemove = Collections.synchronizedList(new ArrayList<>());
 		boolean successOnTurnOff = false;
-		Triple triple = new Triple(sender, storageKey);
+		PeerAddressStorageKeyTuple triple = new PeerAddressStorageKeyTuple(sender, storageKey);
 		if (peerMapReduce.peer().peerAddress().equals(sender)) {
 			logger.info("I [" + peerMapReduce.peer().peerID().shortValue() + "] received bc from myself [" + triple + "]. Ignore");
 			return;
@@ -181,7 +181,7 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 		return this;
 	}
 
-	public Set<Triple> receivedButNotFound() {
+	public Set<PeerAddressStorageKeyTuple> receivedButNotFound() {
 		return this.receivedButNotFound;
 	}
 
