@@ -30,35 +30,55 @@ import net.tomp2p.storage.Data;
 
 /**
  *
- * Users need to add <code>Task</code> and <code>IMapReduceBroadcastReceiver</code> to a <code>Job</code> to be able to execute a MapReduce job. Once these classes are added, <code>Job.start()</code>
- * will determine the first local <code>Task</code> to execute and start it.
+ * Users need to add <code>Task</code> and <code>IMapReduceBroadcastReceiver</code> to a <code>Job</code> to be able to
+ * execute a MapReduce job. Once these classes are added, <code>Job.start()</code> will determine the first local
+ * <code>Task</code> to execute and start it.
  * 
  * @author Oliver Zihler
  */
 final public class Job {
 
+	/** All tasks to execute in a specified order (given by their id chaining, see {@link Task} */
 	private List<Task> tasks;
+	/** All actions taken on broadcast reception. See {@link IMapReduceBroadcastReceiver} */
 	private List<IMapReduceBroadcastReceiver> broadcastReceivers;
+	/** Job identifier to distinguish it from other jobs */
 	private Number640 id;
 
+	/**
+	 * Defines a new job object with a random id.
+	 */
 	public Job() {
 		this(new Number640(new Random()));
 	}
 
+	/**
+	 * Defines a new job object with a specified identifier
+	 * 
+	 * @param id
+	 *            identifier of this job
+	 */
 	public Job(Number640 id) {
 		this.id = id;
 		this.broadcastReceivers = new ArrayList<>();
 		this.tasks = new ArrayList<>();
 	}
 
-	public Number640 id() {
-		return this.id;
-	}
-
+	/**
+	 * * Add a task to the job. Chaining of tasks needs to be defined outside a job before it is added.
+	 * 
+	 * @param task
+	 *            task to execute
+	 */
 	public void addTask(Task task) {
 		this.tasks.add(task);
 	}
 
+	/**
+	 * 
+	 * @return the serialised job containing all tasks and broadcast receivers in a serialised form, to be put into the DHT using {@link PeerMapReduce#get()} or sent via broadcast
+	 * @throws IOException
+	 */
 	public JobTransferObject serialize() throws IOException {
 		JobTransferObject jTO = new JobTransferObject();
 		jTO.id(id);
@@ -72,7 +92,6 @@ final public class Job {
 	}
 
 	public static Job deserialize(JobTransferObject jobToDeserialize) throws ClassNotFoundException, IOException {
-
 		Job job = new Job(jobToDeserialize.id());
 		for (TransferObject taskTransferObject : jobToDeserialize.taskTransferObjects()) {
 			Map<String, Class<?>> taskClasses = SerializeUtils.deserializeClassFiles(taskTransferObject.classFiles());
@@ -87,8 +106,24 @@ final public class Job {
 			throw new Exception("No Task defined. Cannot start execution without any Task to execute.");
 		}
 		if (broadcastReceivers.size() == 0) {
-			throw new Exception("No IMapReduceBroadcastReceiver specified. Cannot start distributed execution without any implementation of these.");
+			throw new Exception(
+					"No IMapReduceBroadcastReceiver specified. Cannot start distributed execution without any implementation of these.");
 		}
+		List<TransferObject> broadcastReceiversTransferObjects = serializeBroadcastReceivers();
+		input.put(NumberUtils.RECEIVERS, new Data(broadcastReceiversTransferObjects));
+		input.put(NumberUtils.JOB_ID, new Data(id));
+		input.put(NumberUtils.JOB_DATA, new Data(serialize()));
+		Task startTask = this.findStartTask();
+		if (startTask == null) {
+			throw new Exception(
+					"Could not find local task to execute. Did you specify the start task to have previousId set to null?");
+		} else {
+			startTask.broadcastReceiver(input, pmr);
+		}
+
+	}
+
+	private List<TransferObject> serializeBroadcastReceivers() throws IOException {
 		List<TransferObject> broadcastReceiversTransferObjects = new ArrayList<>();
 		for (IMapReduceBroadcastReceiver receiver : broadcastReceivers) {
 			Map<String, byte[]> bcClassFiles = SerializeUtils.serializeClassFile(receiver.getClass());
@@ -97,16 +132,7 @@ final public class Job {
 			TransferObject t = new TransferObject(bcObject, bcClassFiles, bcClassName);
 			broadcastReceiversTransferObjects.add(t);
 		}
-		input.put(NumberUtils.RECEIVERS, new Data(broadcastReceiversTransferObjects));
-		input.put(NumberUtils.JOB_ID, new Data(id));
-		input.put(NumberUtils.JOB_DATA, new Data(serialize()));
-		Task startTask = this.findStartTask();
-		if(startTask == null){
-			throw new Exception("Could not find local task to execute. Did you specify the start task to have previousId set to null?");
-		}else{
-			startTask.broadcastReceiver(input, pmr);
-		}
-
+		return broadcastReceiversTransferObjects;
 	}
 
 	public Task findStartTask() {
@@ -131,8 +157,11 @@ final public class Job {
 		this.broadcastReceivers.add(receiver);
 	}
 
-	public List<Task> tasks() {
-		return tasks;
+	/**
+	 * @return identifier of the job
+	 */
+	public Number640 id() {
+		return this.id;
 	}
 
 	@Override

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Some handy file methods
+ * Some useful file methods
  * 
  * @author Oliver
  *
@@ -85,13 +85,11 @@ public enum FileUtils {
 	}
 
 	public ArrayList<String> readLinesFromFile(String filePath, Charset charset) {
-		// System.out.println(filePath);
 		ArrayList<String> lines = new ArrayList<String>();
 		String line = null;
 
 		try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath), charset)) {
 			while ((line = reader.readLine()) != null) {
-				// System.out.println(line);
 				lines.add(line);
 			}
 		} catch (IOException x) {
@@ -104,13 +102,11 @@ public enum FileUtils {
 		for (String fP : pathVisitor) {
 			File file = new File(fP);
 			if (file.exists()) {
-				// System.err.println("deleting: "+ fP);
 				file.delete();
 			}
 		}
 		File file = new File(outFolder);
 		if (file.exists()) {
-			// System.err.println("deleting: "+ outFolder);
 			file.delete();
 		}
 	}

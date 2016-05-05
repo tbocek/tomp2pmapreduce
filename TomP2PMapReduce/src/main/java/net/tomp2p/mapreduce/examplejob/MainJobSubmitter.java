@@ -33,7 +33,7 @@ import net.tomp2p.futures.BaseFutureAdapter;
 import net.tomp2p.futures.FutureBootstrap;
 import net.tomp2p.mapreduce.IMapReduceBroadcastReceiver;
 import net.tomp2p.mapreduce.Job;
-import net.tomp2p.mapreduce.MapReducePeerConnectionCloseListener;
+import net.tomp2p.mapreduce.PeerConnectionCloseListener;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
 import net.tomp2p.mapreduce.utils.FileSize;
@@ -92,7 +92,7 @@ public class MainJobSubmitter {
 		ConnectionBean.DEFAULT_CONNECTION_TIMEOUT_TCP = Integer.MAX_VALUE;
 		// ConnectionBean.DEFAULT_UDP_IDLE_MILLIS = 10000;
 
-		MapReducePeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time (reps*sleepingTime)
+		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time (reps*sleepingTime)
 
 		int bootstrapperPortToConnectTo = 4004;
 		// String bootstrapperToConnectTo = "192.168.1.172"; //T410
@@ -177,7 +177,7 @@ public class MainJobSubmitter {
 					// String filesPath = "C:/Users/Oliver/Desktop/testFiles/1";
 
 					System.err.println("MainJobSubmitter: nrOfShutdownMessagesToAwait[" + nrOfShutdownMessagesToAwait + "], nrOfExecutions[" + nrOfExecutions + "], ConnectionBean.DEFAULT_TCP_IDLE_MILLIS[" + ConnectionBean.DEFAULT_TCP_IDLE_MILLIS + "], PeerConnectionCloseListener.WAITING_TIME ["
-							+ MapReducePeerConnectionCloseListener.WAITING_TIME + "], filesPath[" + filesPath + "], nrOfFiles [" + nrOfFiles + "]");
+							+ PeerConnectionCloseListener.WAITING_TIME + "], filesPath[" + filesPath + "], nrOfFiles [" + nrOfFiles + "]");
 					System.err.println("MainJobSubmitter: START JOB");
 
 					Job job = new Job(new Number640(new Random()));

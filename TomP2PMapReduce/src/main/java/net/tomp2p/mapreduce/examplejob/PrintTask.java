@@ -28,7 +28,6 @@ import java.util.NavigableMap;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +36,10 @@ import net.tomp2p.futures.BaseFutureAdapter;
 import net.tomp2p.mapreduce.FutureMapReduceData;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
+import net.tomp2p.mapreduce.utils.InputUtils;
 import net.tomp2p.mapreduce.utils.NumberUtils;
-import net.tomp2p.mapreduce.utils.TestInformationGatherUtils;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
-import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 
 public class PrintTask extends Task {
@@ -63,17 +61,17 @@ public class PrintTask extends Task {
 
 	@Override
 	public void broadcastReceiver(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
-		startTaskCounter.incrementAndGet();
+//		startTaskCounter.incrementAndGet();
 
 		int execID = counter++;
 		if (pmr.peer().peerID().intValue() != 1 && pmr.peer().peerID().intValue() != 2) {
 			System.err.println("PRINTTASK Returning for senderID: " + pmr.peer().peerID().intValue());
 			return; // I do this that only two request can be made to the data. Therefore, only two results will be printed on id's 1 and 3
 		}
-		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING PRINTTASK [" + execID + "] for job [" + input.get(NumberUtils.JOB_ID) + "]");
+//		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING PRINTTASK [" + execID + "] for job [" + input.get(NumberUtils.JOB_ID) + "]");
 		if (finished.get() || isBeingExecuted.get()) {
 			logger.info("Already executed/Executing reduce results >> ignore call");
-			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING PRINTTASK [" + execID + "]");
+//			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING PRINTTASK [" + execID + "]");
 
 			return;
 		}
@@ -98,7 +96,7 @@ public class PrintTask extends Task {
 						filename = filename.replace(":", "_").replace(",", "_").replace(" ", "_");
 						printResults(filename, reduceResults, pmr.peer().peerID().intValue());
 						NavigableMap<Number640, Data> newInput = new TreeMap<>();
-						keepInputKeyValuePairs(input, newInput, new String[] { "JOB_KEY", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
+						InputUtils.keepInputKeyValuePairs(input, newInput, new String[] { "JOB_KEY", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
 						newInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKey("WRITETASKID")));
 						newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKey("SHUTDOWNTASKID")));
 						newInput.put(NumberUtils.INPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY));
@@ -110,10 +108,10 @@ public class PrintTask extends Task {
 						// newInput.put(NumberUtils.SENDER, new Data(pmr.peer().peerAddress()));
 						finished.set(true);
 						logger.info(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING PRINTTASK [" + execID + "] with [" + reduceResults.keySet().size() + "] words");
-						TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING PRINTTASK [" + execID + "] with [" + reduceResults.keySet().size() + "] words");
+//						TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING PRINTTASK [" + execID + "] with [" + reduceResults.keySet().size() + "] words");
 						// TestInformationGatherUtils.writeOut();
 						pmr.peer().broadcast(new Number160(new Random())).dataMap(newInput).start();
-						finishedTaskCounter.incrementAndGet();
+//						finishedTaskCounter.incrementAndGet();
 
 					} else {
 						// Do nothing

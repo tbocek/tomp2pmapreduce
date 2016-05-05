@@ -19,18 +19,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MapReducePeerConnectionActiveFlagRemoveListener {
-	private static final Logger LOG = LoggerFactory.getLogger(MapReducePeerConnectionActiveFlagRemoveListener.class);
+public class PeerConnectionActiveFlagRemoveListener {
+	private static final Logger LOG = LoggerFactory.getLogger(PeerConnectionActiveFlagRemoveListener.class);
 
 	private AtomicBoolean activeOnDataFlag;
-	private MapReducePeerAddressStorageKeyTuple toAcquire;
+	private PeerAddressStorageKeyTuple toAcquire;
 
-	public MapReducePeerConnectionActiveFlagRemoveListener(MapReducePeerAddressStorageKeyTuple toAcquire, AtomicBoolean activeOnDataFlag) {
+	public PeerConnectionActiveFlagRemoveListener(PeerAddressStorageKeyTuple toAcquire, AtomicBoolean activeOnDataFlag) {
 		this.toAcquire = toAcquire;
 		this.activeOnDataFlag = activeOnDataFlag;
 	}
 
-	public boolean turnOffActiveOnDataFlag(MapReducePeerAddressStorageKeyTuple received) throws Exception {
+	public boolean turnOffActiveOnDataFlag(PeerAddressStorageKeyTuple received) throws Exception {
 		if (this.toAcquire.equals(received)) {
 			LOG.info("Received triple I'm observing: active set to false for triple [" + toAcquire + "]!");
 			activeOnDataFlag.set(false);
@@ -41,7 +41,7 @@ public class MapReducePeerConnectionActiveFlagRemoveListener {
 		}
 	}
 
-	public MapReducePeerAddressStorageKeyTuple tupleToAcquire() { 
+	public PeerAddressStorageKeyTuple tupleToAcquire() { 
 		return toAcquire;
 	}
 

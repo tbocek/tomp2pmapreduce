@@ -14,23 +14,14 @@
  */
 package net.tomp2p.mapreduce.examplejob;
 
-import java.util.List;
 import java.util.NavigableMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.tomp2p.futures.BaseFuture;
-import net.tomp2p.futures.BaseFutureAdapter;
-import net.tomp2p.mapreduce.Job;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
-import net.tomp2p.mapreduce.utils.JobTransferObject;
-import net.tomp2p.mapreduce.utils.NumberUtils;
-import net.tomp2p.mapreduce.utils.ReadLog;
-import net.tomp2p.mapreduce.utils.TestInformationGatherUtils;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 

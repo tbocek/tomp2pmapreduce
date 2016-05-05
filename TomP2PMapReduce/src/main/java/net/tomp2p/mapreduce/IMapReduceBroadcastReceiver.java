@@ -15,13 +15,13 @@
 package net.tomp2p.mapreduce;
 
 import java.io.Serializable;
-import java.util.List;
 
 import net.tomp2p.message.Message;
 
 /**
- * Actions taken on every broadcast recepetion. receive will be invoked by the <code>MapReduceBroadcastReceiver</code> and passes the complete broadcast message to it. The interface is intended to
- * then find the next task to execute and pass the input wrapped inside message to it. 
+ * Actions taken on every broadcast reception. receive will be invoked by the {@link MapReduceBroadcastReceiver} and
+ * passes the complete broadcast message to it. The interface is intended to then find the next task to execute and pass
+ * the input wrapped inside message to it.
  * 
  * @author Oliver
  *
@@ -30,16 +30,16 @@ public interface IMapReduceBroadcastReceiver extends Serializable {
 
 	/**
 	 * 
-	 * @param message the complete broadcast received from the MapReduceBroadcastHandler
-	 * @param PeerMapReduce instance to be passed to the next task to retrieve and store data in the DHT or send broadcasts.
+	 * @param message
+	 *            the complete broadcast received from the MapReduceBroadcastHandler
+	 * @param PeerMapReduce
+	 *            instance to be passed to the next task to retrieve and store data in the DHT or send broadcasts.
 	 */
-  	public void receive(Message message, PeerMapReduce PeerMapReduce);
+	public void receive(Message message, PeerMapReduce PeerMapReduce);
 
 	/**
 	 * @return a subclass-wide ID to avoid adding the same handler on a node multiple times.
 	 */
 	public String id();
-
-	public List<String> printExecutionDetails();
 
 }

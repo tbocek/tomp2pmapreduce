@@ -4,8 +4,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -135,10 +137,8 @@ public class SerializeUtils {
 		ByteClassLoader l = new ByteClassLoader(ClassLoader.getSystemClassLoader(), classesToDefine);
 		Map<String, Class<?>> classes = new HashMap<>();
 		for (String className : classesToDefine.keySet()) {
-			try {
-				// System.out.println("ClassName in deserialize: " + className);
-				Class<?> c = l.findClass(className);
-				// System.out.println("Class found is : " + c.getName());
+			try { 
+				Class<?> c = l.findClass(className); 
 				classes.put(className, c);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -172,4 +172,22 @@ public class SerializeUtils {
 		return objectInBytes;
 	}
 
+	private static class ByteObjectInputStream extends ObjectInputStream {
+		private Map<String, Class<?>> classes;
+
+		public ByteObjectInputStream(InputStream in, Map<String, Class<?>> classes) throws IOException {
+			super(in);
+			this.classes = classes;
+		}
+
+		@Override
+		protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+			Class<?> c = classes.get(desc.getName());
+			if (c != null) {
+				return c;
+			}
+			return super.resolveClass(desc); 
+		}
+
+	}
 }

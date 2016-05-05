@@ -17,11 +17,27 @@ package net.tomp2p.mapreduce;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
 
-public class MapReducePeerAddressStorageKeyTuple {
+/**
+ * Used internally to store the address of the peer that is currently accessing the specified storage key.
+ * 
+ * @author Oliver Zihler
+ *
+ */
+public class PeerAddressStorageKeyTuple {
+	/** {@link Peer} accessing the data specified by storageKey */
 	PeerAddress peerAddress;
+	/** data item specified by its key the {@link Peer} is currently accessing */
 	Number640 storageKey;
 
-	public MapReducePeerAddressStorageKeyTuple(PeerAddress peerAddress, Number640 storageKey) {
+	/**
+	 * Identifies a {@link Peer} by its address and which data item it currently hold
+	 *
+	 * @param peerAddress
+	 *            {@link Peer} accessing a data item
+	 * @param storageKey
+	 *            key of the data item
+	 */
+	public PeerAddressStorageKeyTuple(PeerAddress peerAddress, Number640 storageKey) {
 		this.peerAddress = peerAddress;
 		this.storageKey = storageKey;
 	}
@@ -41,7 +57,7 @@ public class MapReducePeerAddressStorageKeyTuple {
 			return true;
 		if (obj == null)
 			return false;
-		MapReducePeerAddressStorageKeyTuple other = (MapReducePeerAddressStorageKeyTuple) obj;
+		PeerAddressStorageKeyTuple other = (PeerAddressStorageKeyTuple) obj;
 		if (peerAddress == null) {
 			if (other.peerAddress != null)
 				return false;

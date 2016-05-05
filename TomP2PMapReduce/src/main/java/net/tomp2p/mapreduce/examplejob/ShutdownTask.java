@@ -14,23 +14,17 @@
  */
 package net.tomp2p.mapreduce.examplejob;
 
-import java.util.List;
 import java.util.NavigableMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.tomp2p.futures.BaseFuture;
 import net.tomp2p.futures.BaseFutureAdapter;
-import net.tomp2p.mapreduce.Job;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
-import net.tomp2p.mapreduce.utils.JobTransferObject;
 import net.tomp2p.mapreduce.utils.NumberUtils;
-import net.tomp2p.mapreduce.utils.ReadLog;
-import net.tomp2p.mapreduce.utils.TestInformationGatherUtils;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
@@ -68,20 +62,20 @@ public class ShutdownTask extends Task {
 
 	@Override
 	public void broadcastReceiver(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
-		startTaskCounter.incrementAndGet();
+//		startTaskCounter.incrementAndGet();
 
 		int execID = counter++;
-		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING SHUTDOWNTASK [" + execID + "]");
+//		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING SHUTDOWNTASK [" + execID + "]");
 		if (!input.containsKey(NumberUtils.OUTPUT_STORAGE_KEY)) {
 			logger.info("Received shutdown but not for the printing task. Ignored");
-			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING SHUTDOWNTASK [" + execID + "]");
+//			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING SHUTDOWNTASK [" + execID + "]");
 			return;
 		}
 		logger.info("Received REAL shutdown from ACTUAL PRINTING TASK. shutdown initiated.");
 
 		if (shutdownInitiated.get()) {
 			logger.info("Shutdown already initiated. ignored");
-			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING SHUTDOWNTASK [" + execID + "]");
+//			TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> RETURNED EXECUTING SHUTDOWNTASK [" + execID + "]");
 			return;
 		}
 		++retrievalCounter;
@@ -104,8 +98,8 @@ public class ShutdownTask extends Task {
 							e.printStackTrace();
 						}
 					}
-					finishedTaskCounter.incrementAndGet();
-
+//					finishedTaskCounter.incrementAndGet();
+//
 //					List<String> taskDetails = pmr.broadcastHandler().shutdown();
 //					TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING SHUTDOWNTASK [" + execID + "]");
 //					try {

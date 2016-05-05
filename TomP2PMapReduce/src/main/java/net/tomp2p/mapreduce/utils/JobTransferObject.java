@@ -20,6 +20,12 @@ import java.util.List;
 
 import net.tomp2p.peers.Number640;
 
+/**
+ * Complete serialised job with all contained tasks
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class JobTransferObject implements Serializable {
 	/**
 	 * 

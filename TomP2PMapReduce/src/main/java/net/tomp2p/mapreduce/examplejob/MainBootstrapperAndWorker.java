@@ -12,13 +12,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.tomp2p.mapreduce;
+package net.tomp2p.mapreduce.examplejob;
 
 import java.net.InetAddress;
 
 import net.tomp2p.connection.ConnectionBean;
 import net.tomp2p.futures.BaseFutureAdapter;
 import net.tomp2p.futures.FutureBootstrap;
+import net.tomp2p.mapreduce.PeerConnectionCloseListener;
+import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.p2p.PeerBuilder;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.PeerMap;
@@ -39,7 +41,7 @@ public class MainBootstrapperAndWorker {
 		// ConnectionBean.DEFAULT_UDP_IDLE_MILLIS = Integer.MAX_VALUE;
 		// ChannelServerConfiguration c;
 		// int nrOfFiles = 5;
-		MapReducePeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time (reps*sleepingTime)
+		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time (reps*sleepingTime)
 		//
 		String bootstrapperToConnectTo = "130.60.156.102";
 		int bootstrapperPortToConnectTo = 4004;

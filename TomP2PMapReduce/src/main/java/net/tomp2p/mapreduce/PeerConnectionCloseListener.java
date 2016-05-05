@@ -33,8 +33,8 @@ import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
-public class MapReducePeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
-	private static final Logger LOG = LoggerFactory.getLogger(MapReducePeerConnectionCloseListener.class);
+public class PeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
+	private static final Logger LOG = LoggerFactory.getLogger(PeerConnectionCloseListener.class);
 
 	public static long WAITING_TIME = 10000;
 
@@ -48,11 +48,11 @@ public class MapReducePeerConnectionCloseListener extends BaseFutureAdapter<Base
 
 //	private Object value;
 
-	private MapReducePeerAddressStorageKeyTuple requester;
+	private PeerAddressStorageKeyTuple requester;
 
 	private Timer timer;
 
-	public MapReducePeerConnectionCloseListener(AtomicBoolean activeOnDataFlag, MapReducePeerAddressStorageKeyTuple requester, Storage storage, NavigableMap<Number640, Data> broadcastData, Peer peer, Object value) {
+	public PeerConnectionCloseListener(AtomicBoolean activeOnDataFlag, PeerAddressStorageKeyTuple requester, Storage storage, NavigableMap<Number640, Data> broadcastData, Peer peer, Object value) {
 		this.activeOnDataFlag = activeOnDataFlag;
 		this.requester = requester;
 		this.storage = storage;

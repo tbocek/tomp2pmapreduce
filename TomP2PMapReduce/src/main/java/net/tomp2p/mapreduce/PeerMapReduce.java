@@ -14,7 +14,6 @@
  */
 package net.tomp2p.mapreduce;
 
-import java.io.IOException;
 import java.util.NavigableMap;
 import java.util.Random;
 
@@ -25,14 +24,14 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
- * Main connection point to the network. Get and Put methods can be used to store and retrieve serialised data to and from the DHT. Furthermore, the contained <code>Peer</code> can directly be
- * accessed to allow for broadcast emissions.
+ * Main connection point to the network. Get and Put methods can be used to store and retrieve serialised data to and
+ * from the DHT. Furthermore, the contained <code>Peer</code> can directly be accessed to allow for broadcast emissions.
  * 
  * @author Oliver Zihler
  *
  */
 public class PeerMapReduce {
-	private static final int DEFAULT_PORT = 4444;
+	private static final int DEFAULT_WAITING_TIME = 3000;
 	private static final Random RND = new Random();
 
 	/** Peer to connect to the DHT and other peers */
@@ -41,67 +40,17 @@ public class PeerMapReduce {
 	private MapReduceBroadcastHandler broadcastHandler;
 	/** Actual network access */
 	private TaskRPC taskRPC;
-	/** Waiting time before the actual get request is conducted */
-	private int waitingTime = 3000;
-
-	public PeerMapReduce(Peer peer, MapReduceBroadcastHandler broadcastHandler) {
-		// PeerMapReduce.numberOfExpectedComputers = numberOfExpectedComputers;
-		this.peer = peer;
-		if (broadcastHandler != null) {
-			this.broadcastHandler = broadcastHandler;
-			this.broadcastHandler.peerMapReduce(this);
-		}
-		this.taskRPC = new TaskRPC(this);
-	}
-
-	/**
-	 * Only for testing purposed as peers are not configured
-	 */
-	public PeerMapReduce() {
-		try {
-			// PeerMapReduce.numberOfExpectedComputers = numberOfExpectedComputers;
-			this.broadcastHandler = new MapReduceBroadcastHandler();
-			this.peer = new PeerBuilder(new Number160(RND)).ports(DEFAULT_PORT).broadcastHandler(broadcastHandler).start();
-			this.broadcastHandler.peerMapReduce(this);
-			this.taskRPC = new TaskRPC(this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	/** Waiting time before the actual get request is conducted. Default is 3 seconds. */
+	private int waitingTime = DEFAULT_WAITING_TIME;
 
 	public PeerMapReduce(PeerBuilder peerBuilder) {
-		try {
-			this.broadcastHandler = new MapReduceBroadcastHandler();
-			this.peer = peerBuilder.broadcastHandler(broadcastHandler).start();
-			this.broadcastHandler.peerMapReduce(this);
-			this.taskRPC = new TaskRPC(this);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this(peerBuilder, DEFAULT_WAITING_TIME);
 	}
 
-	/**
-	 * 
-	 * @param peerBuilder
-	 *            instance to configure a peer outside
-	 * @param waitingTime
-	 *            until get is invoked
-	 */
 	public PeerMapReduce(PeerBuilder peerBuilder, int waitingTime) {
 		try {
 			this.waitingTime = waitingTime;
 			this.broadcastHandler = new MapReduceBroadcastHandler();
-			this.peer = peerBuilder.broadcastHandler(broadcastHandler).start();
-			this.broadcastHandler.peerMapReduce(this);
-			this.taskRPC = new TaskRPC(this);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public PeerMapReduce(PeerBuilder peerBuilder, MapReduceBroadcastHandler broadcastHandler) {
-		try {
-			this.broadcastHandler = broadcastHandler;
 			this.peer = peerBuilder.broadcastHandler(broadcastHandler).start();
 			this.broadcastHandler.peerMapReduce(this);
 			this.taskRPC = new TaskRPC(this);
@@ -128,8 +77,9 @@ public class PeerMapReduce {
 	}
 
 	/**
-	 * Get the data from the DHT. If the peer requesting the data fails, the same broadcast as before needs to be distributed again for other peers to execute the failed task. This requires the
-	 * complete input the task that invokes this method received.
+	 * Get the data from the DHT. If the peer requesting the data fails, the same broadcast as before needs to be
+	 * distributed again for other peers to execute the failed task. This requires the complete input the task that
+	 * invokes this method received.
 	 * 
 	 * @param locationKey
 	 *            main key, specifies on which peer the data resides
@@ -139,13 +89,12 @@ public class PeerMapReduce {
 	 *            complete input the task that invokes this method received.
 	 * @return
 	 */
-	public MapReduceGetBuilder get(Number160 locationKey, Number160 domainKey, NavigableMap<Number640, Data> broadcastInput) {
+	public MapReduceGetBuilder get(Number160 locationKey, Number160 domainKey,
+			NavigableMap<Number640, Data> broadcastInput) {
 		try {
-			int nextInt = new Random().nextInt(waitingTime);
-			System.err.println("Waiting " + nextInt + " ms till get");
+			int nextInt = RND.nextInt(waitingTime);
 			Thread.sleep(nextInt);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new MapReduceGetBuilder(this, locationKey, domainKey).broadcastInput(broadcastInput);
@@ -159,6 +108,10 @@ public class PeerMapReduce {
 		return this.peer;
 	}
 
+	/**
+	 * 
+	 * @return actual broadcast handler, mainly used for internal mechanisms at the moment.
+	 */
 	public MapReduceBroadcastHandler broadcastHandler() {
 		return this.broadcastHandler;
 	}
@@ -171,4 +124,13 @@ public class PeerMapReduce {
 		return this.taskRPC;
 	}
 
+	/**
+	 * 
+	 * @param waitingTime
+	 *            maximal time in milliseconds to wait until get is invoked. The actual time waited is a random number
+	 *            between 0 and waitingTime.
+	 */
+	public void waitingTime(int waitingTime) {
+		this.waitingTime = waitingTime;
+	}
 }

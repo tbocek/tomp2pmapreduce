@@ -15,13 +15,9 @@
 package net.tomp2p.mapreduce;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -30,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import net.tomp2p.connection.ChannelCreator;
 import net.tomp2p.connection.PeerConnection;
 import net.tomp2p.connection.RequestHandler;
-import net.tomp2p.connection.Reservation;
 import net.tomp2p.connection.Responder;
 import net.tomp2p.dht.Storage;
 import net.tomp2p.dht.StorageMemory;
@@ -43,20 +38,20 @@ import net.tomp2p.message.Message.Type;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
-import net.tomp2p.peers.PeerMap;
 import net.tomp2p.rpc.DispatchHandler;
 import net.tomp2p.rpc.RPC;
 import net.tomp2p.storage.Data;
 
 public class TaskRPC extends DispatchHandler {
-
 	private static final Logger LOG = LoggerFactory.getLogger(TaskRPC.class);
-	private Storage storage = new StorageMemory();
-	// private Set<Triple> locallyCreatedTriples = Collections.synchronizedSet(new HashSet<>());
+	/** Actual storage object where the data on a node resides */
+	private Storage storage;
+
 	private PeerMapReduce peerMapReduce;
 
 	public TaskRPC(final PeerMapReduce peerMapReduce) {
 		super(peerMapReduce.peer().peerBean(), peerMapReduce.peer().connectionBean());
+		this.storage = new StorageMemory();
 		this.peerMapReduce = peerMapReduce;
 		register(RPC.Commands.GCM.getNr());
 	}
@@ -65,44 +60,34 @@ public class TaskRPC extends DispatchHandler {
 		this.storage = storage;
 	}
 
-	public FutureResponse putTaskData(final PeerAddress remotePeer, final MapReducePutBuilder taskDataBuilder, final ChannelCreator channelCreator) {
-		// long start = System.currentTimeMillis();
-
-		// try {
-		// Field f = Reservation.class.getDeclaredField("semaphoreTCP");
-		// f.setAccessible(true);
-		//
-		// Semaphore semaphoreTCP = (Semaphore) f.get(peerMapReduce.peer().connectionBean().reservation());
-		// System.err.println("TASKRPC: available permits TCP " + semaphoreTCP.availablePermits());
-		// } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		final Message message = createMessage(remotePeer, RPC.Commands.GCM.getNr(), Type.REQUEST_1)
-		// .keepAlive(true)
-		;// TODO: replace GCM with TASK
+	/**
+	 * Actual put invoked by {@link DistributedTask#putTaskData()}
+	 * @param remotePeer
+	 * @param taskDataBuilder
+	 * @param channelCreator
+	 * @return
+	 */
+	public FutureResponse putTaskData(final PeerAddress remotePeer, final MapReducePutBuilder taskDataBuilder,
+			final ChannelCreator channelCreator) {
+		// TODO: replace GCM with TASK
+		final Message message = createMessage(remotePeer, RPC.Commands.GCM.getNr(), Type.REQUEST_1);
 		DataMap requestDataMap = new DataMap(new TreeMap<>());
 		try {
-			// will become storage.put(taskBuilder.key(), taskBuilder.dataStorageTriple());
-			// LOG.info("putTaskData(k[" + taskDataBuilder.locationKey() + "] d[" + taskDataBuilder.domainKey() + "], v[ ])");
-			requestDataMap.dataMap().put(NumberUtils.OUTPUT_STORAGE_KEY, new Data(new Number640(taskDataBuilder.locationKey(), taskDataBuilder.domainKey(), Number160.ZERO, Number160.ZERO))); // the
-																																																// key
-																																																// for
-																																																// the
-																																																// values
-																																																// to
-																																																// put
-			requestDataMap.dataMap().put(NumberUtils.VALUE, new Data(taskDataBuilder.data())); // The actual values to put
+			// the key for the values to put
+			requestDataMap.dataMap().put(NumberUtils.OUTPUT_STORAGE_KEY,
+					new Data(new Number640(taskDataBuilder.locationKey(), taskDataBuilder.domainKey(), Number160.ZERO,
+							Number160.ZERO)));
+			// The actual value to put
+			requestDataMap.dataMap().put(NumberUtils.VALUE, new Data(taskDataBuilder.data()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		message.setDataMap(requestDataMap);
 		FutureResponse futureResponse = new FutureResponse(message);
-		final RequestHandler<FutureResponse> requestHandler = new RequestHandler<FutureResponse>(futureResponse, peerBean(), connectionBean(), taskDataBuilder);
-		// long end = System.currentTimeMillis();
+		final RequestHandler<FutureResponse> requestHandler = new RequestHandler<FutureResponse>(futureResponse,
+				peerBean(), connectionBean(), taskDataBuilder);
 
-		// LOG.info("PUT TASK DATA BEFORE SEND MESSAGE: ["+message.messageId()+"] @ ["+ DateFormat.getDateTimeInstance().format(new Date())+"]");
 		if (taskDataBuilder.isForceUDP()) {
 			return requestHandler.fireAndForgetUDP(channelCreator);
 		} else {
@@ -110,25 +95,20 @@ public class TaskRPC extends DispatchHandler {
 		}
 	}
 
-	public FutureResponse getTaskData(final PeerAddress remotePeer, final MapReduceGetBuilder taskDataBuilder, final ChannelCreator channelCreator) {
-		// long start = System.currentTimeMillis();
-
-		final Message message = createMessage(remotePeer, RPC.Commands.GCM.getNr(), Type.REQUEST_2)
-				// ;
-				.keepAlive(true);// TODO: replace GCM with TASK
-		// LOG.info("getTaskData(k[" + taskDataBuilder.locationKey() + "] d[" + taskDataBuilder.domainKey() + "], v[])");
+	public FutureResponse getTaskData(final PeerAddress remotePeer, final MapReduceGetBuilder taskDataBuilder,
+			final ChannelCreator channelCreator) {
+		// TODO: replace GCM with TASK
+		final Message message = createMessage(remotePeer, RPC.Commands.GCM.getNr(), Type.REQUEST_2).keepAlive(true);
 
 		DataMap requestDataMap = new DataMap(new TreeMap<>());
 		try {
-			requestDataMap.dataMap().put(NumberUtils.OUTPUT_STORAGE_KEY, new Data(new Number640(taskDataBuilder.locationKey(), taskDataBuilder.domainKey(), Number160.ZERO, Number160.ZERO))); // the
-																																																// key
-																																																// for
-																																																// the
-																																																// values
-																																																// to
-																																																// put
+			// the key for the values to put
+			requestDataMap.dataMap().put(NumberUtils.OUTPUT_STORAGE_KEY,
+					new Data(new Number640(taskDataBuilder.locationKey(), taskDataBuilder.domainKey(), Number160.ZERO,
+							Number160.ZERO)));
 			if (taskDataBuilder.broadcastInput() != null) { // Maybe null e.g. when job is used
-				requestDataMap.dataMap().put(NumberUtils.OLD_BROADCAST, new Data(taskDataBuilder.broadcastInput())); // Used to send the broadcast again if this connection fails
+				// Used to send the broadcast again if this connection fails
+				requestDataMap.dataMap().put(NumberUtils.OLD_BROADCAST, new Data(taskDataBuilder.broadcastInput()));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -136,12 +116,8 @@ public class TaskRPC extends DispatchHandler {
 
 		message.setDataMap(requestDataMap);
 		FutureResponse futureResponse = new FutureResponse(message);
-		final RequestHandler<FutureResponse> requestHandler = new RequestHandler<FutureResponse>(futureResponse, peerBean(), connectionBean(), taskDataBuilder);
-
-		// long end = System.currentTimeMillis();
-		// LOG.info("getTaskData before send time for message " + message.messageId() + ": " + ((end - start) / 1000) + "secs");
-
-		// LOG.info("GET TASK DATA BEFORE SEND MESSAGE: ["+message.messageId()+"] @ ["+ DateFormat.getDateTimeInstance().format(new Date())+"]");
+		final RequestHandler<FutureResponse> requestHandler = new RequestHandler<FutureResponse>(futureResponse,
+				peerBean(), connectionBean(), taskDataBuilder);
 		if (taskDataBuilder.isForceUDP()) {
 			return requestHandler.fireAndForgetUDP(channelCreator);
 		} else {
@@ -150,10 +126,10 @@ public class TaskRPC extends DispatchHandler {
 	}
 
 	@Override
-	public void handleResponse(final Message message, PeerConnection peerConnection, final boolean sign, Responder responder) throws Exception {
-		// long start = System.currentTimeMillis();
-		// LOG.info("HANDLE RESPONSE RECEIVED MESSAGE: ["+message.messageId()+"] @ ["+ DateFormat.getDateTimeInstance().format(new Date())+"]");
-		if (!((message.type() == Type.REQUEST_1 || message.type() == Type.REQUEST_2) && message.command() == RPC.Commands.GCM.getNr())) {
+	public void handleResponse(final Message message, PeerConnection peerConnection, final boolean sign,
+			Responder responder) throws Exception {
+		if (!((message.type() == Type.REQUEST_1 || message.type() == Type.REQUEST_2)
+				&& message.command() == RPC.Commands.GCM.getNr())) {
 			throw new IllegalArgumentException("Message content is wrong for this handler.");
 		}
 		Message responseMessage = createResponseMessage(message, Type.NOT_FOUND);
@@ -164,10 +140,7 @@ public class TaskRPC extends DispatchHandler {
 			Data valueData = dataMap.get(NumberUtils.VALUE);
 			storage.put(storageKey, valueData);
 			responseMessage = createResponseMessage(message, Type.OK);
-			// LOG.info("PUT handle Response: [requestor: " + (peerConnection != null ? peerConnection.remotePeer().peerId().shortValue() : peerMapReduce.peer().peerID().shortValue()) + "] put(k[" +
-			// storageKey.locationKey() + "],d[" + storageKey.domainKey() + "], v[ ");
 		} else if (message.type() == Type.REQUEST_2) {// Get
-			// System.err.println("Storage key: " + storageKey);
 			Object value = null;
 			// Try to acquire the value
 			synchronized (storage) {
@@ -181,12 +154,12 @@ public class TaskRPC extends DispatchHandler {
 					}
 					if (dST.nrOfExecutions() < 3) {
 						LOG.info("value for key [" + storageKey.locationKey().intValue() + "] requested by peer ["
-								+ (peerConnection != null ? peerConnection.remotePeer().peerId().shortValue() : peerMapReduce.peer().peerID().shortValue()) + "] is "
-								+ (value == null ? "[null]" : "[not null]") + ", dst.currentNrOfExecutions(): " + dST.currentNrOfExecutions() + ", possible nr of executions: [" + dST.nrOfExecutions()
-								+ "]");
+								+ (peerConnection != null ? peerConnection.remotePeer().peerId().shortValue()
+										: peerMapReduce.peer().peerID().shortValue())
+								+ "] is " + (value == null ? "[null]" : "[not null]")
+								+ ", dst.currentNrOfExecutions(): " + dST.currentNrOfExecutions()
+								+ ", possible nr of executions: [" + dST.nrOfExecutions() + "]");
 					}
-					// LOG.info("GET handle Response [requestor: " + (peerConnection != null ? peerConnection.remotePeer().peerId().shortValue() : peerMapReduce.peer().peerID().shortValue()) + "]:
-					// get(k[" + storageKey.locationKey() + "],d[" + storageKey.domainKey() + "]):v ]");
 				}
 			}
 			if (value != null) {
@@ -197,32 +170,45 @@ public class TaskRPC extends DispatchHandler {
 				responseDataMap.dataMap().put(storageKey, new Data(value));
 				responseMessage.setDataMap(responseDataMap);
 				/*
-				 * Add listener to peer connection such that if the connection dies, the broadcast is sent once again Add a broadcast listener that, in case it receives the broadcast, sets the flag of
-				 * the peer connection listener to false, such that the connection listener is not invoked anymore
+				 * Add listener to peer connection such that if the connection dies, the broadcast is sent once again
+				 * Add a broadcast listener that, in case it receives the broadcast, sets the flag of the peer
+				 * connection listener to false, such that the connection listener is not invoked anymore
 				 */
 				if (peerConnection == null) { // This means its directly connected to himself
 					// Do nothing, data on this peer is lost anyways if this peer dies
 					// LOG.info("Acquired data from myself");
 				} else {
 
-					MapReducePeerAddressStorageKeyTuple senderTriple = new MapReducePeerAddressStorageKeyTuple(peerConnection.remotePeer(), storageKey);
-					Set<MapReducePeerAddressStorageKeyTuple> receivedButNotFound = peerMapReduce.broadcastHandler().receivedButNotFound();
+					PeerAddressStorageKeyTuple senderTriple = new PeerAddressStorageKeyTuple(
+							peerConnection.remotePeer(), storageKey);
+					Set<PeerAddressStorageKeyTuple> receivedButNotFound = peerMapReduce.broadcastHandler()
+							.receivedButNotFound();
 					synchronized (receivedButNotFound) {
-						if (receivedButNotFound.contains(senderTriple)) { // this means we received the broadcast before we received the get request for this item from this sender --> invalid/outdated
+						if (receivedButNotFound.contains(senderTriple)) { // this means we received the broadcast before
+																			// we received the get request for this item
+																			// from this sender --> invalid/outdated
 																			// request
-							// LOG.info("Received Get request from [" + senderTriple + "], but was already received once and not found. responseMessage = createResponseMessage(message,
+							// LOG.info("Received Get request from [" + senderTriple + "], but was already received once
+							// and not found. responseMessage = createResponseMessage(message,
 							// Type.NOT_FOUND);");
 							responseMessage = createResponseMessage(message, Type.NOT_FOUND);
 							// senderTriple.nrOfAcquires--;
 						} else {// Only here it is valid
-							if (dataMap.containsKey(NumberUtils.OLD_BROADCAST)) { // If it is null, there is no sense in decrementing it again as nobody will receive a broadcast... -->e.g in case of
+							if (dataMap.containsKey(NumberUtils.OLD_BROADCAST)) { // If it is null, there is no sense in
+																					// decrementing it again as nobody
+																					// will receive a broadcast...
+																					// -->e.g in case of
 																					// job
 								// LOG.info("Will add senderTriple [" + senderTriple + "] to bc handler");
 								final AtomicBoolean activeOnDataFlag = new AtomicBoolean(true);
-								peerMapReduce.broadcastHandler().addPeerConnectionRemoveActiveFlageListener(new MapReducePeerConnectionActiveFlagRemoveListener(senderTriple, activeOnDataFlag));
+								peerMapReduce.broadcastHandler().addPeerConnectionRemoveActiveFlageListener(
+										new PeerConnectionActiveFlagRemoveListener(senderTriple, activeOnDataFlag));
 								NavigableMap<Number640, Data> oldBCInput = MapReduceGetBuilder
-										.reconvertByteArrayToData((NavigableMap<Number640, byte[]>) dataMap.get(NumberUtils.OLD_BROADCAST).object());
-								peerConnection.closeFuture().addListener(new MapReducePeerConnectionCloseListener(activeOnDataFlag, senderTriple, storage, oldBCInput, peerMapReduce.peer(), value));
+										.reconvertByteArrayToData((NavigableMap<Number640, byte[]>) dataMap
+												.get(NumberUtils.OLD_BROADCAST).object());
+								peerConnection.closeFuture()
+										.addListener(new PeerConnectionCloseListener(activeOnDataFlag, senderTriple,
+												storage, oldBCInput, peerMapReduce.peer(), value));
 							}
 						}
 
@@ -231,14 +217,11 @@ public class TaskRPC extends DispatchHandler {
 
 			}
 		}
-		// message.keepAlive(true);
 		if (message.isUdp()) {
 			responder.responseFireAndForget();
 		} else {
 			responder.response(responseMessage);
 		}
-		// long end = System.currentTimeMillis();
-		// LOG.info("handleResponse time for message " + message.messageId() + ": " + ((end - start) / 1000) + "secs");
 	}
 
 	public PeerMapReduce peerMapReduce() {

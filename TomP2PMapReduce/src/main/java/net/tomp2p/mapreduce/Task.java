@@ -15,23 +15,18 @@
 package net.tomp2p.mapreduce;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.NavigableMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import net.tomp2p.mapreduce.utils.NumberUtils;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
  * Main Abstraction Point for a Map or Reduce Function. Users need to define previousId and currentId. currentId
- * corresponds to the id of this task. previousId is the id of the task that comes before in the task chain. 
+ * corresponds to the id of this task. previousId is the id of the task that comes before in the task chain.
  *
  * @author Oliver Zihler
  */
 public abstract class Task implements Serializable {
-	protected AtomicInteger startTaskCounter = new AtomicInteger(0);
-	protected AtomicInteger finishedTaskCounter = new AtomicInteger(0);
 
 	/**
 	 * 
@@ -52,7 +47,7 @@ public abstract class Task implements Serializable {
 	 * MapReduce, see e.g.
 	 * http://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf.
 	 * 
-	 * Define map or reduce functions (or any other extension) by implementing this method. Input provides the 
+	 * Define map or reduce functions (or any other extension) by implementing this method. Input provides the
 	 * 
 	 * @param input
 	 *            defines the input for this task. E.g. location of files to process locally
@@ -71,28 +66,6 @@ public abstract class Task implements Serializable {
 		return this.previousId;
 	}
 
-	/**
-	 * Simplified way of reusing inputs again from previous input if not all inputs should be sent by broadcast. Only
-	 * usable if NumberUtils.allSameKeys() was used to define the keys.
-	 * 
-	 * @param input
-	 *            received input
-	 * @param keptInput
-	 *            part of the input to keep
-	 * @param keyStringsToKeep
-	 *            strings of the input to keep.
-	 */
-	public static void keepInputKeyValuePairs(NavigableMap<Number640, Data> input, Map<Number640, Data> keptInput,
-			String[] keyStringsToKeep) {
-		for (String keyString : keyStringsToKeep) {
-			if (input.containsKey(NumberUtils.allSameKey(keyString))) {
-				keptInput.put(NumberUtils.allSameKey(keyString), input.get(NumberUtils.allSameKey(keyString)));
-			}
-		}
-	}
+	
 
-	public String printExecutionDetails() {
-		return "Task [" + getClass().getSimpleName() + "] was started #[" + startTaskCounter.get() + "] and finished #["
-				+ finishedTaskCounter.get() + "].";
-	}
 }

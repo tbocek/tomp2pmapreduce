@@ -30,8 +30,8 @@ import net.tomp2p.mapreduce.FutureMapReduceData;
 import net.tomp2p.mapreduce.MapReducePutBuilder;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
+import net.tomp2p.mapreduce.utils.InputUtils;
 import net.tomp2p.mapreduce.utils.NumberUtils;
-import net.tomp2p.mapreduce.utils.TestInformationGatherUtils;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
@@ -57,14 +57,14 @@ public class MapTask extends Task {
 	@Override
 	public void broadcastReceiver(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
  
-		startTaskCounter.incrementAndGet();
+//		startTaskCounter.incrementAndGet();
 
 		// logger.info();
 
 		int execID = counter.getAndIncrement();
 
 		logger.info(">>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
-		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
+//		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
 
 		Number640 inputStorageKey = (Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object();
 		Number160 outputLocationKey = inputStorageKey.locationKey();
@@ -111,7 +111,7 @@ public class MapTask extends Task {
 									logger.info("MAPTASK[" + execID + "] put future.isSuccess()?" + future.isSuccess());
 									if (future.isSuccess()) {
 										NavigableMap<Number640, Data> newInput = new TreeMap<>();
-										keepInputKeyValuePairs(input, newInput, new String[] { "JOB_KEY", "NUMBEROFFILES", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
+										InputUtils.keepInputKeyValuePairs(input, newInput, new String[] { "JOB_KEY", "NUMBEROFFILES", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
 										newInput.put(NumberUtils.SENDER, new Data(pmr.peer().peerAddress()));
 										newInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKey("MAPTASKID")));
 										newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKey("REDUCETASKID")));
@@ -119,9 +119,9 @@ public class MapTask extends Task {
 										newInput.put(NumberUtils.INPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY));
 										newInput.put(NumberUtils.OUTPUT_STORAGE_KEY, new Data(new Number640(outputLocationKey, outputDomainKey, Number160.ZERO, Number160.ZERO)));
 										logger.info(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
-										TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
+//										TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
 										pmr.peer().broadcast(new Number160(new Random())).dataMap(newInput).start();
-										finishedTaskCounter.incrementAndGet();
+//										finishedTaskCounter.incrementAndGet();
 
 									} else {
 										logger.info("!future.isSuccess(), failed reason: " + future.failedReason());

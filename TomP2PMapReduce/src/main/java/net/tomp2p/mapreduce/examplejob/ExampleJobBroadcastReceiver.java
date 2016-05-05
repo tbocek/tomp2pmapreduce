@@ -14,10 +14,8 @@
  */
 package net.tomp2p.mapreduce.examplejob;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.NavigableMap;
 import java.util.Set;
 
@@ -41,11 +39,20 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 	 */
 	private static final long serialVersionUID = 6201919213334638897L;
 	private static Logger logger = LoggerFactory.getLogger(ExampleJobBroadcastReceiver.class);
-	private String id;
-	/** Listens to this job only */
-	private Number640 jobId;
-	// private Job job = null;
 
+	/**
+	 * identifier to be declared such that the same IMapReduceBroadcastReceiver is not instantiated multiple times. see
+	 * {@link IMapReduceBroadcastReceiver#id()} private String id; /** Listens to this job only
+	 */
+	private String id;
+	/**
+	 * The job this IMapReduceBroadcastReceiver is responsible for.
+	 */
+	private Number640 jobId;
+
+	/**
+	 * To catch multiple same jobs if received in parallel.
+	 */
 	public Set<Job> jobs = Collections.synchronizedSet(new HashSet<>());
 
 	public ExampleJobBroadcastReceiver(Number640 jobId) {
@@ -59,29 +66,15 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 		NavigableMap<Number640, Data> input = message.dataMapList().get(0).dataMap();
 		try {
 			Data jobData = input.get(NumberUtils.JOB_DATA);
-			System.err.println("Job data : " + jobData.object().getClass());
 			if (jobData != null) {
 				synchronized (jobs) {
 					JobTransferObject serializedJob = ((JobTransferObject) jobData.object());
 					Job job = Job.deserialize(serializedJob);
-					// jobs.add(j);
 					if (!job.id().equals(jobId)) {
-						System.err
-								.println("Received job for wrong id: observing job [" + jobId.locationKey().shortValue()
-										+ "], received job[" + job.id().locationKey().shortValue() + "]");
 						logger.info("Received job for wrong id: observing job [" + jobId.locationKey().shortValue()
 								+ "], received job[" + job.id().locationKey().shortValue() + "]");
 						return;
 					}
-
-					// boolean containsJob = false;
-					// for(Job j: jobs) {
-					// if(j.id().equals(jobKey)){
-					// containsJob = true;
-					// job = j;
-					// }
-					// }
-
 					if (!jobs.contains(job)) {
 						jobs.add(job);
 					} else {
@@ -91,56 +84,14 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 							}
 						}
 					}
-					// peerMapReduce.get(jobKey.locationKey(),
-					// jobKey.domainKey(), null).start().addListener(new
-					// BaseFutureAdapter<FutureTask>() {
-					//
-					// public void operationComplete(FutureTask future) throws
-					// Exception {
-					// if (future.isSuccess()) {
-					// synchronized (jobs) {
-					// boolean containsJob = false;
-					// for(Job job: jobs) {
-					// if(job.id().equals(jobKey)){
-					// containsJob = true;
-					// }
-					// }
-					// if (!containsJob) {
-					// JobTransferObject serialized = (JobTransferObject)
-					// future.data().object();
-					// Job j = Job.deserialize(serialized);
-					// jobs.add(j);
-					// }
-					// }
-					//
-					// }
-					// if (job != null) {
-					// logger.info("[" +
-					// peerMapReduce.peer().peerID().shortValue() + "]: Success
-					// on job retrieval. Job = " + job);
 					if (input.containsKey(NumberUtils.NEXT_TASK)) {
 						Number640 nextTaskId = (Number640) input.get(NumberUtils.NEXT_TASK).object();
 						Task task = job.findTask(nextTaskId);
 						task.broadcastReceiver(input, peerMapReduce);
+					} else {
+						logger.info("Job was null");
 					}
-					// } else {
-					// logger.info("Job was null");
-					// }
 				}
-
-				// });
-				// }else{
-				//// logger.info("[" +
-				// peerMapReduce.peer().peerID().shortValue() + "]: Success on
-				// job retrieval. Job = " + job);
-				// if (input.containsKey(NumberUtils.NEXT_TASK)) {
-				// Number640 nextTaskId = (Number640)
-				// input.get(NumberUtils.NEXT_TASK).object();
-				// Task task = job.findTask(nextTaskId);
-				// task.broadcastReceiver(input, peerMapReduce);
-				// }
-				// }
-				// }
 			}
 
 		} catch (Exception e) {
@@ -175,22 +126,6 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 	@Override
 	public String id() {
 		return id;
-	}
-
-	@Override
-	public List<String> printExecutionDetails() {
-		List<String> taskStrings = Collections.synchronizedList(new ArrayList<>());
-		synchronized (jobs) {
-			for (Job job : jobs) {
-				// System.err.println("DETAILS FOR JOB "+ job.id());
-				synchronized (job.tasks()) {
-					for (Task task : job.tasks()) {
-						taskStrings.add(task.printExecutionDetails());
-					}
-				}
-			}
-		}
-		return taskStrings;
 	}
 
 }

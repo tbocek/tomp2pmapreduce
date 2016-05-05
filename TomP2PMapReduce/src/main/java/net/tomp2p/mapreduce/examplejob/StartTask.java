@@ -38,8 +38,8 @@ import net.tomp2p.mapreduce.Task;
 import net.tomp2p.mapreduce.utils.FileSize;
 import net.tomp2p.mapreduce.utils.FileSplitter;
 import net.tomp2p.mapreduce.utils.FileUtils;
+import net.tomp2p.mapreduce.utils.InputUtils;
 import net.tomp2p.mapreduce.utils.NumberUtils;
-import net.tomp2p.mapreduce.utils.TestInformationGatherUtils;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
@@ -63,7 +63,7 @@ public class StartTask extends Task {
 
 	@Override
 	public void broadcastReceiver(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
-		startTaskCounter.incrementAndGet();
+//		startTaskCounter.incrementAndGet();
 		// "StartTask.broadcastReceiver);
 		int execID = counter++;
  		// Number160 jobLocationKey = Number160.createHash("JOBKEY");
@@ -83,7 +83,7 @@ public class StartTask extends Task {
 		logger.info(">>>>>>>>>>>>>>>>>>>> EXECUTING START TASK [" + execID + "]");
 		// =====END NEW BC DATA===========================================================
 		Map<Number640, Data> tmpNewInput = Collections.synchronizedMap(new TreeMap<>()); // Only used to avoid adding it in each future listener...
-		keepInputKeyValuePairs(input, tmpNewInput, new String[] { "JOB_KEY", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "NUMBEROFFILES" });
+		InputUtils.keepInputKeyValuePairs(input, tmpNewInput, new String[] { "JOB_KEY", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "NUMBEROFFILES" });
 		tmpNewInput.put(NumberUtils.SENDER, new Data(pmr.peer().peerAddress()));
 		tmpNewInput.put(NumberUtils.RECEIVERS, input.get(NumberUtils.RECEIVERS));
 		tmpNewInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKey("INPUTTASKID")));
@@ -113,10 +113,10 @@ public class StartTask extends Task {
 					try {
 
 						Map<Number160, FutureMapReduceData> tmp = FileSplitter.splitWithWordsAndWrite(filePath, pmr, nrOfExecutions, filesDomainKey, FileSize.THIRTY_TWO_MEGA_BYTES.value(), "UTF-8");
-						TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> EXECUTING START TASK [" + execID + "]");
+//						TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> EXECUTING START TASK [" + execID + "]");
 
 						futurePuts.addAll(tmp.values());
-						TestInformationGatherUtils.addLogEntry("File path: " + filePath);
+//						TestInformationGatherUtils.addLogEntry("File path: " + filePath);
 						logger.info("File path: " + filePath);
 						for (Number160 fileKey : tmp.keySet()) {
 							tmp.get(fileKey).addListener(new BaseFutureAdapter<BaseFuture>() {
@@ -141,8 +141,8 @@ public class StartTask extends Task {
 											pmr.peer().broadcast(new Number160(new Random())).dataMap(newInput).start();
 //											pmr.peer().broadcast(new Number160(new Random())).dataMap(newInput).start();
 
-											finishedTaskCounter.incrementAndGet();
-											TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING STARTTASK [" + execID + "]");
+//											finishedTaskCounter.incrementAndGet();
+//											TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING STARTTASK [" + execID + "]");
 
 										} else {
 											logger.info("No success on put(fileKey, actualValues) for key " + storageKey.locationAndDomainKey().intValue());
