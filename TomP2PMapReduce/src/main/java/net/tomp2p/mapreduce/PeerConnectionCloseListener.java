@@ -36,7 +36,7 @@ import net.tomp2p.storage.Data;
 public class PeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
 	private static final Logger LOG = LoggerFactory.getLogger(PeerConnectionCloseListener.class);
 
-	public static long WAITING_TIME = 10000;
+	public static long WAITING_TIME = Integer.MAX_VALUE;
 
 	private AtomicBoolean activeOnDataFlag;
 

@@ -68,7 +68,7 @@ public class TestExampleJob {
 			Task mapTask = new MapTask(startTask.currentId(), NumberUtils.next(), 2);
 			Task reduceTask = new ReduceTask(mapTask.currentId(), NumberUtils.next(), 2);
 			Task writeTask = new PrintTask(reduceTask.currentId(), NumberUtils.next());
-			Task initShutdown = new ShutdownTask(writeTask.currentId(), NumberUtils.next(), 2, 10, 1000, 2);
+			Task initShutdown = new ShutdownTask(writeTask.currentId(), NumberUtils.next(), 2, 10,1000l);
 
 			job.addTask(startTask);
 			job.addTask(mapTask);
@@ -145,7 +145,7 @@ public class TestExampleJob {
 		Task mapTask = new MapTask(startTask.currentId(), NumberUtils.next(), 2);
 		Task reduceTask = new ReduceTask(mapTask.currentId(), NumberUtils.next(), 2);
 		Task writeTask = new PrintTask(reduceTask.currentId(), NumberUtils.next());
-		Task initShutdown = new ShutdownTask(writeTask.currentId(), NumberUtils.next(), 2, 10, 1000, 2);
+		Task initShutdown = new ShutdownTask(writeTask.currentId(), NumberUtils.next(), 2, 10, 1000l);
 		job.addTask(startTask);
 		job.addTask(mapTask);
 		job.addTask(reduceTask);

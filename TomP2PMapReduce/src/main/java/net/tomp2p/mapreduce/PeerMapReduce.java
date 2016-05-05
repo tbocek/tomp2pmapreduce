@@ -31,7 +31,7 @@ import net.tomp2p.storage.Data;
  *
  */
 public class PeerMapReduce {
-	private static final int DEFAULT_WAITING_TIME = 3000;
+	public static int DEFAULT_WAITING_TIME = 3000;
 	private static final Random RND = new Random();
 
 	/** Peer to connect to the DHT and other peers */
