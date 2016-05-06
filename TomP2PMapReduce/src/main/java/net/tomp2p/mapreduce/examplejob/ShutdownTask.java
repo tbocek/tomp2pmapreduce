@@ -28,30 +28,46 @@ import net.tomp2p.mapreduce.utils.NumberUtils;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
+/**
+ * ShutdownTask demonstrates how a user needs to take care of a graceful disconnection of the peer once a job finished.
+ * In the current implementation, a user specifies how many times a shutdown task needs to be called. Once this number
+ * is reached, the shutdown is initiated and the peer disconnected from the DHT after 15 seconds of waiting time. The
+ * waiting time is provided such that all connected peers can receive the required number of messages and needs to be
+ * tested beforehand by the user.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class ShutdownTask extends Task {
-	private static int counter = 0;
-
 	private static Logger logger = LoggerFactory.getLogger(ShutdownTask.class);
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5543401293112052880L;
-	private static int DEFAULT_SLEEPING_TIME_REPS = 15;
-	private static long DEFAULT_SLEEPING_TIME = 1000;
+	public static int DEFAULT_SLEEPING_TIME_REPS = 15;
+	public static long DEFAULT_SLEEPING_TIME = 1000;
 
 	private long sleepingTime = DEFAULT_SLEEPING_TIME;
 	private int sleepingTimeReps = DEFAULT_SLEEPING_TIME_REPS;
 	private int retrievalCounter = 0;
-	private int nrOfParticipatingPeers;
+	private int nrOfShutdownMessagesToAwait;
 	public AtomicBoolean shutdownInitiated = new AtomicBoolean(false);
 
-	public ShutdownTask(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers, int sleepingTimeReps,
-			long sleepingTime) {
+	/**
+	 * 
+	 * @param previousId
+	 *            ID of the {@link PrintTask}
+	 * 
+	 * @param currentId
+	 *            ID of this ShutdownTask
+	 * @param nrOfShutdownMessagesToAwait
+	 *            how many times this ShutdownTask needs to be invoked before the peer is actually disconnected from the
+	 *            overlay.
+	 * @param sleepingTimeReps
+	 *            number of times sleepingTime should be repeated
+	 * @param sleepingTime
+	 *            Sleeping tim ein milliseconds
+	 */
+	public ShutdownTask(Number640 previousId, Number640 currentId, int nrOfShutdownMessagesToAwait) {
 		super(previousId, currentId);
-		this.nrOfParticipatingPeers = nrOfParticipatingPeers;
-		this.sleepingTimeReps = sleepingTimeReps;
-		this.sleepingTime = sleepingTime;
+		this.nrOfShutdownMessagesToAwait = nrOfShutdownMessagesToAwait;
 	}
 
 	@Override
@@ -69,8 +85,8 @@ public class ShutdownTask extends Task {
 		}
 		++retrievalCounter;
 		logger.info("Retrieval counter: " + retrievalCounter + ", (" + retrievalCounter + " >= "
-				+ nrOfParticipatingPeers + ")? " + (retrievalCounter >= nrOfParticipatingPeers));
-		if (retrievalCounter >= nrOfParticipatingPeers) {
+				+ nrOfShutdownMessagesToAwait + ")? " + (retrievalCounter >= nrOfShutdownMessagesToAwait));
+		if (retrievalCounter >= nrOfShutdownMessagesToAwait) {
 			shutdownInitiated.set(true);
 			logger.info("Received shutdown message. Counter is: " + retrievalCounter + ": SHUTDOWN IN 5 SECONDS");
 			new Thread(new Runnable() {
@@ -93,17 +109,17 @@ public class ShutdownTask extends Task {
 						pmr.peer().shutdown().await().addListener(new BaseFutureAdapter<BaseFuture>() {
 
 							@Override
-							public void operationComplete(BaseFuture future) throws Exception { 
+							public void operationComplete(BaseFuture future) throws Exception {
 								if (future.isSuccess()) {
 									logger.info("Success on shutdown peer [" + pmr.peer().peerID().shortValue() + "]");
 								} else {
-									logger.info("NOOO SUCCEESSS on shutdown peer [" + pmr.peer().peerID().shortValue()
+									logger.info("NO SUCCEESSS on shutdown peer [" + pmr.peer().peerID().shortValue()
 											+ "], reason: " + future.failedReason());
 								}
 								System.exit(0);
 							}
 						});
-					} catch (InterruptedException e) { 
+					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					logger.info("Shutdown peer.");
@@ -111,7 +127,7 @@ public class ShutdownTask extends Task {
 				}
 			}).start();
 		} else {
-			logger.info("RetrievalCounter is only: " + retrievalCounter);
+			logger.info("RetrievalCounter is only: " + retrievalCounter + ", no shutdown.");
 		}
 
 	}

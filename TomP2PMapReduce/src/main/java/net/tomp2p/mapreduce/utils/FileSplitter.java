@@ -35,7 +35,8 @@ public class FileSplitter {
 	private static Logger logger = LoggerFactory.getLogger(FileSplitter.class);
 
 	/**
-	 * Splits a text file located at keyFilePath into pieces of at max maxFileSize. Words are not split! Meaning, this method is appropriate for word count
+	 * Splits a text file located at keyFilePath into pieces of at max maxFileSize. Words are not split! Meaning, this
+	 * method is appropriate for word count
 	 * 
 	 * @param keyfilePath
 	 * @param dht
@@ -43,36 +44,27 @@ public class FileSplitter {
 	 * @param maxFileSize
 	 * @param fileEncoding
 	 *            (e.g. UTF-8)
-	 * @return a map containing all generated dht keys of the file splits to retrieve them together with the FuturePut to be called in Futures.whenAllSucess(...)
+	 * @return a map containing all generated dht keys of the file splits to retrieve them together with the FuturePut
+	 *         to be called in Futures.whenAllSucess(...)
 	 */
-	public static Map<Number160, FutureMapReduceData> splitWithWordsAndWrite(String keyfilePath, PeerMapReduce pmr, int nrOfExecutions, Number160 domainKey, int maxFileSize, String fileEncoding) {
+	public static Map<Number160, FutureMapReduceData> splitWithWordsAndWrite(String keyfilePath, PeerMapReduce pmr,
+			int nrOfExecutions, Number160 domainKey, int maxFileSize, String fileEncoding) {
 		Map<Number160, FutureMapReduceData> dataKeysAndFuturePuts = Collections.synchronizedMap(new HashMap<>());
-		// System.err.println("Filepath: " + keyfilePath);
 		try {
 			RandomAccessFile aFile = new RandomAccessFile(keyfilePath, "r");
 			FileChannel inChannel = aFile.getChannel();
 			ByteBuffer buffer = ByteBuffer.allocate(maxFileSize);
-			// int filePartCounter = 0;
 			String split = "";
 			String actualData = "";
 			String remaining = "";
-//			Integer.parseInt(remaining);
 			while (inChannel.read(buffer) > 0) {
 				buffer.flip();
-				// String all = "";
-				// for (int i = 0; i < buffer.limit(); i++) {
 				byte[] data = new byte[buffer.limit()];
 				buffer.get(data);
-				// }
-				// System.out.println(all);
 				split = new String(data);
 				split = remaining += split;
 
 				remaining = "";
-				// System.out.println(all);
-				// Assure that words are not split in parts by the buffer: only
-				// take the split until the last occurrance of " " and then
-				// append that to the first again
 
 				if (split.getBytes(Charset.forName(fileEncoding)).length >= maxFileSize) {
 					actualData = split.substring(0, split.lastIndexOf(" ")).trim();
@@ -81,16 +73,9 @@ public class FileSplitter {
 					actualData = split.trim();
 					remaining = "";
 				}
-				// System.err.println("Put data: " + actualData + ", remaining data: " + remaining);
 				Number160 dataKey = Number160.createHash(keyfilePath);
 				MapReducePutBuilder put = pmr.put(dataKey, domainKey, actualData, nrOfExecutions);
-//				logger.info("put[k[" + dataKey + "], d[" + domainKey + "]");
-//				TestInformationGatherUtils
-//				.addLogEntry("put[k[" + dataKey + "], d[" + domainKey + "]");
-//				put.execId = "STARTTASK [" + dataKey.shortValue() + "]";
-
 				FutureMapReduceData futureTask = put.start();
-
 				dataKeysAndFuturePuts.put(dataKey, futureTask);
 
 				buffer.clear();

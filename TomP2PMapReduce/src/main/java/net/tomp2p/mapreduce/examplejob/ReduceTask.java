@@ -260,8 +260,8 @@ public class ReduceTask extends Task {
 																"REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID",
 																"RECEIVERS" });
 
-										newInput.put(NumberUtils.CURRENT_TASK,
-												input.get(NumberUtils.allSameKey("REDUCETASKID")));
+//										newInput.put(NumberUtils.CURRENT_TASK,
+//												input.get(NumberUtils.allSameKey("REDUCETASKID")));
 										newInput.put(NumberUtils.NEXT_TASK,
 												input.get(NumberUtils.allSameKey("WRITETASKID")));
 										// newInput.put(NumberUtils.NEXT_TASK,

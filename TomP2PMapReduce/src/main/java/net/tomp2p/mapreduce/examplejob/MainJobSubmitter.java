@@ -56,8 +56,8 @@ public class MainJobSubmitter {
 		int nrOfShutdownMessagesToAwait = 1;
 		int nrOfExecutions = 1;
 
-		String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/12MB";
-		int nrOfFiles = 24;
+		String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/1MB";
+		int nrOfFiles = 2;
 		ConnectionBean.DEFAULT_SLOW_RESPONSE_TIMEOUT_SECONDS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_TCP_IDLE_MILLIS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_CONNECTION_TIMEOUT_TCP = Integer.MAX_VALUE;
@@ -65,7 +65,8 @@ public class MainJobSubmitter {
 		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE;
 
 		// how long the get method should wait until it actually starts retrieving the data from the dht
-		PeerMapReduce.DEFAULT_WAITING_TIME = 5000;
+		PeerMapReduce.DEFAULT_WAITING_TIME = 1;
+		ShutdownTask.DEFAULT_SLEEPING_TIME = 1;
 		// Bootstrapping node IP
 		String bootstrapperIP = "130.60.156.102";
 		// Bootstrapping node port
@@ -118,7 +119,7 @@ public class MainJobSubmitter {
 					Task reduceTask = new ReduceTask(mapTask.currentId(), NumberUtils.next(), nrOfExecutions);
 					Task writeTask = new PrintTask(reduceTask.currentId(), NumberUtils.next());
 					Task initShutdown = new ShutdownTask(writeTask.currentId(), NumberUtils.next(),
-							nrOfShutdownMessagesToAwait, 10, 1000l);
+							nrOfShutdownMessagesToAwait);
 
 					job.addTask(startTask);
 					job.addTask(mapTask);
