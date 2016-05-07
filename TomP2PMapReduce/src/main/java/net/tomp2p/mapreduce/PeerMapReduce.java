@@ -102,6 +102,26 @@ public class PeerMapReduce {
 
 	/**
 	 * 
+	 * @param locationKey
+	 * @param domainKey
+	 * @param broadcastInput
+	 * @param waitingTime
+	 *            maximal time in milliseconds to wait until get is invoked.. Will not be stored! If needs to be reused, use the corresponding setter.
+	 * @return
+	 */
+	public MapReduceGetBuilder get(Number160 locationKey, Number160 domainKey,
+			NavigableMap<Number640, Data> broadcastInput, int waitingTime) {
+		try {
+			int nextInt = RND.nextInt(waitingTime);
+			Thread.sleep(nextInt);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return new MapReduceGetBuilder(this, locationKey, domainKey).broadcastInput(broadcastInput);
+	}
+
+	/**
+	 * 
 	 * @return peer to send broadcast or configure
 	 */
 	public Peer peer() {

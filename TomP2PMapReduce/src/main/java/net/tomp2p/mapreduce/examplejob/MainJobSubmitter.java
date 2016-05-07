@@ -52,11 +52,11 @@ public class MainJobSubmitter {
 
 		// false -- will only execute locally, true --- will connect to bootstrapper specifeid by bootstrapperIP and
 		// bootstrapperPort
-		boolean shouldBootstrap = false;
-		int nrOfShutdownMessagesToAwait = 1;
-		int nrOfExecutions = 1;
+		boolean shouldBootstrap = true;
+		int nrOfShutdownMessagesToAwait = 2;
+		int nrOfExecutions = 2;
 
-		String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/1MB";
+		String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/12MB";
 		int nrOfFiles = 2;
 		ConnectionBean.DEFAULT_SLOW_RESPONSE_TIMEOUT_SECONDS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_TCP_IDLE_MILLIS = Integer.MAX_VALUE;
@@ -65,10 +65,11 @@ public class MainJobSubmitter {
 		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE;
 
 		// how long the get method should wait until it actually starts retrieving the data from the dht
-		PeerMapReduce.DEFAULT_WAITING_TIME = 1;
-		ShutdownTask.DEFAULT_SLEEPING_TIME = 1;
+		PeerMapReduce.DEFAULT_WAITING_TIME = 75000;
+		ShutdownTask.DEFAULT_SLEEPING_TIME = 1000;
+		ShutdownTask.DEFAULT_SLEEPING_TIME_REPS = 10;
 		// Bootstrapping node IP
-		String bootstrapperIP = "130.60.156.102";
+		String bootstrapperIP = "192.168.0.19";
 		// Bootstrapping node port
 		int bootstrapperPort = 4004;
 
