@@ -150,7 +150,7 @@ public class TaskRPCTest {
 			taskDataBuilder.locationKey(key).domainKey(key);
 			// Just some simple bc input
 			TreeMap<Number640, Data> broadcastInput = new TreeMap<>();
-			broadcastInput.put(NumberUtils.allSameKey("SENDERID"), new Data(sender.peer().peerID()));
+			broadcastInput.put(NumberUtils.allSameKeys("SENDERID"), new Data(sender.peer().peerID()));
 			taskDataBuilder.broadcastInput(broadcastInput);
 
 			// Try to acquire the data
@@ -167,7 +167,7 @@ public class TaskRPCTest {
 				assertEquals(actualKey, (Number640) requestDataMap.get(NumberUtils.OUTPUT_STORAGE_KEY).object());
 				assertEquals(sender.peer().peerID(),
 						(Number160) new Data(((NavigableMap<Number640, byte[]>) requestDataMap
-								.get(NumberUtils.OLD_BROADCAST).object()).get(NumberUtils.allSameKey("SENDERID")))
+								.get(NumberUtils.OLD_BROADCAST).object()).get(NumberUtils.allSameKeys("SENDERID")))
 										.object());
 				assertEquals(Type.REQUEST_2, fr.request().type());
 				// Response data

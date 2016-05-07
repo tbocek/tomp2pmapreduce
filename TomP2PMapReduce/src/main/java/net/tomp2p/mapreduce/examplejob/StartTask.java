@@ -77,11 +77,11 @@ public class StartTask extends Task {
 		tmpNewInput.put(NumberUtils.RECEIVERS, input.get(NumberUtils.RECEIVERS));
 		// To determine which task to execute next.
 //		tmpNewInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKey("INPUTTASKID")));
-		tmpNewInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKey("MAPTASKID")));
+		tmpNewInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKeys("MAPTASKID")));
 		// =====END NEW BC DATA===========================================================
 
 		// ============GET ALL THE FILES ==========
-		String filesPath = (String) input.get(NumberUtils.allSameKey("DATAFILEPATH")).object();
+		String filesPath = (String) input.get(NumberUtils.allSameKeys("DATAFILEPATH")).object();
 		List<String> pathVisitor = Collections.synchronizedList(new ArrayList<>());
 		FileUtils.INSTANCE.getFiles(new File(filesPath), pathVisitor);
 		// ===== FINISHED GET ALL THE FILES =================
@@ -90,7 +90,7 @@ public class StartTask extends Task {
 		final List<FutureMapReduceData> futurePuts = Collections.synchronizedList(new ArrayList<>());
 
 		// To distribute all the files in parallel like the MapReduceBroadcastReceiver does
-		int nrOfFiles = (int) input.get(NumberUtils.allSameKey("NUMBEROFFILES")).object();
+		int nrOfFiles = (int) input.get(NumberUtils.allSameKeys("NUMBEROFFILES")).object();
 		ThreadPoolExecutor e = new ThreadPoolExecutor(nrOfFiles, nrOfFiles, Long.MAX_VALUE, TimeUnit.DAYS,
 				new LinkedBlockingQueue<>());
 
@@ -109,7 +109,9 @@ public class StartTask extends Task {
 								nrOfExecutions, filesDomainKey, FileSize.THIRTY_TWO_MEGA_BYTES.value(), "UTF-8");
 
 						futurePuts.addAll(tmp.values());
+						int cnt = 0;
 						for (Number160 fileKey : tmp.keySet()) {
+							System.err.println(cnt++);
 							tmp.get(fileKey).addListener(new BaseFutureAdapter<BaseFuture>() {
 
 								@Override

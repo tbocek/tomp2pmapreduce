@@ -32,6 +32,18 @@ import net.tomp2p.message.Message;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
+/**
+ * Exemplary implementation of {@link IMapReduceBroadcastReceiver} that is invoked by {@link MapReduceBroadcastHandler}
+ * after receiving a broadcast {@link Message}. This implementation receives the job on every broadcast, deserialises
+ * it, and adds it to a set of jobs to assure the same job is only added once. This is required as the
+ * {@link ReduceTaskEval} depends on the job as it stores certain result temporarily. If no dependencies are needed,
+ * instead, the job would not have to be stored. Once the job is added, the next task to execute is distinguished and
+ * invoked using the received broadcast input. Every instance of {@link ExampleJobBroadcastReceiverEval} is responsible
+ * for exactly one job.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class ExampleJobBroadcastReceiverEval implements IMapReduceBroadcastReceiver {
 
 	/**
@@ -55,6 +67,11 @@ public class ExampleJobBroadcastReceiverEval implements IMapReduceBroadcastRecei
 	 */
 	public Set<Job> jobs = Collections.synchronizedSet(new HashSet<>());
 
+	/**
+	 * 
+	 * @param jobId
+	 *            the job for which this {@link ExampleJobBroadcastReceiverEval} instance is responsible for (only one)
+	 */
 	public ExampleJobBroadcastReceiverEval(Number640 jobId) {
 		this.jobId = jobId;
 		this.id = ExampleJobBroadcastReceiverEval.class.getSimpleName() + "_" + jobId;
@@ -62,19 +79,25 @@ public class ExampleJobBroadcastReceiverEval implements IMapReduceBroadcastRecei
 
 	@Override
 	public void receive(Message message, PeerMapReduce peerMapReduce) {
-
+		// get the input from the broadcast message
 		NavigableMap<Number640, Data> input = message.dataMapList().get(0).dataMap();
 		try {
+			// the job data from the broadcast message (optional)
 			Data jobData = input.get(NumberUtils.JOB_DATA);
 			if (jobData != null) {
 				synchronized (jobs) {
+					// Deserialise the job from the broadcast message
 					JobTransferObject serializedJob = ((JobTransferObject) jobData.object());
 					Job job = Job.deserialize(serializedJob);
+
+					// If it is not the job this instance is responsible for, simply return
 					if (!job.id().equals(jobId)) {
 						logger.info("Received job for wrong id: observing job [" + jobId.locationKey().shortValue()
 								+ "], received job[" + job.id().locationKey().shortValue() + "]");
 						return;
 					}
+
+					// Add the job if it is not contained
 					if (!jobs.contains(job)) {
 						jobs.add(job);
 					} else {
@@ -84,6 +107,8 @@ public class ExampleJobBroadcastReceiverEval implements IMapReduceBroadcastRecei
 							}
 						}
 					}
+
+					// Invoke the next task to execute, determined from the broadcast input
 					if (input.containsKey(NumberUtils.NEXT_TASK)) {
 						Number640 nextTaskId = (Number640) input.get(NumberUtils.NEXT_TASK).object();
 						Task task = job.findTask(nextTaskId);

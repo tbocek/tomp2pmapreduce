@@ -16,15 +16,27 @@ package net.tomp2p.mapreduce;
 
 import java.io.Serializable;
 import java.util.NavigableMap;
+import java.util.Random;
 
+import net.tomp2p.mapreduce.examplejob.StartTask;
+import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
- * Main Abstraction Point for a Map or Reduce Function. Users need to define previousId and currentId. currentId
- * corresponds to the id of this task. previousId is the id of the task that comes before in the task chain.
- *
  * @author Oliver Zihler
+ * 
+ * 
+ *         Main Abstraction Point for a Map or Reduce Function. Users need to define previousId and currentId. currentId
+ *         corresponds to the id of this task. previousId is the id of the task that comes before in the task chain. In
+ *         the chain, the first (and presumably locally executed task) has NO previousId (stays null).
+ *
+ * @see StartTask
+ * @see MapTask
+ * @see ReduceTask
+ * @see PrintTask
+ * @see ShutdownTask
+ * @see ExampleJobBroadcastReceiver
  */
 public abstract class Task implements Serializable {
 
@@ -47,12 +59,17 @@ public abstract class Task implements Serializable {
 	 * MapReduce, see e.g.
 	 * http://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf.
 	 * 
-	 * Define map or reduce functions (or any other extension) by implementing this method. Input provides the
+	 * Define map or reduce functions (or any other extension) by implementing this method. User the provided
+	 * {@link PeerMapReduce} instance to store data etc. produced during execution to the DHT (
+	 * {@link PeerMapReduce#put()}), retrieve data etc. from the DHT ({@link PeerMapReduce#get()}), or send broadcasts
+	 * to inform other nodes about completed tasks ({@link PeerMapReduce#peer()}, then on the Peer invoke e.g.
+	 * pmr.peer().broadcast(new Number160(new Random())).dataMap(yourBroadcastMessageAsNavigableMap).start();
 	 * 
 	 * @param input
-	 *            defines the input for this task. E.g. location of files to process locally
+	 *            defines the user-defined input for this task. E.g. location of files to process, keys to data in the
+	 *            DHT, and so on.
 	 * @param pmr
-	 *            connection to the dht. Used to get and put data from and to the DHT and to send broadcast messages.
+	 *            connection to the DHT. Used to get and put data from and to the DHT and to send broadcast messages.
 	 * @throws Exception
 	 *             any exception that can occur in the task.
 	 */
@@ -65,7 +82,5 @@ public abstract class Task implements Serializable {
 	public Number640 previousId() {
 		return this.previousId;
 	}
-
-	
 
 }

@@ -97,8 +97,8 @@ public class PrintTaskEval extends Task {
 						printResults(filename, reduceResults, pmr.peer().peerID().intValue());
 						NavigableMap<Number640, Data> newInput = new TreeMap<>();
 						InputUtils.keepInputKeyValuePairs(input, newInput, new String[] { "JOB_KEY", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
-						newInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKey("WRITETASKID")));
-						newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKey("SHUTDOWNTASKID")));
+						newInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKeys("WRITETASKID")));
+						newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKeys("SHUTDOWNTASKID")));
 						newInput.put(NumberUtils.INPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY));
 						// Number640 o = new Number640(new Random());
 						// newInput.put(NumberUtils.OUTPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY)); //Below replaces this because bc handler has a set with msgs and would not execute it if the outputkey was the same (see bchandler)

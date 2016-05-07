@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Random;
 
+import net.tomp2p.mapreduce.examplejob.StartTask;
 import net.tomp2p.mapreduce.utils.JobTransferObject;
 import net.tomp2p.mapreduce.utils.NumberUtils;
 import net.tomp2p.mapreduce.utils.SerializeUtils;
@@ -30,9 +31,12 @@ import net.tomp2p.storage.Data;
 
 /**
  *
- * Users need to add <code>Task</code> and <code>IMapReduceBroadcastReceiver</code> to a <code>Job</code> to be able to
- * execute a MapReduce job. Once these classes are added, <code>Job.start()</code> will determine the first local
- * <code>Task</code> to execute and start it.
+ * Users need to add {@link Task} and {@link IMapReduceBroadcastReceiver} to a {@link Job} to be able to execute a
+ * MapReduce job. Once these classes are added, {@link #start()} will determine the first local {@link Task} (compare
+ * {@link StartTask}) to execute (specified by the {@link Task#previousId()} to be null) and start it.
+ * 
+ * @see StartTask
+ * 
  * 
  * @author Oliver Zihler
  */
@@ -76,7 +80,8 @@ final public class Job {
 
 	/**
 	 * 
-	 * @return the serialised job containing all tasks and broadcast receivers in a serialised form, to be put into the DHT using {@link PeerMapReduce#get()} or sent via broadcast
+	 * @return the serialised job containing all tasks and broadcast receivers in a serialised form, to be put into the
+	 *         DHT using {@link PeerMapReduce#get()} or sent via broadcast
 	 * @throws IOException
 	 */
 	public JobTransferObject serialize() throws IOException {
@@ -101,6 +106,15 @@ final public class Job {
 		return job;
 	}
 
+	/**
+	 * Main entrance point to start a MapReduce job. The input is the same as for {@link Task#broadcastReceiver()}. This
+	 * is intentional as #start() will determine the first task (whose {@link Task#previousId()} is null) and execute it
+	 * locally, where it will also pass the input and {@link PeerMapReduce} instance for the first task to use it.
+	 * 
+	 * @param input
+	 * @param pmr
+	 * @throws Exception
+	 */
 	public void start(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
 		if (tasks.size() == 0) {
 			throw new Exception("No Task defined. Cannot start execution without any Task to execute.");
@@ -135,6 +149,9 @@ final public class Job {
 		return broadcastReceiversTransferObjects;
 	}
 
+	/**
+	 * @return the first task encountered whose previoudId() is null. Returns null if none is found.
+	 */
 	public Task findStartTask() {
 		for (Task task : tasks) {
 			if (task.previousId() == null) {// This marks the start
@@ -144,6 +161,11 @@ final public class Job {
 		return null;
 	}
 
+	/**
+	 * @param taskId
+	 *            the task to find
+	 * @return the task that has the corresponding taskId as {@link Task#currentId()}. Else null
+	 */
 	public Task findTask(Number640 taskId) {
 		for (Task task : tasks) {
 			if (task.currentId().equals(taskId)) {

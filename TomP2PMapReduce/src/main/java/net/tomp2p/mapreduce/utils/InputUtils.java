@@ -9,7 +9,7 @@ import net.tomp2p.storage.Data;
 public class InputUtils {
 	/**
 	 * Simplified way of reusing inputs again from previous input if not all inputs should be sent by broadcast. Only
-	 * usable if NumberUtils.allSameKeys() was used to define the keys.
+	 * usable if {#link NumberUtils#allSameKeys(String)} was used to define the keys.
 	 * 
 	 * @param input
 	 *            received input
@@ -21,8 +21,8 @@ public class InputUtils {
 	public static void keepInputKeyValuePairs(NavigableMap<Number640, Data> input, Map<Number640, Data> keptInput,
 			String[] keyStringsToKeep) {
 		for (String keyString : keyStringsToKeep) {
-			if (input.containsKey(NumberUtils.allSameKey(keyString))) {
-				keptInput.put(NumberUtils.allSameKey(keyString), input.get(NumberUtils.allSameKey(keyString)));
+			if (input.containsKey(NumberUtils.allSameKeys(keyString))) {
+				keptInput.put(NumberUtils.allSameKeys(keyString), input.get(NumberUtils.allSameKeys(keyString)));
 			}
 		}
 	}

@@ -87,7 +87,7 @@ public class PrintTask extends Task {
 						NavigableMap<Number640, Data> newInput = new TreeMap<>();
 						InputUtils.keepInputKeyValuePairs(input, newInput, new String[] { "JOB_KEY", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
  
-						newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKey("SHUTDOWNTASKID")));
+						newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKeys("SHUTDOWNTASKID")));
 						newInput.put(NumberUtils.INPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY));
 			 			newInput.put(NumberUtils.OUTPUT_STORAGE_KEY, new Data(new Number640(new Random())));
 

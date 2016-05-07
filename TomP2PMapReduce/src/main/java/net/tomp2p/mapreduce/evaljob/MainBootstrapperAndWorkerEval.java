@@ -16,6 +16,9 @@ package net.tomp2p.mapreduce.evaljob;
 
 import java.net.InetAddress;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.tomp2p.connection.ConnectionBean;
 import net.tomp2p.futures.BaseFutureAdapter;
 import net.tomp2p.futures.FutureBootstrap;
@@ -26,60 +29,63 @@ import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.PeerMap;
 import net.tomp2p.peers.PeerMapConfiguration;
 
+/**
+ * Example client to be run on any node that is not the job submitter. Bootstrapping node below has id 2. All other
+ * nodes have an id different from 2 and need to connect to the bootstrapper. Additionally, IP and port to connect to
+ * from the bootstrapping node need to be provided
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class MainBootstrapperAndWorkerEval {
-
-	private static final int waitingTime = 5000; 
-	// private static int peerCounter = new Random().nextInt();
-	private static int peerCounter = 2;
+	private static final Logger LOG = LoggerFactory.getLogger(MainBootstrapperAndWorkerEval.class);
 
 	public static void main(String[] args) throws Exception {
-		// String myIP = "192.168.";
-
+		// These configurations are needed due to a bug not resolved yet
 		ConnectionBean.DEFAULT_SLOW_RESPONSE_TIMEOUT_SECONDS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_TCP_IDLE_MILLIS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_CONNECTION_TIMEOUT_TCP = Integer.MAX_VALUE;
-		// ConnectionBean.DEFAULT_UDP_IDLE_MILLIS = Integer.MAX_VALUE;
-		// ChannelServerConfiguration c;
-		// int nrOfFiles = 5;
-		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time (reps*sleepingTime)
-		//
-		String bootstrapperToConnectTo = "130.60.156.102";
-		int bootstrapperPortToConnectTo = 4004;
-		// MapReduceBroadcastHandler broadcastHandler = new MapReduceBroadcastHandler();
+		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE;
 
-		Number160 id = new Number160(peerCounter);
+		// how long the get method should wait until it actually starts retrieving the data from the dht
+		PeerMapReduce.DEFAULT_WAITING_TIME = 5000;
 
-		PeerMapConfiguration pmc = new PeerMapConfiguration(id);
+		// peer id generator. Bootstrapper should be ID 2. Can be adapted as needed. Any node that is not the
+		// bootstrapper needs to have another id assigned.
+		int peerCounter = 2;
+		boolean isBootstrapper = peerCounter == 2;
+		// Bootstrapping node IP
+		String bootstrapperIP = "192.168.0.19";
+		// Bootstrapping node port
+		int bootstrapperPort = 4004;
+
+		// Peer configuration
+		Number160 peerId = new Number160(peerCounter);
+
+		PeerMapConfiguration pmc = new PeerMapConfiguration(peerId);
 		pmc.peerNoVerification();
 		PeerMap pm = new PeerMap(pmc);
-		PeerBuilder peerBuilder = new PeerBuilder(id).peerMap(pm).ports(bootstrapperPortToConnectTo);
-		// Bindings b = new Bindings().addAddress(InetAddresses.forString(myIP));
+		PeerBuilder peerBuilder = new PeerBuilder(peerId).peerMap(pm).ports(bootstrapperPort);
 
-		PeerMapReduce peerMapReduce = new PeerMapReduce(peerBuilder, waitingTime);
+		// connection to the DHT
+		PeerMapReduce peerMapReduce = new PeerMapReduce(peerBuilder);
 
-		boolean isBootStrapper = (peerCounter == 2);
-		if (!isBootStrapper) {
-			peerMapReduce.peer().bootstrap().inetAddress(InetAddress.getByName(bootstrapperToConnectTo)).ports(bootstrapperPortToConnectTo).start().awaitUninterruptibly().addListener(new BaseFutureAdapter<FutureBootstrap>() {
+		// Connect to the bootstrapping node. peer with ID 2 in this case is the bootstrapper and does not need to be
+		// connected. All other nodes connect to peer 2.
+		if (!isBootstrapper) {
+			peerMapReduce.peer().bootstrap().inetAddress(InetAddress.getByName(bootstrapperIP)).ports(bootstrapperPort)
+					.start().awaitUninterruptibly().addListener(new BaseFutureAdapter<FutureBootstrap>() {
 
-				@Override
-				public void operationComplete(FutureBootstrap future) throws Exception {
-					if (future.isSuccess()) {
-						System.err.println("successfully bootstrapped to " + bootstrapperToConnectTo + "/" + bootstrapperPortToConnectTo);
-					} else {
-						System.err.println("No success on bootstrapping: fail reason: " + future.failedReason());
-					}
-				}
+						@Override
+						public void operationComplete(FutureBootstrap future) throws Exception {
+							if (future.isSuccess()) {
+								LOG.info("successfully bootstrapped to " + bootstrapperIP + "/" + bootstrapperPort);
+							} else {
+								LOG.warn("No success on bootstrapping: fail reason: " + future.failedReason());
+							}
+						}
 
-			});
+					});
 		}
-
-		// new Thread(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// Sniffer.main(null);
-		// }
-		// }).start();
-//		new PeerMapReduce(peer, broadcastHandler);
 	}
 }

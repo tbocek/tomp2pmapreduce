@@ -77,12 +77,12 @@ public class TestExampleJob {
 			job.addTask(initShutdown);
 
 			NavigableMap<Number640, Data> input = new TreeMap<>();
-			input.put(NumberUtils.allSameKey("INPUTTASKID"), new Data(startTask.currentId()));
-			input.put(NumberUtils.allSameKey("MAPTASKID"), new Data(mapTask.currentId()));
-			input.put(NumberUtils.allSameKey("REDUCETASKID"), new Data(reduceTask.currentId()));
-			input.put(NumberUtils.allSameKey("WRITETASKID"), new Data(writeTask.currentId()));
-			input.put(NumberUtils.allSameKey("SHUTDOWNTASKID"), new Data(initShutdown.currentId()));
-			input.put(NumberUtils.allSameKey("DATAFILEPATH"), new Data(filesPath));
+			input.put(NumberUtils.allSameKeys("INPUTTASKID"), new Data(startTask.currentId()));
+			input.put(NumberUtils.allSameKeys("MAPTASKID"), new Data(mapTask.currentId()));
+			input.put(NumberUtils.allSameKeys("REDUCETASKID"), new Data(reduceTask.currentId()));
+			input.put(NumberUtils.allSameKeys("WRITETASKID"), new Data(writeTask.currentId()));
+			input.put(NumberUtils.allSameKeys("SHUTDOWNTASKID"), new Data(initShutdown.currentId()));
+			input.put(NumberUtils.allSameKeys("DATAFILEPATH"), new Data(filesPath));
 			input.put(NumberUtils.JOB_DATA, new Data(job.serialize()));
 			// T410: 192.168.1.172
 			// ASUS: 192.168.1.147
@@ -153,13 +153,13 @@ public class TestExampleJob {
 		job.addTask(initShutdown);
 
 		NavigableMap<Number640, Data> input = new TreeMap<>();
-		input.put(NumberUtils.allSameKey("INPUTTASKID"), new Data(startTask.currentId()));
-		input.put(NumberUtils.allSameKey("MAPTASKID"), new Data(mapTask.currentId()));
-		input.put(NumberUtils.allSameKey("REDUCETASKID"), new Data(reduceTask.currentId()));
-		input.put(NumberUtils.allSameKey("WRITETASKID"), new Data(writeTask.currentId()));
-		input.put(NumberUtils.allSameKey("SHUTDOWNTASKID"), new Data(initShutdown.currentId()));
-		input.put(NumberUtils.allSameKey("DATAFILEPATH"), new Data(filesPath));
-		input.put(NumberUtils.allSameKey("JOBKEY"), new Data(job.serialize()));
+		input.put(NumberUtils.allSameKeys("INPUTTASKID"), new Data(startTask.currentId()));
+		input.put(NumberUtils.allSameKeys("MAPTASKID"), new Data(mapTask.currentId()));
+		input.put(NumberUtils.allSameKeys("REDUCETASKID"), new Data(reduceTask.currentId()));
+		input.put(NumberUtils.allSameKeys("WRITETASKID"), new Data(writeTask.currentId()));
+		input.put(NumberUtils.allSameKeys("SHUTDOWNTASKID"), new Data(initShutdown.currentId()));
+		input.put(NumberUtils.allSameKeys("DATAFILEPATH"), new Data(filesPath));
+		input.put(NumberUtils.allSameKeys("JOBKEY"), new Data(job.serialize()));
 		startTask.broadcastReceiver(input, peers[0]);
 
 		Thread.sleep(1000);
@@ -216,7 +216,7 @@ public class TestExampleJob {
 
 	@Test
 	public void testMapTask() throws Exception {
-		MapTask maptask = new MapTask(NumberUtils.allSameKey("INITTASKID"), NumberUtils.allSameKey("MAPTASKID"), 2);
+		MapTask maptask = new MapTask(NumberUtils.allSameKeys("INITTASKID"), NumberUtils.allSameKeys("MAPTASKID"), 2);
 		PeerMapReduce[] peers = null;
 		try {
 			peers = createAndAttachNodes(100, 4444);
@@ -233,11 +233,11 @@ public class TestExampleJob {
 				.awaitUninterruptibly();
 
 		NavigableMap<Number640, Data> input = new TreeMap<>();
-		input.put(NumberUtils.allSameKey("INPUTTASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("MAPTASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("REDUCETASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("WRITETASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("SHUTDOWNTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("INPUTTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("MAPTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("REDUCETASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("WRITETASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("SHUTDOWNTASKID"), new Data(NumberUtils.next()));
 		input.put(NumberUtils.OUTPUT_STORAGE_KEY,
 				new Data(new Number640(fileLocationKey, domainKey, Number160.ZERO, Number160.ZERO)));
 		maptask.broadcastReceiver(input, peers[0]);
@@ -269,8 +269,8 @@ public class TestExampleJob {
 
 	@Test
 	public void testReduceTask() throws Exception {
-		ReduceTask reduceTask = new ReduceTask(NumberUtils.allSameKey("MAPTASKID"),
-				NumberUtils.allSameKey("REDUCETASKID"), 2);
+		ReduceTask reduceTask = new ReduceTask(NumberUtils.allSameKeys("MAPTASKID"),
+				NumberUtils.allSameKeys("REDUCETASKID"), 2);
 		PeerMapReduce[] peers = null;
 		try {
 			peers = createAndAttachNodes(100, 4444);
@@ -282,12 +282,12 @@ public class TestExampleJob {
 		perfectRouting(peers);
 
 		NavigableMap<Number640, Data> input = new TreeMap<>();
-		input.put(NumberUtils.allSameKey("INPUTTASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("MAPTASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("REDUCETASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("WRITETASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("SHUTDOWNTASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("NUMBEROFFILES"), new Data(4));
+		input.put(NumberUtils.allSameKeys("INPUTTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("MAPTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("REDUCETASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("WRITETASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("SHUTDOWNTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("NUMBEROFFILES"), new Data(4));
 		for (int i = 0; i < 4; ++i) {
 			Number160 fileLocationKey = Number160.createHash("FILE" + i);
 			Number160 domainKey = Number160.createHash(peers[0].peer().peerID() + "_" + i);
@@ -338,8 +338,8 @@ public class TestExampleJob {
 
 	@Test
 	public void testPrintTask() throws Exception {
-		PrintTask maptask = new PrintTask(NumberUtils.allSameKey("REDUCETASKID"),
-				NumberUtils.allSameKey("WRITETASKID"));
+		PrintTask maptask = new PrintTask(NumberUtils.allSameKeys("REDUCETASKID"),
+				NumberUtils.allSameKeys("WRITETASKID"));
 		PeerMapReduce[] peers = null;
 		try {
 			peers = createAndAttachNodes(100, 4444);
@@ -363,11 +363,11 @@ public class TestExampleJob {
 		peers[0].put(resKey, domainKey, values, 3).start().awaitUninterruptibly();
 
 		NavigableMap<Number640, Data> input = new TreeMap<>();
-		input.put(NumberUtils.allSameKey("INPUTTASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("MAPTASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("REDUCETASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("WRITETASKID"), new Data(NumberUtils.next()));
-		input.put(NumberUtils.allSameKey("SHUTDOWNTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("INPUTTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("MAPTASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("REDUCETASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("WRITETASKID"), new Data(NumberUtils.next()));
+		input.put(NumberUtils.allSameKeys("SHUTDOWNTASKID"), new Data(NumberUtils.next()));
 		input.put(NumberUtils.OUTPUT_STORAGE_KEY,
 				new Data(new Number640(resKey, domainKey, Number160.ZERO, Number160.ZERO)));
 		maptask.broadcastReceiver(input, peers[0]);

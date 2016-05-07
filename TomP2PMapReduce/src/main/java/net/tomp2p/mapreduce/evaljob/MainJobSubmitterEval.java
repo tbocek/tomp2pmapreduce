@@ -12,7 +12,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.tomp2p.mapreduce.examplejob;
+package net.tomp2p.mapreduce.evaljob;
 
 import java.net.InetAddress;
 import java.util.NavigableMap;
@@ -35,7 +35,7 @@ import net.tomp2p.peers.PeerMap;
 import net.tomp2p.peers.PeerMapConfiguration;
 import net.tomp2p.storage.Data;
 
-public class MainJobSubmitter {
+public class MainJobSubmitterEval {
 
 	public static void main(String[] args) throws Exception {
 
@@ -55,8 +55,8 @@ public class MainJobSubmitter {
 
 		// how long the get method should wait until it actually starts retrieving the data from the dht
 		PeerMapReduce.DEFAULT_WAITING_TIME = 7000;
-		ShutdownTask.DEFAULT_SLEEPING_TIME = 1000;
-		ShutdownTask.DEFAULT_SLEEPING_TIME_REPS = 10;
+		ShutdownTaskEval.DEFAULT_SLEEPING_TIME = 1000;
+		ShutdownTaskEval.DEFAULT_SLEEPING_TIME_REPS = 10;
 		// Bootstrapping node IP
 		String bootstrapperIP = "192.168.0.19";
 		// Bootstrapping node port
@@ -104,11 +104,11 @@ public class MainJobSubmitter {
 					System.err.println("MainJobSubmitter: START JOB");
 
 					Job job = new Job(new Number640(new Random()));
-					Task startTask = new StartTask(null, NumberUtils.next(), nrOfExecutions);
-					Task mapTask = new MapTask(startTask.currentId(), NumberUtils.next(), nrOfExecutions);
-					Task reduceTask = new ReduceTask(mapTask.currentId(), NumberUtils.next(), nrOfExecutions);
-					Task writeTask = new PrintTask(reduceTask.currentId(), NumberUtils.next());
-					Task initShutdown = new ShutdownTask(writeTask.currentId(), NumberUtils.next(),
+					Task startTask = new StartTaskEval(null, NumberUtils.next(), nrOfExecutions);
+					Task mapTask = new MapTaskEval(startTask.currentId(), NumberUtils.next(), nrOfExecutions);
+					Task reduceTask = new ReduceTaskEval(mapTask.currentId(), NumberUtils.next(), nrOfExecutions);
+					Task writeTask = new PrintTaskEval(reduceTask.currentId(), NumberUtils.next());
+					Task initShutdown = new ShutdownTaskEval(writeTask.currentId(), NumberUtils.next(),
 							nrOfShutdownMessagesToAwait);
 
 					job.addTask(startTask);
@@ -118,7 +118,7 @@ public class MainJobSubmitter {
 					job.addTask(initShutdown);
 
 					// Add receiver to handle BC messages (job specific handler, defined by user)
-					IMapReduceBroadcastReceiver receiver = new ExampleJobBroadcastReceiver(job.id());
+					IMapReduceBroadcastReceiver receiver = new ExampleJobBroadcastReceiverEval(job.id());
 					job.addBroadcastReceiver(receiver);
 
 					NavigableMap<Number640, Data> input = new TreeMap<>();

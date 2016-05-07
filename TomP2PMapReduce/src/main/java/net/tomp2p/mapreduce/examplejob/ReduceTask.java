@@ -128,7 +128,7 @@ public class ReduceTask extends Task {
 			domainKeys.add(inputStorageKey.domainKey());
 		}
 		// Need to know how many files, where from? --> user knows it?
-		int nrOfFiles = (int) input.get(NumberUtils.allSameKey("NUMBEROFFILES")).object();
+		int nrOfFiles = (int) input.get(NumberUtils.allSameKeys("NUMBEROFFILES")).object();
 		if (nrOfFiles > aggregatedFileKeys.keySet().size()) {
 			logger.info(
 					"[" + this + "] Expecting #[" + nrOfFiles + "], current #[" + aggregatedFileKeys.size() + "]: ");
@@ -182,7 +182,7 @@ public class ReduceTask extends Task {
 					// Map<String, Integer> reduceResults = fileResults.get(index);
 					// ++index;
 					Number160 domainKey = aggregatedFileKeys.get(locationKey).iterator().next();
-					pmr.get(locationKey, domainKey, new TreeMap<>()/* input */).start()
+					pmr.get(locationKey, domainKey, input, 100).start()
 							.addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 								@Override
@@ -263,7 +263,7 @@ public class ReduceTask extends Task {
 //										newInput.put(NumberUtils.CURRENT_TASK,
 //												input.get(NumberUtils.allSameKey("REDUCETASKID")));
 										newInput.put(NumberUtils.NEXT_TASK,
-												input.get(NumberUtils.allSameKey("WRITETASKID")));
+												input.get(NumberUtils.allSameKeys("WRITETASKID")));
 										// newInput.put(NumberUtils.NEXT_TASK,
 										// input.get(NumberUtils.allSameKey("SHUTDOWNTASKID")));
 										// TODO Here I need to send ALL <locKey,domainKey>, else all gets on these will

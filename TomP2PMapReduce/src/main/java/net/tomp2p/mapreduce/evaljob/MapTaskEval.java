@@ -113,8 +113,8 @@ public class MapTaskEval extends Task {
 										NavigableMap<Number640, Data> newInput = new TreeMap<>();
 										InputUtils.keepInputKeyValuePairs(input, newInput, new String[] { "JOB_KEY", "NUMBEROFFILES", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
 										newInput.put(NumberUtils.SENDER, new Data(pmr.peer().peerAddress()));
-										newInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKey("MAPTASKID")));
-										newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKey("REDUCETASKID")));
+										newInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKeys("MAPTASKID")));
+										newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKeys("REDUCETASKID")));
 										// newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKey("SHUTDOWNTASKID")));
 										newInput.put(NumberUtils.INPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY));
 										newInput.put(NumberUtils.OUTPUT_STORAGE_KEY, new Data(new Number640(outputLocationKey, outputDomainKey, Number160.ZERO, Number160.ZERO)));
