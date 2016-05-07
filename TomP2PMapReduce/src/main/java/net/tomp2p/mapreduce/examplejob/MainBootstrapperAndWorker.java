@@ -55,7 +55,7 @@ public class MainBootstrapperAndWorker {
 		int peerCounter = 2;
 		boolean isBootstrapper = peerCounter == 2;
 		// Bootstrapping node IP
-		String bootstrapperIP = "130.60.156.102";
+		String bootstrapperIP = "192.168.0.19";
 		// Bootstrapping node port
 		int bootstrapperPort = 4004;
 
