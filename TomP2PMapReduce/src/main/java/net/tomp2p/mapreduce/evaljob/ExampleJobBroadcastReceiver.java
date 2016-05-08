@@ -12,7 +12,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.tomp2p.mapreduce.examplejob;
+package net.tomp2p.mapreduce.evaljob;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import net.tomp2p.mapreduce.IMapReduceBroadcastReceiver;
 import net.tomp2p.mapreduce.Job;
-import net.tomp2p.mapreduce.MapReduceBroadcastHandler;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.mapreduce.Task;
 import net.tomp2p.mapreduce.utils.JobTransferObject;
@@ -34,13 +33,14 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
- * Exemplary implementation of {@link IMapReduceBroadcastReceiver} that is invoked by {@link MapReduceBroadcastHandler} after receiving a broadcast {@link Message}. This implementation receives the
- * job on every broadcast, deserialises it, and adds it to a set of jobs to assure the same job is only added once. This is required as the {@link ReduceTask} depends on the job as it stores certain
- * result temporarily. If no dependencies are needed, instead, the job would not have to be stored. Once the job is added, the next task to execute is distinguished and invoked using the received
- * broadcast input. Every instance of {@link ExampleJobBroadcastReceiver} is responsible for exactly one job. In this implementation, {@link NumberUtils#NEXT_TASK} defines the key in the input map
- * that maps to the actual key of the next task to execute.
+ * Exemplary implementation of {@link IMapReduceBroadcastReceiver} that is invoked by {@link MapReduceBroadcastHandler}
+ * after receiving a broadcast {@link Message}. This implementation receives the job on every broadcast, deserialises
+ * it, and adds it to a set of jobs to assure the same job is only added once. This is required as the
+ * {@link ReduceTask} depends on the job as it stores certain result temporarily. If no dependencies are needed,
+ * instead, the job would not have to be stored. Once the job is added, the next task to execute is distinguished and
+ * invoked using the received broadcast input. Every instance of {@link ExampleJobBroadcastReceiver} is responsible
+ * for exactly one job.
  * 
- * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
  * @author Oliver Zihler
  *
  */
@@ -53,8 +53,8 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 	private static Logger logger = LoggerFactory.getLogger(ExampleJobBroadcastReceiver.class);
 
 	/**
-	 * identifier to be declared such that the same IMapReduceBroadcastReceiver is not instantiated multiple times. see {@link IMapReduceBroadcastReceiver#id()} private String id; /** Listens to this
-	 * job only
+	 * identifier to be declared such that the same IMapReduceBroadcastReceiver is not instantiated multiple times. see
+	 * {@link IMapReduceBroadcastReceiver#id()} private String id; /** Listens to this job only
 	 */
 	private String id;
 	/**
@@ -92,7 +92,8 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 
 					// If it is not the job this instance is responsible for, simply return
 					if (!job.id().equals(jobId)) {
-						logger.info("Received job for wrong id: observing job [" + jobId.locationKey().shortValue() + "], received job[" + job.id().locationKey().shortValue() + "]");
+						logger.info("Received job for wrong id: observing job [" + jobId.locationKey().shortValue()
+								+ "], received job[" + job.id().locationKey().shortValue() + "]");
 						return;
 					}
 

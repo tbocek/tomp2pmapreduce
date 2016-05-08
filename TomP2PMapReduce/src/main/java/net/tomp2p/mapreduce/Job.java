@@ -36,7 +36,6 @@ import net.tomp2p.storage.Data;
  * convenience of the user to store all needed classes in on job. See also the documentation <a href="http://tinyurl.com/csgmtmapred">here</a>, chapter 5.
  * 
  * @see StartTask
- * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
  * 
  * 
  * @author Oliver Zihler

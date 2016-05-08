@@ -34,9 +34,11 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
- * Invoked when a connection is closed. If the connection closes before the active flag on that data item is removed (meaning, a node crashes), this listener will make sure that the same broadcast for
- * that task is sent out again for other nodes to complete it. Currently, a time is used to wait as the connection may close prematurely although the node is not crashed yet. Needs to be tested more
- * thoroughly to assure its functionality really works. Created by {@link TaskRPC#handleResponse()} on successful get data invocation.
+ * Invoked when a connection is closed. If the connection closes before the active flag on that data item is removed
+ * (meaning, a node crashes), this listener will make sure that the same broadcast for that task is sent out again for
+ * other nodes to complete it. Currently, a time is used to wait as the connection may close prematurely although the
+ * node is not crashed yet. Needs to be tested more thoroughly to assure its functionality really works. Created by
+ * {@link TaskRPC#handleResponse()} on successful get data invocation.
  * 
  * @author Oliver Zihler
  *
@@ -54,67 +56,68 @@ public class PeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
 
 	private Peer peer;
 
-	private Object value;
+	// private Object value;
 
 	private PeerAddressStorageKeyTuple requester;
 
 	private Timer timer;
 
-	public PeerConnectionCloseListener(AtomicBoolean activeOnDataFlag, PeerAddressStorageKeyTuple requester, Storage storage, NavigableMap<Number640, Data> broadcastData, Peer peer, Object value) {
+	public PeerConnectionCloseListener(AtomicBoolean activeOnDataFlag, PeerAddressStorageKeyTuple requester,
+			Storage storage, NavigableMap<Number640, Data> broadcastData, Peer peer, Object value) {
 		this.activeOnDataFlag = activeOnDataFlag;
 		this.requester = requester;
 		this.storage = storage;
 		this.broadcastData = broadcastData;
 		this.peer = peer;
-		this.value = value;
+		// this.value = value;
 	}
 
 	@Override
 	public void operationComplete(BaseFuture future) throws Exception {
-		try {
-			if (future.isSuccess()) {
+		if (future.isSuccess()) {
+			this.timer = new Timer();
+			timer.schedule(new TimerTask() {
 
-				this.timer = new Timer();
-				timer.schedule(new TimerTask() {
-
-					@Override
-					public void run() {
-						if (activeOnDataFlag.get()) {
-							try {
-								synchronized (storage) {
-									Data data = storage.get(requester.storageKey);
-									if (data != null) {
-										MapReduceValue dST = (MapReduceValue) data.object();
-										dST.tryDecrementCurrentNrOfExecutions(); // Makes sure the data is available again
-																					// to another peer that tries to get it.
-										storage.put(requester.storageKey, new Data(dST));
-										LOG.info("active is true: dST.tryDecrementCurrentNrOfExecutions() for " + requester + " and task " + (broadcastData.get(NumberUtils.NEXT_TASK).object())
-												+ " value [ ]");
-										peer.broadcast(new Number160(new Random())).dataMap(broadcastData).start();
-									}
+				@Override
+				public void run() {
+					if (activeOnDataFlag.get()) {
+						try {
+							synchronized (storage) {
+								Data data = storage.get(requester.storageKey);
+								if (data != null) {
+									MapReduceValue dST = (MapReduceValue) data.object();
+									dST.tryDecrementCurrentNrOfExecutions(); // Makes sure the data is available again
+																				// to another peer that tries to get it.
+									storage.put(requester.storageKey, new Data(dST));
+									// LOG.info("active is true: dST.tryDecrementCurrentNrOfExecutions() for " +
+									// requester + " and task " + (broadcastData.get(NumberUtils.NEXT_TASK).object()) +
+									// " value [ ]");
+									peer.broadcast(new Number160(new Random())).dataMap(broadcastData).start();
 								}
-							} catch (Exception e) {
-								// e.printStackTrace();
 							}
-						} else {
-							try {
-								LOG.info("active was already set to aF[" + activeOnDataFlag.get() + "] for request " + requester + "and task " + (broadcastData.get(NumberUtils.NEXT_TASK).object())
-										+ " value [" + value + "]");
-							} catch (Exception e) {
-								// e.printStackTrace();
-							}
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
+					} else {
+						// try {
+						// LOG.info("active was already set to aF[" + activeOnDataFlag.get() + "] for request " +
+						// requester + "and task " + (broadcastData.get(NumberUtils.NEXT_TASK).object()) + " value [
+						// ]");
+						// } catch (ClassNotFoundException | IOException e) {
+						// // TODO Auto-generated catch block
+						// e.printStackTrace();
+						// }
 					}
+				}
 
-				}, WAITING_TIME);
-				LOG.info("Started timer for " + requester + "and task " + (broadcastData.get(NumberUtils.NEXT_TASK).object()) + " value [ ]");
+			}, WAITING_TIME);
+			// LOG.info("Started timer for " + requester + "and task " +
+			// (broadcastData.get(NumberUtils.NEXT_TASK).object()) + " value [ ]");
 
-			} else {
-				LOG.warn("!future.isSuccess() on PeerConnectionCloseListener and task " + (broadcastData.get(NumberUtils.NEXT_TASK).object()) + " value [ ], failed reason: " + future.failedReason());
-			}
-		} catch (Exception e) {
-
-			// e.printStackTrace();
+		} else {
+			LOG.warn("!future.isSuccess() on PeerConnectionCloseListener and task "
+					+ (broadcastData.get(NumberUtils.NEXT_TASK).object()) + " value [ ], failed reason: "
+					+ future.failedReason());
 		}
 	}
 

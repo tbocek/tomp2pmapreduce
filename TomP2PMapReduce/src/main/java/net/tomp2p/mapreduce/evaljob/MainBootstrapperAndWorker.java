@@ -12,7 +12,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.tomp2p.mapreduce.examplejob;
+package net.tomp2p.mapreduce.evaljob;
 
 import java.net.InetAddress;
 
@@ -30,11 +30,10 @@ import net.tomp2p.peers.PeerMap;
 import net.tomp2p.peers.PeerMapConfiguration;
 
 /**
- * Example client to be run on any node that is not the job submitter. Bootstrapping node below has id 2. All other nodes have an id different from 2 and need to connect to the bootstrapper.
- * Additionally, IP and port to connect to from the bootstrapping node need to be provided. The first one starting this method should be the bootstrapping node to which all other peers (id other than
- * 2) connect to.
+ * Example client to be run on any node that is not the job submitter. Bootstrapping node below has id 2. All other
+ * nodes have an id different from 2 and need to connect to the bootstrapper. Additionally, IP and port to connect to
+ * from the bootstrapping node need to be provided
  * 
- * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
  * @author Oliver Zihler
  *
  */
@@ -74,8 +73,8 @@ public class MainBootstrapperAndWorker {
 		// Connect to the bootstrapping node. peer with ID 2 in this case is the bootstrapper and does not need to be
 		// connected. All other nodes connect to peer 2.
 		if (!isBootstrapper) {
-			peerMapReduce.peer().bootstrap().inetAddress(InetAddress.getByName(bootstrapperIP)).ports(bootstrapperPort).start().awaitUninterruptibly()
-					.addListener(new BaseFutureAdapter<FutureBootstrap>() {
+			peerMapReduce.peer().bootstrap().inetAddress(InetAddress.getByName(bootstrapperIP)).ports(bootstrapperPort)
+					.start().awaitUninterruptibly().addListener(new BaseFutureAdapter<FutureBootstrap>() {
 
 						@Override
 						public void operationComplete(FutureBootstrap future) throws Exception {

@@ -19,10 +19,11 @@ import java.io.Serializable;
 import net.tomp2p.message.Message;
 
 /**
- * Actions taken on every broadcast reception. {@link #receive()} will be invoked by {@link MapReduceBroadcastReceiver}, which passes the complete broadcast message to it. The interface is intended to
- * then find the next task to execute and pass the input wrapped inside message to it. See also the documentation <a href="http://tinyurl.com/csgmtmapred">here</a>, chapter 5.
+ * Actions taken on every broadcast reception. {@link #receive()} will be invoked by {@link MapReduceBroadcastReceiver},
+ * which passes the complete broadcast message to it. The interface is intended to then find the next task to execute
+ * and pass the input wrapped inside message to it. See also the documentation
+ * <a href="http://tinyurl.com/csgmtmapred">here</a>, chapter 5.
  * 
- * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
  * @author Oliver Zihler
  *
  */
