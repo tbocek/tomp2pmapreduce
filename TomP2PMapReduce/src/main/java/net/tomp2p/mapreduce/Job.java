@@ -29,9 +29,11 @@ import net.tomp2p.storage.Data;
 
 /**
  *
- * Users need to add {@link Task} and {@link IMapReduceBroadcastReceiver} to a {@link Job} to be able to execute a
- * MapReduce job. Once these classes are added, {@link #start()} will determine the first local {@link Task} (compare
- * {@link StartTask}) to execute (specified by the {@link Task#previousId()} to be null) and start it.
+ * Users need to add {@link Task} and {@link IMapReduceBroadcastReceiver} to a {@link Job} to be able to execute a MapReduce job. Once these classes are added, {@link #start()} will determine the
+ * first local {@link Task} (compare {@link StartTask}) to execute (specified by the {@link Task#previousId()} to be null) and start it. Use {@link #serialize()} to create a {@link JobTransferObject}
+ * that contains all tasks and the job's id to be put into the DHT or sent via broadcasts. Use {@link #deserialize(JobTransferObject)} to deserialise the complete job again once it is received on a
+ * node. CAUTION: {@link IMapReduceBroadcastReceiver} are NOT stored within the {@link JobTransferObject} and need to be added externally to the broadcast input. They are aggregated here for the
+ * convenience of the user to store all needed classes in on job. See also the documentation <a href="http://tinyurl.com/csgmtmapred">here</a>, chapter 5.
  * 
  * @see StartTask
  * 
@@ -78,8 +80,7 @@ final public class Job {
 
 	/**
 	 * 
-	 * @return the serialised job containing all tasks and broadcast receivers in a serialised form, to be put into the
-	 *         DHT using {@link PeerMapReduce#get()} or sent via broadcast
+	 * @return the serialised job containing all tasks and broadcast receivers in a serialised form, to be put into the DHT using {@link PeerMapReduce#get()} or sent via broadcast
 	 * @throws IOException
 	 */
 	public JobTransferObject serialize() throws IOException {
@@ -106,8 +107,7 @@ final public class Job {
 	public static Job deserialize(JobTransferObject jobToDeserialize) throws ClassNotFoundException, IOException {
 		Job job = new Job(jobToDeserialize.id());
 		for (TransferObject taskTransferObject : jobToDeserialize.taskTransferObjects()) {
-			Map<String, Class<?>> taskClasses = SerializeUtils
-					.deserializeClassFiles(taskTransferObject.serialisedClassFiles());
+			Map<String, Class<?>> taskClasses = SerializeUtils.deserializeClassFiles(taskTransferObject.serialisedClassFiles());
 			Task task = (Task) SerializeUtils.deserializeJavaObject(taskTransferObject.serialisedObject(), taskClasses);
 			job.addTask(task);
 		}
@@ -115,12 +115,10 @@ final public class Job {
 	}
 
 	/**
-	 * Main entrance point to start a MapReduce job. The input is the same as for {@link Task#broadcastReceiver()}. This
-	 * is intentional as #start() will determine the first task (whose {@link Task#previousId()} is null) and execute it
-	 * locally, where it will also pass the input and {@link PeerMapReduce} instance for the first task to use it. See
-	 * also {@link Task#broadcastReceiver(NavigableMap, PeerMapReduce)} as it contains the same signature. Job is thus
-	 * similar to a local {@link MapReduceBroadcastHandler} as it invokes the next (first) task to execute locally on
-	 * the node defining the job.  
+	 * Main entrance point to start a MapReduce job. The input is the same as for {@link Task#broadcastReceiver()}. This is intentional as #start() will determine the first task (whose
+	 * {@link Task#previousId()} is null) and execute it locally, where it will also pass the input and {@link PeerMapReduce} instance for the first task to use it. See also
+	 * {@link Task#broadcastReceiver(NavigableMap, PeerMapReduce)} as it contains the same signature. Job is thus similar to a local {@link MapReduceBroadcastHandler} as it invokes the next (first)
+	 * task to execute locally on the node defining the job.
 	 * 
 	 * @param input
 	 *            initial input to be used within the first task.
@@ -133,20 +131,24 @@ final public class Job {
 			throw new Exception("No Task defined. Cannot start execution without any Task to execute.");
 		}
 		if (broadcastReceivers.size() == 0) {
-			throw new Exception(
-					"No IMapReduceBroadcastReceiver specified. Cannot start distributed execution without any implementation of these.");
+			throw new Exception("No IMapReduceBroadcastReceiver specified. Cannot start distributed execution without any implementation of these.");
 		}
 
 		Task startTask = this.findStartTask();
 		if (startTask == null) {
-			throw new Exception(
-					"Could not find local task to execute. Did you specify the start task to have previousId set to null?");
+			throw new Exception("Could not find local task to execute. Did you specify the start task to have previousId set to null?");
 		} else {
 			startTask.broadcastReceiver(input, pmr);
 		}
 
 	}
 
+	/**
+	 * Serialises all user-defined {@link IMapReduceBroadcastReceiver}s to be sent to other nodes via broadcast.
+	 * 
+	 * @return a list of all user-defined {@link IMapReduceBroadcastReceiver}s in serialised form.
+	 * @throws IOException
+	 */
 	public List<TransferObject> serializeBroadcastReceivers() throws IOException {
 		List<TransferObject> broadcastReceiversTransferObjects = new ArrayList<>();
 		for (IMapReduceBroadcastReceiver receiver : broadcastReceivers) {

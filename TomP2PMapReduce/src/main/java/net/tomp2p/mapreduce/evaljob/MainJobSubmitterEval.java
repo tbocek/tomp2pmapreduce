@@ -88,17 +88,14 @@ public class MainJobSubmitterEval {
 	}
 
 	public static void main(String[] args) throws Exception {
-		if (args.length == 0) {
-			System.out.println(new File("").getAbsolutePath());
-			return;
-		}
+		 
 		//
-		// boolean shouldBootstrap = false;
-		// int nrOfShutdownMessagesToAwait = 1;
-		// int nrOfExecutions = 1;
-		boolean shouldBootstrap = true;
-		int nrOfShutdownMessagesToAwait = 2;
-		int nrOfExecutions = 2;
+		 boolean shouldBootstrap = false;
+		 int nrOfShutdownMessagesToAwait = 1;
+		 int nrOfExecutions = 1;
+//		boolean shouldBootstrap = true;
+//		int nrOfShutdownMessagesToAwait = 2;
+//		int nrOfExecutions = 2;
 		ConnectionBean.DEFAULT_SLOW_RESPONSE_TIMEOUT_SECONDS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_TCP_IDLE_MILLIS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_CONNECTION_TIMEOUT_TCP = Integer.MAX_VALUE;
