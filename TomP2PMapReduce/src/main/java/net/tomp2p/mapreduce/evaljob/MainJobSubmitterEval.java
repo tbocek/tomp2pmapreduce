@@ -75,7 +75,7 @@ public class MainJobSubmitterEval {
 		input.put(NumberUtils.RECEIVERS, new Data(broadcastReceiversTransferObjects));
 		input.put(NumberUtils.JOB_ID, new Data(job.id()));
 		input.put(NumberUtils.JOB_DATA, new Data(job.serialize()));
-		
+
 		input.put(NumberUtils.allSameKeys("INPUTTASKID"), new Data(startTask.currentId()));
 		input.put(NumberUtils.allSameKeys("MAPTASKID"), new Data(mapTask.currentId()));
 		input.put(NumberUtils.allSameKeys("REDUCETASKID"), new Data(reduceTask.currentId()));
@@ -88,6 +88,10 @@ public class MainJobSubmitterEval {
 	}
 
 	public static void main(String[] args) throws Exception {
+		if (args.length == 0) {
+			System.out.println(new File("").getAbsolutePath());
+			return;
+		}
 		//
 		// boolean shouldBootstrap = false;
 		// int nrOfShutdownMessagesToAwait = 1;
@@ -144,46 +148,14 @@ public class MainJobSubmitterEval {
 
 					});
 		}
-		// new Thread(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// Sniffer.main(null);
-		// }
-		// }).start();
 		final PeerMapReduce pmr = peerMapReduce;
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
-					System.err.println("Sleeping for 20secs before executing job");
-
-					Thread.sleep(1);
-
-					// String filesPath = new File("").getAbsolutePath() +
-					// "/src/test/java/net/tomp2p/mapreduce/testfiles/";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/1MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/1MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/2MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/2MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1File/2MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/4MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/4MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1File/4MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/8MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/8MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1File/8MB";
-					String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/12MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/12MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1File/12MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/16MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/16MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1File/16MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/20MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/20MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1File/20MB";
-					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/8MB/get";
+					String filesPath = new File("").getAbsolutePath().replace("\\", "/")
+							+ "/src/main/java/net/tomp2p/mapreduce/evaljob/inputfiles";
 					//
 					int nrOfFiles = localCalculation(filesPath);
 					// nrOfFiles = ;
