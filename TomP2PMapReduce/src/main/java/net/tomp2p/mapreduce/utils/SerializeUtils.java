@@ -14,14 +14,31 @@ import java.util.TreeMap;
 
 /**
  * 
- * This class provides methods to serialize and deserialize both class files and java objects. It is used by <code>Job</code> to transport user-defined Task and IMapReduceBroadcastReceiver
- * implementations.
+ * This class provides methods to serialize and deserialize both class files and java objects. It is used by {@link Job}
+ * to serialise and transport user-defined {@link Task} and {@link IMapReduceBroadcastReceiver} implementations. As
+ * users define these classes themselves on one node, other nodes do not know of their implementation. Using the
+ * provided methods in this class, it is possible to transfer and instantiate defined objects and classes on nodes that
+ * do not know of their implementation. See also {@link TransferObject}, which is used to store and transfer serialised
+ * objects and classes.
  * 
  * @author Oliver Zihler
  *
  */
 public class SerializeUtils {
 
+	/**
+	 * Serialises a class (its class file) and all contained declared or anonymous classes. Starts with the uppermost
+	 * declaring class of the class provided as parameter. Allows sending unknown classes to other computers.See
+	 * {@link #deserializeClassFiles(Map)} to see how these classes can be defined on a node again. See also
+	 * {@link TransferObject} for an easy aggregation of objects and corresponding class files.
+	 * 
+	 * 
+	 * @param classToSerialize
+	 *            the class (file) that should be serialised for transfer
+	 * @return a {@link Map} containing all classes specified by there name as key and the value the corresponding
+	 *         byte[] containing the serialised class.
+	 * @throws IOException
+	 */
 	public static Map<String, byte[]> serializeClassFile(Class<?> classToSerialize) throws IOException {
 		Map<String, byte[]> visitor = new TreeMap<>();
 		// Check if class is declared inside another class. If so, start serialization from parent
@@ -69,7 +86,8 @@ public class SerializeUtils {
 				if (lastIndexOfPrevious$ == -1 || notFollowedByNumber(lastNumber)) {
 					return; // Back at initial classpath
 				} else {
-					String count = classToSerializeName.substring(lastIndexOfPrevious$ + 1, classToSerializeName.length());
+					String count = classToSerializeName.substring(lastIndexOfPrevious$ + 1,
+							classToSerializeName.length());
 					int newCounter = Integer.parseInt(count);
 					++newCounter; // Increment it for the next round
 					classToSerializeName = classToSerializeName.substring(0, lastIndexOfPrevious$ + 1) + newCounter;
@@ -132,13 +150,22 @@ public class SerializeUtils {
 		return null;
 	}
 
+	/**
+	 * Deserialises and loads unknown classes such that they are available on a computer that received them. See
+	 * {@link #serializeClassFile(Class)} to see how a class can be serialised for transfer.
+	 * 
+	 * @param classesToDefine
+	 *            {@link Map} containing all class names as Strings (key) and corresponding class files as byte[]
+	 *            (value)
+	 * @return {@link Map} containing the actual {@link Class} files. To be used in e.g.
+	 *         {@link #deserializeJavaObject(byte[], Map)}
+	 */
 	public static Map<String, Class<?>> deserializeClassFiles(Map<String, byte[]> classesToDefine) {
-
 		ByteClassLoader l = new ByteClassLoader(ClassLoader.getSystemClassLoader(), classesToDefine);
 		Map<String, Class<?>> classes = new HashMap<>();
 		for (String className : classesToDefine.keySet()) {
-			try { 
-				Class<?> c = l.findClass(className); 
+			try {
+				Class<?> c = l.findClass(className);
 				classes.put(className, c);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -147,10 +174,22 @@ public class SerializeUtils {
 		return classes;
 	}
 
+	/**
+	 * Deserialises a Java object. To be able to use it, first of all, the corresponding class files need to be
+	 * deserialised using {@link #deserializeClassFiles(Map)}, which need to be provided as a parameter.
+	 * 
+	 * @param objectData
+	 *            the serialised Java object to deserialise. See {@link #serializeJavaObject(Object)}.
+	 * @param classes
+	 *            the deserialised Java classes needed to instantiate the serialised object. See
+	 *            {@link #deserializeClassFiles(Map)}
+	 * @return the deserialised Java object
+	 */
 	public static Object deserializeJavaObject(byte[] objectData, Map<String, Class<?>> classes) {
 		Object object = null;
 		try {
-			ByteObjectInputStream objectStream = new ByteObjectInputStream(new ByteArrayInputStream(objectData), classes);
+			ByteObjectInputStream objectStream = new ByteObjectInputStream(new ByteArrayInputStream(objectData),
+					classes);
 			object = objectStream.readObject();
 			objectStream.close();
 		} catch (IOException | ClassNotFoundException e) {
@@ -159,6 +198,14 @@ public class SerializeUtils {
 		return object;
 	}
 
+	/**
+	 * Serialises a Java object. See {@link #deserializeJavaObject(byte[], Map). See also {@link TransferObject} for an
+	 * easy aggregation of objects and corresponding class files.
+	 * 
+	 * @param object
+	 *            the Java object to serialise
+	 * @return a serialised Java object as byte[] that can be used for transfer.
+	 */
 	public static byte[] serializeJavaObject(Object object) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		try {
@@ -172,6 +219,12 @@ public class SerializeUtils {
 		return objectInBytes;
 	}
 
+	/**
+	 * Internal class used to resolve class files
+	 * 
+	 * @author Oliver Zihler
+	 *
+	 */
 	private static class ByteObjectInputStream extends ObjectInputStream {
 		private Map<String, Class<?>> classes;
 
@@ -186,7 +239,7 @@ public class SerializeUtils {
 			if (c != null) {
 				return c;
 			}
-			return super.resolveClass(desc); 
+			return super.resolveClass(desc);
 		}
 
 	}

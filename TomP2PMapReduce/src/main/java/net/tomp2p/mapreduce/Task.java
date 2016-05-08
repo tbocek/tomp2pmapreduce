@@ -16,10 +16,7 @@ package net.tomp2p.mapreduce;
 
 import java.io.Serializable;
 import java.util.NavigableMap;
-import java.util.Random;
 
-import net.tomp2p.mapreduce.examplejob.StartTask;
-import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 

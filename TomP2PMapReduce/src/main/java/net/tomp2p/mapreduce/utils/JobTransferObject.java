@@ -21,7 +21,12 @@ import java.util.List;
 import net.tomp2p.peers.Number640;
 
 /**
- * Complete serialised job with all contained tasks
+ * Complete serialised job with all contained tasks. {@link IMapReduceBroadcastReceiver} instances are not contained as
+ * they need to be sent via broadcast for every node to instantiate them on reception (there is no reason why they
+ * should be stored within the DHT). On the other hand, {@link Task}s of a {@link Job} should be possible to send via
+ * broadcast or put the into the DHT. This is what this class allows: it is completely serialised and can thus be
+ * transferred via broadcast or stored withing the DHT. This is actually only a convenience method as every {@link Task}
+ * and {@link Job} id could also be directly stored in the DHT or sent via broadcast.
  * 
  * @author Oliver Zihler
  *
@@ -31,25 +36,34 @@ public class JobTransferObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6702141212731486921L;
+	/** All tasks in serialised form */
 	private List<TransferObject> taskTransferObjects = new ArrayList<>();
- 	private Number640 id;
+	/** The id of the job */
+	private Number640 jobId;
 
+	/**
+	 * 
+	 * @param tto
+	 *            {@link Task} in a serialised form of {@link TransferObject}
+	 */
 	public void addTask(TransferObject tto) {
 		this.taskTransferObjects.add(tto);
 	}
 
+	/**
+	 * 
+	 * @return all {@link Task} in a serialised form of {@link TransferObject}
+	 */
 	public List<TransferObject> taskTransferObjects() {
 		return taskTransferObjects;
 	}
 
-	public void id(Number640 id) {
-		this.id = id;
-
+	public void jobId(Number640 id) {
+		this.jobId = id;
 	}
 
 	public Number640 id() {
-		return id;
+		return jobId;
 	}
- 
 
 }

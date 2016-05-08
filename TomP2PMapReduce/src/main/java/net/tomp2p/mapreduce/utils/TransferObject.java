@@ -17,30 +17,53 @@ package net.tomp2p.mapreduce.utils;
 import java.io.Serializable;
 import java.util.Map;
 
+import net.tomp2p.mapreduce.IMapReduceBroadcastReceiver;
+
+/**
+ * Wraps a serialised Java object and its corresponding serialised class files and the main class's name to be
+ * transferred to other nodes. See also {@link SerializeUtils}. It is mostly used to store user-defined {@link Task} and
+ * {@link IMapReduceBroadcastReceiver} instances inside a {@link JobTransferObject}. As it is completely serialised, it
+ * can be stored in the DHT or sent over the network via broadcasts, however the user likes.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class TransferObject implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8971732001157216939L;
-	private byte[] data;
-	private Map<String, byte[]> classFiles;
-	private String className;
+	/** The transfered object in serialised form. See {@link SerializeUtils#serializeJavaObject(Object)} and {@link SerializeUtils#deserializeJavaObject(byte[], Map)(Object)} */
+	private byte[] serialisedObject;
+	/** The corresponding class files (together with all contained declared and anonymous classes. See {@link SerializeUtils#serializeClassFile(Class)} and {@link SerializeUtils#deserializeClassFiles(Map)} */
+	private Map<String, byte[]> serialisedClassFiles;
+	/** The actual name of the serialised object to know which one to invoke */
+	private String mainClassName;
 
-	public TransferObject(byte[] data, Map<String, byte[]> classFiles, String className) {
-		this.data = data;
-		this.classFiles = classFiles;
-		this.className = className;
+	public TransferObject(byte[] serialisedObject, Map<String, byte[]> serialisedClassFiles, String mainClassName) {
+		this.serialisedObject = serialisedObject;
+		this.serialisedClassFiles = serialisedClassFiles;
+		this.mainClassName = mainClassName;
 	}
 
-	public byte[] data() {
-		return this.data;
+	/**
+	 * @return The transfered object in serialised form
+	 */
+	public byte[] serialisedObject() {
+		return this.serialisedObject;
 	}
 
-	public Map<String, byte[]> classFiles() {
-		return this.classFiles;
+	/**
+	 * @return The corresponding class files (together with all contained declared and anonymous classes
+	 */
+	public Map<String, byte[]> serialisedClassFiles() {
+		return this.serialisedClassFiles;
 	}
 
-	public String className() {
-		return this.className;
+	/**
+	 * @return The actual name of the serialised object to know which one to invoke
+	 */
+	public String mainClassName() {
+		return this.mainClassName;
 	}
 }

@@ -31,17 +31,28 @@ import net.tomp2p.mapreduce.MapReducePutBuilder;
 import net.tomp2p.mapreduce.PeerMapReduce;
 import net.tomp2p.peers.Number160;
 
+/**
+ * Convenience method used in the example job to read and split files into certain sizes. Caution: Splitting was
+ * abandonned eventually and is not tested currently. The maxFileSize parameter should therefore stay larger than the
+ * actual size of the files to simply read it completely and distribute it to the DHT. Probably better to use own
+ * implementations instead until this is resolved and tested again.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class FileSplitter {
 	private static Logger logger = LoggerFactory.getLogger(FileSplitter.class);
 
 	/**
 	 * Splits a text file located at keyFilePath into pieces of at max maxFileSize. Words are not split! Meaning, this
-	 * method is appropriate for word count
+	 * method is appropriate for word count. Then, file splits are put into the DHT and a map with all resulting
+	 * location keys and corresponding {@link FutureMapReduceData} is returned to add listener to them outside.
 	 * 
 	 * @param keyfilePath
 	 * @param dht
-	 *            connection to put it into the dht
+	 *            connection to the DHT
 	 * @param maxFileSize
+	 *            how much a split should contain
 	 * @param fileEncoding
 	 *            (e.g. UTF-8)
 	 * @return a map containing all generated dht keys of the file splits to retrieve them together with the FuturePut

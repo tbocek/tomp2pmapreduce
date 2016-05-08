@@ -27,31 +27,53 @@ import java.util.List;
 /**
  * Some useful file methods
  * 
- * @author Oliver
+ * @author Oliver Zihler
  *
  */
 public enum FileUtils {
 
 	INSTANCE;
 
+	/**
+	 * Creates a new tmp folder at the specified location. Deletes an existing folder and all its content.
+	 * 
+	 * @param inputFilePath
+	 *            where a new folder should be created
+	 * @return a new {@link File} representing the new folder.
+	 */
 	public File createTmpFolder(String inputFilePath) {
 		File folder = new File(inputFilePath + "/tmp/");
 		if (folder.exists()) {
-			FileUtils.INSTANCE.deleteTmpFolder(folder);
+			deleteTmpFolder(folder);
 		}
 		folder.mkdirs();
 		return folder;
 	}
 
+	/**
+	 * Creates a new tmp folder at the specified location. Deletes an existing folder and all its content.
+	 * 
+	 * @param inputFilePath
+	 *            where a new folder should be created
+	 * @param tmpFolderName
+	 *            the name of the folder
+	 * @return a new {@link File} representing the new folder.
+	 */
 	public File createTmpFolder(String inputFilePath, String tmpFolderName) {
 		File folder = new File(inputFilePath + "/" + tmpFolderName + "/");
 		if (folder.exists()) {
-			FileUtils.INSTANCE.deleteTmpFolder(folder);
+			deleteTmpFolder(folder);
 		}
 		folder.mkdirs();
 		return folder;
 	}
 
+	/**
+	 * Deletes a folder and all its content
+	 * 
+	 * @param folder
+	 *            to delete
+	 */
 	public void deleteTmpFolder(File folder) {
 		String[] entries = folder.list();
 		for (String s : entries) {
@@ -61,12 +83,20 @@ public enum FileUtils {
 		folder.delete();
 	}
 
-	public void getFiles(File f, List<String> pathVisitor) {
+	/**
+	 * Recoursively retrieves all absolute paths (with filenames) contained in a folder specified
+	 * 
+	 * @param folder
+	 *            to retrieve all files from
+	 * @param pathVisitor
+	 *            a list that will be filled with all file names
+	 */
+	public void getFiles(File folder, List<String> pathVisitor) {
 
-		if (f.isFile())
-			pathVisitor.add(f.getAbsolutePath());
+		if (folder.isFile())
+			pathVisitor.add(folder.getAbsolutePath());
 		else {
-			File files[] = f.listFiles();
+			File files[] = folder.listFiles();
 			if (files != null) {
 				for (int i = 0; i < files.length; i++) {
 					getFiles(files[i], pathVisitor);
@@ -75,6 +105,15 @@ public enum FileUtils {
 		}
 	}
 
+	/**
+	 * Reads all lines from a file and stores it in one String. Lines are seperated by \n
+	 * 
+	 * @param filePath
+	 *            the file to read
+	 * @param charset
+	 *            of the file
+	 * @return String consisting of the whole text of filePath
+	 */
 	public String readLines(String filePath, Charset charset) {
 		String linesAsLine = "";
 		ArrayList<String> lines = readLinesFromFile(filePath, charset);
@@ -84,6 +123,15 @@ public enum FileUtils {
 		return linesAsLine;
 	}
 
+	/**
+	 * Reads all lines from a file and stores them in an {@link ArrayList} .
+	 * 
+	 * @param filePath
+	 *            the file to read
+	 * @param charset
+	 *            of the file
+	 * @return {@link ArrayList} consisting of all lines of filePath
+	 */
 	public ArrayList<String> readLinesFromFile(String filePath, Charset charset) {
 		ArrayList<String> lines = new ArrayList<String>();
 		String line = null;
@@ -96,19 +144,6 @@ public enum FileUtils {
 			System.err.format("IOException:" + line + " %s%n", x);
 		}
 		return lines;
-	}
-
-	public void deleteFilesAndFolder(String outFolder, List<String> pathVisitor) {
-		for (String fP : pathVisitor) {
-			File file = new File(fP);
-			if (file.exists()) {
-				file.delete();
-			}
-		}
-		File file = new File(outFolder);
-		if (file.exists()) {
-			file.delete();
-		}
 	}
 
 }

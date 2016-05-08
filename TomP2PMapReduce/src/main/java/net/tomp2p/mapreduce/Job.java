@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Random;
 
-import net.tomp2p.mapreduce.examplejob.StartTask;
 import net.tomp2p.mapreduce.utils.JobTransferObject;
 import net.tomp2p.mapreduce.utils.NumberUtils;
 import net.tomp2p.mapreduce.utils.SerializeUtils;
@@ -86,7 +85,7 @@ final public class Job {
 	 */
 	public JobTransferObject serialize() throws IOException {
 		JobTransferObject jTO = new JobTransferObject();
-		jTO.id(id);
+		jTO.jobId(id);
 		for (Task task : tasks) {
 			Map<String, byte[]> taskClassFiles = SerializeUtils.serializeClassFile(task.getClass());
 			byte[] taskData = SerializeUtils.serializeJavaObject(task);
@@ -99,8 +98,8 @@ final public class Job {
 	public static Job deserialize(JobTransferObject jobToDeserialize) throws ClassNotFoundException, IOException {
 		Job job = new Job(jobToDeserialize.id());
 		for (TransferObject taskTransferObject : jobToDeserialize.taskTransferObjects()) {
-			Map<String, Class<?>> taskClasses = SerializeUtils.deserializeClassFiles(taskTransferObject.classFiles());
-			Task task = (Task) SerializeUtils.deserializeJavaObject(taskTransferObject.data(), taskClasses);
+			Map<String, Class<?>> taskClasses = SerializeUtils.deserializeClassFiles(taskTransferObject.serialisedClassFiles());
+			Task task = (Task) SerializeUtils.deserializeJavaObject(taskTransferObject.serialisedObject(), taskClasses);
 			job.addTask(task);
 		}
 		return job;

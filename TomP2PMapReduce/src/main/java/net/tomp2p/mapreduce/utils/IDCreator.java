@@ -18,7 +18,7 @@ package net.tomp2p.mapreduce.utils;
 import java.util.Random;
 
 /**
- * More or less impossible to ever have colliding id's if I do it like that...
+ * 
  * 
  * @author Oliver Zihler
  *
@@ -28,6 +28,14 @@ public enum IDCreator {
 	private static long localCounter = 0;
 	private static final Random random = new Random();
 
+	/**
+	 * More or less impossible to ever have colliding IDs consisting of the provided String, the timestamp of creation,
+	 * a random long, and a local counter.
+	 * 
+	 * @param name
+	 *            additional name, e.g. class name (can be used to create classwide identifiers)
+	 * @return a String identifier of the form NAME_[TS(TIMESTAMP)_RND(RANDOM_LONG)_LC(LOCAL_COUNTER)]
+	 */
 	public String createTimeRandomID(final String name) {
 		// TS == Timestamp
 		// RND == Random long
