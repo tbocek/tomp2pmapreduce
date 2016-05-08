@@ -41,6 +41,12 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 
+/**
+ * Stores and retrieves data to and from the DHT
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class DistributedTask {
 	final private static Logger logger = LoggerFactory.getLogger(DistributedTask.class);
 	private static final NavigableSet<PeerAddress> EMPTY_NAVIGABLE_SET = new TreeSet<PeerAddress>();
@@ -55,40 +61,25 @@ public class DistributedTask {
 	}
 
 	/**
-	 * Submits a task to the DHT. The node that is close to the locationKey will get the task. The routing process
-	 * returns a list of close peers with the current load. The peer with the lowest load will get the task.
+	 * stores data for a task in the DHT. The node that is close to the locationKey will get the data.
 	 * 
-	 * @param locationKey
-	 * @param dataMap
-	 * @param routingConfiguration
-	 * @param taskConfiguration
-	 * @param futureChannelCreator
-	 * @param signMessage
-	 * @param isAutomaticCleanup
-	 * @param connectionReservation
-	 * @return
 	 */
-	public FutureMapReduceData putTaskData(final MapReducePutBuilder builder, final FutureMapReduceData futureTask) {
+	public FutureMapReduceData putTaskData(final MapReducePutBuilder builder, final FutureMapReduceData data) {
 		builder.futureChannelCreator().addListener(new BaseFutureAdapter<FutureChannelCreator>() {
 			@Override
 			public void operationComplete(final FutureChannelCreator future) throws Exception {
-				// logger.info(builder.execId + " in operation complete after futurechannelCreator. future.isSuccess()?
-				// " + future.isSuccess());
 				if (future.isSuccess()) {
 					final RoutingBuilder routingBuilder = createBuilder(builder);
 					final FutureRouting futureRouting = routing.route(routingBuilder, Type.REQUEST_1,
 							future.channelCreator());
 
-					futureTask.futureRouting(futureRouting);
+					data.futureRouting(futureRouting);
 					futureRouting.addListener(new BaseFutureAdapter<FutureRouting>() {
 						@Override
 						public void operationComplete(final FutureRouting futureRouting) throws Exception {
-							// logger.info(builder.execId + " in operation complete after
-							// routing.futureRouting.isSuccess()?" + futureRouting.isSuccess());
-
 							if (futureRouting.isSuccess()) {
 								parallelRequests(builder.requestP2PConfiguration(), EMPTY_NAVIGABLE_SET,
-										futureRouting.potentialHits(), futureTask, false, future.channelCreator(),
+										futureRouting.potentialHits(), data, false, future.channelCreator(),
 										new MapReduceOperationMapper() {
 
 									@Override
@@ -107,24 +98,21 @@ public class DistributedTask {
 									}
 								});
 							} else {
-								futureTask.failed(futureRouting);
+								data.failed(futureRouting);
 							}
 						}
 					});
-					futureTask.addFutureDHTReleaseListener(future.channelCreator());
+					data.addFutureDHTReleaseListener(future.channelCreator());
 				} else {
-					futureTask.failed(future);
+					data.failed(future);
 				}
 			}
 
 		});
-		return futureTask;
+		return data;
 	}
 
-	private static <K extends BaseMapReduceBuilder<K>> RoutingBuilder createBuilder(BaseMapReduceBuilder<K> builder) { // TODO
-																														// is
-																														// that
-																														// okay?
+	private static <K extends BaseMapReduceBuilder<K>> RoutingBuilder createBuilder(BaseMapReduceBuilder<K> builder) {
 		RoutingBuilder routingBuilder = new RoutingBuilder();
 		routingBuilder.parallel(builder.routingConfiguration().parallel());
 		routingBuilder.setMaxNoNewInfo(
@@ -138,18 +126,8 @@ public class DistributedTask {
 	}
 
 	/**
-	 * Submits a task to the DHT. The node that is close to the locationKey will get the task. The routing process
-	 * returns a list of close peers with the current load. The peer with the lowest load will get the task.
-	 * 
-	 * @param locationKey
-	 * @param dataMap
-	 * @param routingConfiguration
-	 * @param taskConfiguration
-	 * @param futureChannelCreator
-	 * @param signMessage
-	 * @param isAutomaticCleanup
-	 * @param connectionReservation
-	 * @return
+	 * Gets the data from the DHT. Retrieves it only if the data item is accessible by floor(N/2) nodes, where N is the
+	 * number of nodes that contain the data.
 	 */
 	public FutureMapReduceData getTaskData(final MapReduceGetBuilder builder, final FutureMapReduceData futureTask) {
 		builder.futureChannelCreator().addListener(new BaseFutureAdapter<FutureChannelCreator>() {
@@ -206,22 +184,6 @@ public class DistributedTask {
 													+ recip);
 											futureTask.receivedData(rawData, futuresCompleted);
 										} else if (receivedCntr.containsKey(recip) && deniedCntr.containsKey(recip)) {
-											// int diff = (receivedC >= deniedC ? receivedC - deniedC : deniedC -
-											// receivedC);
-											// boolean isDiffLargerThanNdivided2plus1 = (diff >
-											// (PeerMapReduce.numberOfExpectedComputers / 2) + 1); //will also work if
-											// some computers are removed..
-											// if (!isDiffLargerThanNdivided2plus1) {
-											// logger.info("in isDiffLargerThanNdivided2plus1 (("+diff+" >
-											// "+((PeerMapReduce.numberOfExpectedComputers / 2) + 1)+") (requestor[" +
-											// recip.substring(0, recip.indexOf("_")) + "] GRANTED access to [" +
-											// builder.locationKey().intValue() + "]) recCntr[" +
-											// (receivedC == null ? "0" : receivedC)
-											// + "] denCntr[" + (deniedC == null ? "0" : deniedC) + "] for
-											// requestor/key: " + recip);
-											// futureTask.receivedData(rawData, futuresCompleted);
-											// } else { //only here it is possible to say if it should really be granted
-											// or not
 											if (receivedC >= deniedC) { // received
 												logger.info("in receivedC >= deniedC (" + receivedC + " >= " + deniedC
 														+ ") (requestor[" + recip.substring(0, recip.indexOf("_"))
@@ -231,7 +193,6 @@ public class DistributedTask {
 														+ "] for requestor/key: " + recip);
 												futureTask.receivedData(rawData, futuresCompleted);
 											} else {// if(receivedC < deniedC){
-
 												logger.info("in receivedC < deniedC (" + receivedC + " < " + deniedC
 														+ ") (requestor[" + recip.substring(0, recip.indexOf("_"))
 														+ "] DENIED access to [" + builder.locationKey().intValue()
@@ -241,14 +202,11 @@ public class DistributedTask {
 												futureTask.failed("Too many workers on data item for key ["
 														+ builder.locationKey().intValue() + "] already");
 											}
-											// }
 										}
 									}
 
 									@Override
 									public void interMediateResponse(FutureResponse future) {
-										// the future tells us that the communication was successful, but we
-										// need to check the result if we could store it.
 										if (future.isSuccess() && future.responseMessage().isOk()) {
 											synchronized (receivedCntr) {
 												String recip = asyncTask.peerMapReduce().peer().peerID().intValue()
@@ -272,9 +230,6 @@ public class DistributedTask {
 												}
 												deniedCntr.put(recip, ++cntr);
 											}
-
-											// futureTask.failed("Too many workers on data item for key [" +
-											// builder.locationKey().intValue() + "] already");
 										}
 									}
 								});

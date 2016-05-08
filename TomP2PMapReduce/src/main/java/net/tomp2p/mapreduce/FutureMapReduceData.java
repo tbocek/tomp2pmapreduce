@@ -32,9 +32,7 @@ import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 
 public class FutureMapReduceData extends FutureDone<Void> {
-
-	// Stores futures of DHT operations, 6 is the maximum of futures being
-	// generates as seen in Configurations (min.res + parr.diff)
+ 
 	private final List<FutureResponse> requests = new ArrayList<FutureResponse>(6);
 	private FutureRouting futureRouting;
 

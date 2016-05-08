@@ -19,13 +19,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Used to remove an active on data flag when a peer successfully processed a data item such that the broadcast is not
+ * sent out again. See {@link PeerConnectionCloseListener} which is responsible for sending out a broadcast in case the
+ * node accessing a data item fails. Invoked by {@link MapReduceBroadcastHandler} on receiving a message that the node
+ * with the according {@link PeerAddress} successfully finished processing this data item.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class PeerConnectionActiveFlagRemoveListener {
 	private static final Logger LOG = LoggerFactory.getLogger(PeerConnectionActiveFlagRemoveListener.class);
 
 	private AtomicBoolean activeOnDataFlag;
 	private PeerAddressStorageKeyTuple toAcquire;
 
-	public PeerConnectionActiveFlagRemoveListener(PeerAddressStorageKeyTuple toAcquire, AtomicBoolean activeOnDataFlag) {
+	public PeerConnectionActiveFlagRemoveListener(PeerAddressStorageKeyTuple toAcquire,
+			AtomicBoolean activeOnDataFlag) {
 		this.toAcquire = toAcquire;
 		this.activeOnDataFlag = activeOnDataFlag;
 	}
@@ -41,7 +51,7 @@ public class PeerConnectionActiveFlagRemoveListener {
 		}
 	}
 
-	public PeerAddressStorageKeyTuple tupleToAcquire() { 
+	public PeerAddressStorageKeyTuple tupleToAcquire() {
 		return toAcquire;
 	}
 

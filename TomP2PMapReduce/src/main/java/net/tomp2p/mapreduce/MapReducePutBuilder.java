@@ -14,23 +14,42 @@
  */
 package net.tomp2p.mapreduce;
 
+import net.tomp2p.dht.GetBuilder;
 import net.tomp2p.mapreduce.utils.MapReduceValue;
 import net.tomp2p.peers.Number160;
 
+/**
+ * Class similar to {@link PutBuilder}. Additionally provides the possibility to restrict access to that data
+ * item. Created when {@link PeerMapReduce#put()} is invoked. Do not create this externally but use the provided wrapper
+ * of {@link PeerMapReduce}.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class MapReducePutBuilder extends BaseMapReduceBuilder<MapReducePutBuilder> {
-
+	/** Actual data to store */
 	private MapReduceValue data;
-//	public String execId; // Only used for testing purposes
 
 	public MapReducePutBuilder(PeerMapReduce peerMapReduce, Number160 locationKey, Number160 domainKey) {
 		super(peerMapReduce, locationKey, domainKey);
 		self(this);
 	}
 
+	/**
+	 * @return future to add a listener to to define what happens once the put finished.
+	 */
 	public FutureMapReduceData start() {
-		return new DistributedTask(peerMapReduce.peer().distributedRouting(), peerMapReduce.taskRPC()).putTaskData(this, super.start());
+		return new DistributedTask(peerMapReduce.peer().distributedRouting(), peerMapReduce.taskRPC()).putTaskData(this,
+				super.start());
 	}
 
+	/**
+	 * @param value
+	 *            to store
+	 * @param nrOfExecutions
+	 *            the number of times this value should be accessible
+	 * @return
+	 */
 	public MapReducePutBuilder data(Object value, int nrOfExecutions) {
 		this.data = new MapReduceValue(value, nrOfExecutions);
 		return this;

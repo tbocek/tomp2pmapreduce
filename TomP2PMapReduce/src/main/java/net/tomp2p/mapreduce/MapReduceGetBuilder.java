@@ -17,12 +17,26 @@ package net.tomp2p.mapreduce;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import net.tomp2p.dht.GetBuilder;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
+/**
+ * Class similar to {@link GetBuilder}. Additionally provides the possibility to add broadcast input which will be
+ * released again in case the requesting node fails (not tested in real situation yet!!). Created when
+ * {@link PeerMapReduce#get()} is invoked.Do not create this externally but use the provided wrapper of
+ * {@link PeerMapReduce}.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class MapReduceGetBuilder extends BaseMapReduceBuilder<MapReduceGetBuilder> {
 
+	/**
+	 * Broadcast input used to resent broadcast in case the node accessing the data using {@link PeerMapReduce#get()}
+	 * fails.
+	 */
 	private NavigableMap<Number640, byte[]> broadcastInput;
 
 	public MapReduceGetBuilder(PeerMapReduce peerMapReduce, Number160 locationKey, Number160 domainKey) {
@@ -42,7 +56,8 @@ public class MapReduceGetBuilder extends BaseMapReduceBuilder<MapReduceGetBuilde
 	}
 
 	public FutureMapReduceData start() {
-		return new DistributedTask(peerMapReduce.peer().distributedRouting(), peerMapReduce.taskRPC()).getTaskData(this, super.start());
+		return new DistributedTask(peerMapReduce.peer().distributedRouting(), peerMapReduce.taskRPC()).getTaskData(this,
+				super.start());
 	}
 
 	public static NavigableMap<Number640, byte[]> convertDataToByteArray(NavigableMap<Number640, Data> input) {

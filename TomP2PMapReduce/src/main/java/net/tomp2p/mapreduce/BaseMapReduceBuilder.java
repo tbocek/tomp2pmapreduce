@@ -15,19 +15,31 @@
 package net.tomp2p.mapreduce;
 
 import net.tomp2p.connection.DefaultConnectionConfiguration;
+import net.tomp2p.dht.DHTBuilder;
 import net.tomp2p.futures.FutureChannelCreator;
 import net.tomp2p.p2p.RequestP2PConfiguration;
 import net.tomp2p.p2p.RoutingConfiguration;
 import net.tomp2p.peers.Number160;
 
+/**
+ * Base class for {@link MapReducePutBuilder} and {@link MapReduceGetBuilder}. User's can define own configurations
+ * here. See {@link DHTBuilder} and corresponding classes for similar examples.
+ * 
+ * @author Oliver Zihler
+ *
+ * @param <K>
+ */
 public abstract class BaseMapReduceBuilder<K extends BaseMapReduceBuilder<K>> extends DefaultConnectionConfiguration {
 
+	/** Default configuration creates 3 replicas and conducts 3 queries in parallel */
 	protected RoutingConfiguration routingConfiguration;
 	protected RequestP2PConfiguration requestP2PConfiguration;
 	protected FutureChannelCreator futureChannelCreator;
 
 	private K self;
+	/** domain key to store/retrieve data */
 	private Number160 domainKey;
+	/** location key to store/retrieve data */
 	private Number160 locationKey;//
 	protected PeerMapReduce peerMapReduce;
 
