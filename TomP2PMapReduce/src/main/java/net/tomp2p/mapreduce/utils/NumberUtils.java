@@ -26,6 +26,7 @@ import net.tomp2p.peers.Number640;
  * 
  * @author Oliver Zihler
  *
+ * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
  */
 public class NumberUtils {
 

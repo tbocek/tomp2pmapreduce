@@ -22,6 +22,7 @@ import java.util.TreeMap;
  * objects and classes.
  * 
  * @author Oliver Zihler
+ * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
  *
  */
 public class SerializeUtils {

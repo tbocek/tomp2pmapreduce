@@ -44,15 +44,15 @@ import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 
 /**
- * This task is invoked after {@link MapTaskEval} and aggregates all keys until for every locationKey (a hash of the file name), 2 domainKeys (meaning, two successful executions of the same
- * {@link MapTaskEval} are retrieved. As long as this number is not reached, ReduceTask simply returns. Only in the case of two domainKeys for every locationKey, and additionally, only if the peer
- * executing the {@link ReduceTaskEval} has id 1 or 2, the actual aggregation of all data for every file is carried out and finished with a broadcast to allow {@link PrintTaskEval} to print out the
+ * This task is invoked after {@link MapTask} and aggregates all keys until for every locationKey (a hash of the file name), 2 domainKeys (meaning, two successful executions of the same
+ * {@link MapTask} are retrieved. As long as this number is not reached, ReduceTask simply returns. Only in the case of two domainKeys for every locationKey, and additionally, only if the peer
+ * executing the {@link ReduceTask} has id 1 or 2, the actual aggregation of all data for every file is carried out and finished with a broadcast to allow {@link PrintTask} to print out the
  * final result.
  * 
  * @author Oliver Zihler
  *
  */
-public class ReduceTaskEval extends Task {
+public class ReduceTask extends Task {
 
 	/**
 	* 
@@ -60,7 +60,7 @@ public class ReduceTaskEval extends Task {
 	private static int counter = 0;
 
 	private static final long serialVersionUID = -5662749658082184304L;
-	private static Logger logger = LoggerFactory.getLogger(ReduceTaskEval.class);
+	private static Logger logger = LoggerFactory.getLogger(ReduceTask.class);
 	// public static long cntr = 0;
 	private static AtomicBoolean finished = new AtomicBoolean(false);
 	private static AtomicBoolean isBeingExecuted = new AtomicBoolean(false);
@@ -73,7 +73,7 @@ public class ReduceTaskEval extends Task {
 	private static Map<String, Integer> reduceResults = Collections.synchronizedMap(new HashMap<>());
 	private static Map<PeerAddress, Integer> cntr = Collections.synchronizedMap(new HashMap<>());
 
-	public ReduceTaskEval(Number640 previousId, Number640 currentId, int nrOfExecutions) {
+	public ReduceTask(Number640 previousId, Number640 currentId, int nrOfExecutions) {
 		super(previousId, currentId);
 		this.nrOfExecutions = nrOfExecutions;
 	}

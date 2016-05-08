@@ -40,9 +40,9 @@ import net.tomp2p.storage.Data;
  * @author Oliver Zihler
  *
  */
-public class ShutdownTaskEval extends Task {
+public class ShutdownTask extends Task {
 
-	private static Logger logger = LoggerFactory.getLogger(ShutdownTaskEval.class);
+	private static Logger logger = LoggerFactory.getLogger(ShutdownTask.class);
 
 	/**
 	 * 
@@ -59,14 +59,14 @@ public class ShutdownTaskEval extends Task {
 
 	// private long nrOfNodes;
 
-	public ShutdownTaskEval(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers, int sleepingTimeReps, long sleepingTime) {
+	public ShutdownTask(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers, int sleepingTimeReps, long sleepingTime) {
 		super(previousId, currentId);
 		this.nrOfParticipatingPeers = nrOfParticipatingPeers;
 		this.sleepingTimeReps = sleepingTimeReps;
 		this.sleepingTime = sleepingTime;
 	}
 
-	public ShutdownTaskEval(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers) {
+	public ShutdownTask(Number640 previousId, Number640 currentId, int nrOfParticipatingPeers) {
 		this(previousId, currentId, nrOfParticipatingPeers, DEFAULT_SLEEPING_TIME_REPS, DEFAULT_SLEEPING_TIME);
 	}
 

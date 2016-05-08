@@ -28,6 +28,7 @@ import net.tomp2p.storage.Data;
  * accessed to allow for broadcast emissions. See also the documentation <a href="http://tinyurl.com/csgmtmapred">here</a>, chapter 5 and the methods here for more detailed explanations.
  * 
  * @author Oliver Zihler
+ * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
  *
  */
 public class PeerMapReduce {

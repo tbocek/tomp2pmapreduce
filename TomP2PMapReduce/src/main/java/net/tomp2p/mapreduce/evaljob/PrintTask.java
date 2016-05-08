@@ -43,21 +43,21 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
- * This task is invoked after {@link ReduceTaskEval} and prints the resulting word count to a local file. Only in cases of the peer's id to be 1 and 2 this is actually carried out. Else, the
+ * This task is invoked after {@link ReduceTask} and prints the resulting word count to a local file. Only in cases of the peer's id to be 1 and 2 this is actually carried out. Else, the
  * invocation will be ignored.
  * 
  * @author Oliver Zihler
  *
  */
-public class PrintTaskEval extends Task {
+public class PrintTask extends Task {
 
 	private static int counter = 0;
 
-	private static Logger logger = LoggerFactory.getLogger(PrintTaskEval.class);
+	private static Logger logger = LoggerFactory.getLogger(PrintTask.class);
 	private static AtomicBoolean finished = new AtomicBoolean(false);
 	private static AtomicBoolean isBeingExecuted = new AtomicBoolean(false);
 
-	public PrintTaskEval(Number640 previousId, Number640 currentId) {
+	public PrintTask(Number640 previousId, Number640 currentId) {
 		super(previousId, currentId);
 	}
 

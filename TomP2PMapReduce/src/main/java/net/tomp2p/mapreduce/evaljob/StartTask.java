@@ -53,13 +53,13 @@ import net.tomp2p.storage.Data;
  * @author Oliver Zihler
  *
  */
-public class StartTaskEval extends Task {
+public class StartTask extends Task {
 
-	private static Logger logger = LoggerFactory.getLogger(StartTaskEval.class);
+	private static Logger logger = LoggerFactory.getLogger(StartTask.class);
 	/** How many times the stored input should be accessible by other nodes. Default is twice */
 	private int nrOfExecutions = 2;
 
-	public StartTaskEval(Number640 previousId, Number640 currentId, int nrOfExecutions) {
+	public StartTask(Number640 previousId, Number640 currentId, int nrOfExecutions) {
 		super(previousId, currentId);
 		this.nrOfExecutions = nrOfExecutions;
 	}

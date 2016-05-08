@@ -37,22 +37,22 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
- * This task is invoked after {@link StartTaskEval} and tries to retrieve the data of a file split from the DHT, execute a local word count on that file resulting in a Map<Word, Count> that is finally
- * put into the DHT and the upcoming {@link ReduceTaskEval} will aggregate it until all {@link MapTaskEval} are executed at least twice. Every locationKey corresponds to a hash of the file name and
+ * This task is invoked after {@link StartTask} and tries to retrieve the data of a file split from the DHT, execute a local word count on that file resulting in a Map<Word, Count> that is finally
+ * put into the DHT and the upcoming {@link ReduceTask} will aggregate it until all {@link MapTask} are executed at least twice. Every locationKey corresponds to a hash of the file name and
  * stays in every execution the same. Only the domainKey changes to accommodate the fact that it is another execution of the same input data.
  * 
  * @author Oliver Zihler
  *
  */
-public class MapTaskEval extends Task {
+public class MapTask extends Task {
 
 	private static AtomicInteger counter = new AtomicInteger(0);
 
-	private static Logger logger = LoggerFactory.getLogger(MapTaskEval.class);
+	private static Logger logger = LoggerFactory.getLogger(MapTask.class);
 	// public static long cntr = 0;
 	int nrOfExecutions;
 
-	public MapTaskEval(Number640 previousId, Number640 currentId, int nrOfExecutions) {
+	public MapTask(Number640 previousId, Number640 currentId, int nrOfExecutions) {
 		super(previousId, currentId);
 		this.nrOfExecutions = nrOfExecutions;
 	}
