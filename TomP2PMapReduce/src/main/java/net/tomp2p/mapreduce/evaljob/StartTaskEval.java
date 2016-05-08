@@ -25,7 +25,6 @@ import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,16 +150,7 @@ public class StartTaskEval extends Task {
 				}
 			});
 
-		}
-		// Futures.whenAllSuccess(futurePuts).awaitUninterruptibly();
-
-		// } else {
-		// logger.info("No sucess on put(Job): Fail reason: " + future.failedReason());
-		// }
-		// }
-		// });
-
-		// Futures.whenAllSuccess(initial);
+		} 
 	}
 
 }

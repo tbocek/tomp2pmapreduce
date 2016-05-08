@@ -49,16 +49,13 @@ import net.tomp2p.storage.Data;
 
 public class MainJobSubmitterEval {
 	private static final int waitingTime = 5000;
-	private static final long nrOfNodes = 2;
 
-	private static NavigableMap<Number640, Data> getJob(int nrOfShutdownMessagesToAwait, int nrOfExecutions,
-			String filesPath, int nrOfFiles, Job job) throws IOException {
+	private static NavigableMap<Number640, Data> getJob(int nrOfShutdownMessagesToAwait, int nrOfExecutions, String filesPath, int nrOfFiles, Job job) throws IOException {
 		Task startTask = new StartTaskEval(null, NumberUtils.next(), nrOfExecutions);
 		Task mapTask = new MapTaskEval(startTask.currentId(), NumberUtils.next(), nrOfExecutions);
 		Task reduceTask = new ReduceTaskEval(mapTask.currentId(), NumberUtils.next(), nrOfExecutions);
 		Task writeTask = new PrintTaskEval(reduceTask.currentId(), NumberUtils.next());
-		Task initShutdown = new ShutdownTaskEval(writeTask.currentId(), NumberUtils.next(), nrOfShutdownMessagesToAwait,
-				10, 1000, nrOfNodes);
+		Task initShutdown = new ShutdownTaskEval(writeTask.currentId(), NumberUtils.next(), nrOfShutdownMessagesToAwait, 10, 1000);
 
 		job.addTask(startTask);
 		job.addTask(mapTask);
@@ -88,35 +85,31 @@ public class MainJobSubmitterEval {
 	}
 
 	public static void main(String[] args) throws Exception {
-		 
-		//
-		 boolean shouldBootstrap = false;
-		 int nrOfShutdownMessagesToAwait = 1;
-		 int nrOfExecutions = 1;
-//		boolean shouldBootstrap = true;
-//		int nrOfShutdownMessagesToAwait = 2;
-//		int nrOfExecutions = 2;
+
+		// DISTRIBUTED EXECUTION
+		boolean tmpShouldBootstrap = true;
+		int tmpNrOfShutdownMessagesToAwait = 2;
+		int tmpNrOfExecutions = 2;
+
+		if (args[0].equalsIgnoreCase("local")) { // Local execution
+			tmpShouldBootstrap = false;
+			tmpNrOfShutdownMessagesToAwait = 1;
+			tmpNrOfExecutions = 1;
+		}
+		final boolean shouldBootstrap = tmpShouldBootstrap;
+		final int nrOfShutdownMessagesToAwait = tmpNrOfShutdownMessagesToAwait;
+		final int nrOfExecutions = tmpNrOfExecutions;
+
+		String filesPath = new File("").getAbsolutePath().replace("\\", "/") + "/src/main/java/net/tomp2p/mapreduce/evaljob/inputfiles";
+		int nrOfFiles = localCalculation(filesPath);
 		ConnectionBean.DEFAULT_SLOW_RESPONSE_TIMEOUT_SECONDS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_TCP_IDLE_MILLIS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_CONNECTION_TIMEOUT_TCP = Integer.MAX_VALUE;
-		// ConnectionBean.DEFAULT_UDP_IDLE_MILLIS = 10000;
-
-		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time
-																		// (reps*sleepingTime)
+		// Should be less than shutdown time (reps*sleepingTime)
+		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE;
 
 		int bootstrapperPortToConnectTo = 4004;
-		// String bootstrapperToConnectTo = "192.168.1.172"; //T410
-		String bootstrapperToConnectTo = "192.168.0.19"; // T410 ANDROID
-		// String bootstrapperToConnectTo = "192.168.43.144"; //T61ANDROID
-		// // String bootstrapperToConnectTo = "130.60.156.102"; //T61 B
-		// String bootstrapperToConnectTo = "192.168.0.17"; // T61 B
-		// String bootstrapperToConnectTo = "192.168.0.15"; // ASUS
-		// String bootstrapperToConnectTo = "130.60.156.102"; // ASUS UNI ETH
-
-		// String bootstrapperToConnectTo = "192.168.1.143"; //T61 B
-		// String bootstrapperToConnectTo = "192.168.1.147"; // ASUS
-		// String bootstrapperToConnectTo = "192.168.43.59"; // T61c ANDROID S6
-		// String bootstrapperToConnectTo = "192.168.1.147"; // CSG81
+		String bootstrapperToConnectTo = "192.168.0.19";
 		Number160 id = new Number160(1);
 
 		PeerMapConfiguration pmc = new PeerMapConfiguration(id);
@@ -127,19 +120,16 @@ public class MainJobSubmitterEval {
 		PeerMapReduce peerMapReduce = new PeerMapReduce(peerBuilder, waitingTime);
 		if (shouldBootstrap) {
 			// int bootstrapperPortToConnectTo = 4004;
-			peerMapReduce.peer().bootstrap().ports(bootstrapperPortToConnectTo)
-					.inetAddress(InetAddress.getByName(bootstrapperToConnectTo))
+			peerMapReduce.peer().bootstrap().ports(bootstrapperPortToConnectTo).inetAddress(InetAddress.getByName(bootstrapperToConnectTo))
 					// .ports(bootstrapperPortToConnectTo)
 					.start().awaitUninterruptibly().addListener(new BaseFutureAdapter<FutureBootstrap>() {
 
 						@Override
 						public void operationComplete(FutureBootstrap future) throws Exception {
 							if (future.isSuccess()) {
-								System.err.println("successfully bootstrapped to " + bootstrapperToConnectTo + "/"
-										+ bootstrapperPortToConnectTo);
+								System.err.println("successfully bootstrapped to " + bootstrapperToConnectTo + "/" + bootstrapperPortToConnectTo);
 							} else {
-								System.err
-										.println("No success on bootstrapping: fail reason: " + future.failedReason());
+								System.err.println("No success on bootstrapping: fail reason: " + future.failedReason());
 							}
 						}
 
@@ -151,46 +141,18 @@ public class MainJobSubmitterEval {
 			@Override
 			public void run() {
 				try {
-					String filesPath = new File("").getAbsolutePath().replace("\\", "/")
-							+ "/src/main/java/net/tomp2p/mapreduce/evaljob/inputfiles";
-					//
-					int nrOfFiles = localCalculation(filesPath);
-					// nrOfFiles = ;
-					// String filesPath = "C:/Users/Oliver/Desktop/testFiles/1";
-
-					System.err.println("MainJobSubmitter: nrOfShutdownMessagesToAwait[" + nrOfShutdownMessagesToAwait
-							+ "], nrOfExecutions[" + nrOfExecutions + "], ConnectionBean.DEFAULT_TCP_IDLE_MILLIS["
-							+ ConnectionBean.DEFAULT_TCP_IDLE_MILLIS + "], PeerConnectionCloseListener.WAITING_TIME ["
-							+ PeerConnectionCloseListener.WAITING_TIME + "], filesPath[" + filesPath + "], nrOfFiles ["
-							+ nrOfFiles + "]");
-					System.err.println("MainJobSubmitter: START JOB");
-
 					Job job = new Job(new Number640(new Random()));
-					NavigableMap<Number640, Data> input = getJob(nrOfShutdownMessagesToAwait, nrOfExecutions, filesPath,
-							nrOfFiles, job);
+					NavigableMap<Number640, Data> input = getJob(nrOfShutdownMessagesToAwait, nrOfExecutions, filesPath, nrOfFiles, job);
 					job.start(input, pmr);
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 
 		}).start();
-
-		// Thread.sleep(10000);
-	}
-	// finally
-	//
-	// {
-	// // peerMapReduce.peer().shutdown().await();
-	// // for (PeerMapReduce p : peers) {
-	// // p.peer().shutdown().await();
-	// // }
-	// }
-
-	// }
-
+ 
+	} 
 	private static int localCalculation(String filesPath) {
 		try {
 			List<String> pathVisitor = new ArrayList<>();

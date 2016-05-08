@@ -42,6 +42,13 @@ import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
+/**
+ * This task is invoked after {@link ReduceTaskEval} and prints the resulting word count to a local file. Only in cases of the peer's id to be 1 and 2 this is actually carried out. Else, the
+ * invocation will be ignored.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class PrintTaskEval extends Task {
 
 	private static int counter = 0;
@@ -61,14 +68,14 @@ public class PrintTaskEval extends Task {
 
 	@Override
 	public void broadcastReceiver(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
- 
+
 		int execID = counter++;
 		if (pmr.peer().peerID().intValue() != 1 && pmr.peer().peerID().intValue() != 2) {
 			System.err.println("PRINTTASK Returning for senderID: " + pmr.peer().peerID().intValue());
 			return; // I do this that only two request can be made to the data. Therefore, only two results will be printed on id's 1 and 3
 		}
- 		if (finished.get() || isBeingExecuted.get()) {
-			logger.info("Already executed/Executing reduce results >> ignore call"); 
+		if (finished.get() || isBeingExecuted.get()) {
+			logger.info("Already executed/Executing reduce results >> ignore call");
 			return;
 		}
 
@@ -76,13 +83,13 @@ public class PrintTaskEval extends Task {
 		Data storageKeyData = input.get(NumberUtils.OUTPUT_STORAGE_KEY);
 		if (storageKeyData != null) {
 			Number640 storageKey = (Number640) storageKeyData.object();
-			pmr.get(storageKey.locationKey(), storageKey.domainKey(), new TreeMap<>()/*input*/).start().addListener(new BaseFutureAdapter<FutureMapReduceData>() {
+			pmr.get(storageKey.locationKey(), storageKey.domainKey(), new TreeMap<>()/* input */).start().addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 				@Override
 				public void operationComplete(FutureMapReduceData future) throws Exception {
 					if (future.isSuccess()) {
 						Map<String, Integer> reduceResults = new TreeMap<>((Map<String, Integer>) future.data().object());
-					 	String filename = "temp_[" + reduceResults.keySet().size() + "]words_[" + DateFormat.getDateTimeInstance().format(new Date()) + "]";
+						String filename = "temp_[" + reduceResults.keySet().size() + "]words_[" + DateFormat.getDateTimeInstance().format(new Date()) + "]";
 						filename = filename.replace(":", "_").replace(",", "_").replace(" ", "_");
 						printResults(filename, reduceResults, pmr.peer().peerID().intValue());
 						NavigableMap<Number640, Data> newInput = new TreeMap<>();
@@ -90,16 +97,16 @@ public class PrintTaskEval extends Task {
 						newInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKeys("WRITETASKID")));
 						newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKeys("SHUTDOWNTASKID")));
 						newInput.put(NumberUtils.INPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY));
-					 	newInput.put(NumberUtils.OUTPUT_STORAGE_KEY, new Data(new Number640(new Random())));
+						newInput.put(NumberUtils.OUTPUT_STORAGE_KEY, new Data(new Number640(new Random())));
 						newInput.put(NumberUtils.SENDER, new Data(pmr.peer().peerAddress()));
 
 						finished.set(true);
 						logger.info(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING PRINTTASK [" + execID + "] with [" + reduceResults.keySet().size() + "] words");
- 
-						pmr.peer().broadcast(new Number160(new Random())).dataMap(newInput).start(); 
+
+						pmr.peer().broadcast(new Number160(new Random())).dataMap(newInput).start();
 
 					} else {
-						logger.info("no success on future. Reason: " +future.failedReason());
+						logger.info("no success on future. Reason: " + future.failedReason());
 					}
 				}
 
@@ -111,7 +118,7 @@ public class PrintTaskEval extends Task {
 	}
 
 	public static void printResults(String filename, Map<String, Integer> reduceResults, int peerId) throws Exception {
- 		File f = new File(filename);
+		File f = new File(filename);
 		if (f.exists()) {
 			f.delete();
 		}
@@ -119,7 +126,8 @@ public class PrintTaskEval extends Task {
 
 		Path file = Paths.get(filename);
 		try (BufferedWriter writer = Files.newBufferedWriter(file, Charset.defaultCharset(), StandardOpenOption.APPEND)) {
-			writer.write("==========WORDCOUNT RESULTS OF PEER WITH ID: " + peerId + ", #words [" + reduceResults.keySet().size() + "] time [" + DateFormat.getDateTimeInstance().format(new Date()) + "]==========");
+			writer.write("==========WORDCOUNT RESULTS OF PEER WITH ID: " + peerId + ", #words [" + reduceResults.keySet().size() + "] time [" + DateFormat.getDateTimeInstance().format(new Date())
+					+ "]==========");
 			writer.newLine();
 
 			for (String word : reduceResults.keySet()) {

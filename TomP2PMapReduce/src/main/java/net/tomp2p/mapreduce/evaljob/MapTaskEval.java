@@ -36,6 +36,14 @@ import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
+/**
+ * This task is invoked after {@link StartTaskEval} and tries to retrieve the data of a file split from the DHT, execute a local word count on that file resulting in a Map<Word, Count> that is finally
+ * put into the DHT and the upcoming {@link ReduceTaskEval} will aggregate it until all {@link MapTaskEval} are executed at least twice. Every locationKey corresponds to a hash of the file name and
+ * stays in every execution the same. Only the domainKey changes to accommodate the fact that it is another execution of the same input data.
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class MapTaskEval extends Task {
 
 	private static AtomicInteger counter = new AtomicInteger(0);
@@ -57,26 +65,16 @@ public class MapTaskEval extends Task {
 	@Override
 	public void broadcastReceiver(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
  
-//		startTaskCounter.incrementAndGet();
-
-		// logger.info();
-
 		int execID = counter.getAndIncrement();
 
 		logger.info(">>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
-//		TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
-
+ 
 		Number640 inputStorageKey = (Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object();
 		Number160 outputLocationKey = inputStorageKey.locationKey();
 		Number160 outputDomainKey = Number160.createHash(pmr.peer().peerID() + "_" + (new Random().nextLong()));
-		// try {
-		// Thread.sleep(new Random().nextInt(1000));
-		// } catch (InterruptedException e1) {
-		// e1.printStackTrace();
-		// }
-//		Thread.sleep(new Random().nextInt(3000));
+ 
 
-		pmr.get(inputStorageKey.locationKey(), inputStorageKey.domainKey(), new TreeMap<>()/*input*/).start().addListener(new BaseFutureAdapter<FutureMapReduceData>() {
+		pmr.get(inputStorageKey.locationKey(), inputStorageKey.domainKey(), new TreeMap<>()/* input */).start().addListener(new BaseFutureAdapter<FutureMapReduceData>() {
 
 			@Override
 			public void operationComplete(FutureMapReduceData future) throws Exception {
@@ -102,8 +100,7 @@ public class MapTaskEval extends Task {
 						}
 						logger.info(this + " [" + execID + "]: input produced output[" + fileResults.keySet().size() + "] words");
 						MapReducePutBuilder put = pmr.put(outputLocationKey, outputDomainKey, fileResults, nrOfExecutions);
-//						put.execId = "MapTASK [" + execID + "]_Peer[" + pmr.peer().peerID().shortValue() + "]";
-						put.start().addListener(new BaseFutureAdapter<BaseFuture>() {
+ 						put.start().addListener(new BaseFutureAdapter<BaseFuture>() {
 
 							@Override
 							public void operationComplete(BaseFuture future) throws Exception {
@@ -111,18 +108,17 @@ public class MapTaskEval extends Task {
 									logger.info("MAPTASK[" + execID + "] put future.isSuccess()?" + future.isSuccess());
 									if (future.isSuccess()) {
 										NavigableMap<Number640, Data> newInput = new TreeMap<>();
-										InputUtils.keepInputKeyValuePairs(input, newInput, new String[] { "JOB_KEY", "NUMBEROFFILES", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
+										InputUtils.keepInputKeyValuePairs(input, newInput,
+												new String[] { "JOB_KEY", "NUMBEROFFILES", "INPUTTASKID", "MAPTASKID", "REDUCETASKID", "WRITETASKID", "SHUTDOWNTASKID", "RECEIVERS" });
 										newInput.put(NumberUtils.SENDER, new Data(pmr.peer().peerAddress()));
 										newInput.put(NumberUtils.CURRENT_TASK, input.get(NumberUtils.allSameKeys("MAPTASKID")));
 										newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKeys("REDUCETASKID")));
-										// newInput.put(NumberUtils.NEXT_TASK, input.get(NumberUtils.allSameKey("SHUTDOWNTASKID")));
-										newInput.put(NumberUtils.INPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY));
+ 										newInput.put(NumberUtils.INPUT_STORAGE_KEY, input.get(NumberUtils.OUTPUT_STORAGE_KEY));
 										newInput.put(NumberUtils.OUTPUT_STORAGE_KEY, new Data(new Number640(outputLocationKey, outputDomainKey, Number160.ZERO, Number160.ZERO)));
-										logger.info(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
-//										TestInformationGatherUtils.addLogEntry(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [" + execID + "],[" + ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]");
+										logger.info(">>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [" + execID + "],["
+												+ ((Number640) input.get(NumberUtils.OUTPUT_STORAGE_KEY).object()).locationKey().intValue() + "]"); 
 										pmr.peer().broadcast(new Number160(new Random())).dataMap(newInput).start();
-//										finishedTaskCounter.incrementAndGet();
-
+ 
 									} else {
 										logger.info("!future.isSuccess(), failed reason: " + future.failedReason());
 									}
