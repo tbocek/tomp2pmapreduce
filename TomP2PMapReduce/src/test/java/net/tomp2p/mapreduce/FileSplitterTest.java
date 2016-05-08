@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import net.tomp2p.mapreduce.evaljob.TestExampleJob;
+import net.tomp2p.mapreduce.examplejob.TestExampleJob;
 import net.tomp2p.mapreduce.utils.FileSize;
 import net.tomp2p.mapreduce.utils.FileSplitter;
 import net.tomp2p.mapreduce.utils.FileUtils;

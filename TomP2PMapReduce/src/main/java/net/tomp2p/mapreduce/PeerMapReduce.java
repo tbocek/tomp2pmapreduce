@@ -27,6 +27,8 @@ import net.tomp2p.storage.Data;
  * Main connection point to the network. Get and Put methods can be used to store and retrieve serialised data to and from the DHT. Furthermore, the contained <code>Peer</code> can directly be
  * accessed to allow for broadcast emissions. See also the documentation <a href="http://tinyurl.com/csgmtmapred">here</a>, chapter 5 and the methods here for more detailed explanations.
  * 
+ * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
+ * 
  * @author Oliver Zihler
  *
  */

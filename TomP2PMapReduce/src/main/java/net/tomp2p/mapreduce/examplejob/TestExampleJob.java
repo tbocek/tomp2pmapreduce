@@ -12,7 +12,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.tomp2p.mapreduce.evaljob;
+package net.tomp2p.mapreduce.examplejob;
 
 import static org.junit.Assert.assertEquals;
 

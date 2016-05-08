@@ -1,137 +1,782 @@
-1287 [main] INFO  net.tomp2p.connection.PeerCreator - Status of external address search: Discover status:  ++lo( /127.0.0.1,/0:0:0:0:0:0:0:1), ++eth0(), ++eth1(), ++wlan0( /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0), ++net0(), ++ppp0(), ++eth2(), ++net1(), ++net2(), ++net3(), ++ppp1(), ++net4(), ++net5(), ++eth3(), ++net6(), ++eth4(), ++eth5(), ++net7(), ++net8( /fe80:0:0:0:0:5efe:c0a8:e%net8), ++net9( /2001:0:9d38:90d7:c17:338f:af24:4a6b,/fe80:0:0:0:c17:338f:af24:4a6b%net9), ++eth6( /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6), ++net10(), ++eth7( /192.168.0.14,/fe80:0:0:0:3847:7a64:f49f:7c19%eth7), ++eth8(), ++wlan1( /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1), ++net11(), ++wlan2(), ++eth9(), ++eth10(), ++eth11(), ++eth12(), ++eth13(), ++eth14(), ++eth15(), ++eth16(), ++eth17(), ++eth18(), ++eth19(), ++wlan3(), ++wlan4(), ++wlan5(), ++wlan6(), ++wlan7(), ++wlan8(), ++wlan9(), ++wlan10(), ++wlan11().
-1307 [main] INFO  net.tomp2p.connection.PeerCreator - Visible address to other peers: paddr[0xba419d350dfe8af7aee7bbe10c45c0284f083ce4[/192.168.0.14,4253]]/relay(false)/slow(false)
-2327 [pool-3-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /127.255.255.255:4253
-2331 [pool-3-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /192.168.0.255:4253
-2332 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on wildcard broadcast address 0.0.0.0/0.0.0.0:4253
-2727 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /127.0.0.1 on port tcp: 4253
-2729 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /0:0:0:0:0:0:0:1 on port tcp: 4253
-2732 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0 on port tcp: 4253
-2734 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:0:5efe:c0a8:e%net8 on port tcp: 4253
-2736 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /2001:0:9d38:90d7:c17:338f:af24:4a6b on port tcp: 4253
-2738 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:c17:338f:af24:4a6b%net9 on port tcp: 4253
-2740 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6 on port tcp: 4253
-2742 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /192.168.0.14 on port tcp: 4253
-2743 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:3847:7a64:f49f:7c19%eth7 on port tcp: 4253
-2746 [pool-3-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1 on port tcp: 4253
-3016 [pool-4-thread-1] ERROR n.tomp2p.futures.BaseFutureAdapter - BaseFutureAdapter exceptionCaught()
-java.lang.NullPointerException: null
-	at net.tomp2p.connection.Sender.sendSelf(Sender.java:432) ~[tomp2p-core-5.0-Beta8.jar:na]
-	at net.tomp2p.connection.Sender.sendTCP(Sender.java:187) ~[tomp2p-core-5.0-Beta8.jar:na]
-	at net.tomp2p.connection.RequestHandler.sendTCP(RequestHandler.java:190) ~[tomp2p-core-5.0-Beta8.jar:na]
-	at net.tomp2p.mapreduce.TaskRPC.putTaskData(TaskRPC.java:101) ~[classes/:na]
-	at net.tomp2p.mapreduce.DistributedTask$1$1$1.create(DistributedTask.java:87) ~[classes/:na]
-	at net.tomp2p.mapreduce.DistributedTask.loopRec(DistributedTask.java:354) ~[classes/:na]
-	at net.tomp2p.mapreduce.DistributedTask.parallelRequests(DistributedTask.java:333) ~[classes/:na]
-	at net.tomp2p.mapreduce.DistributedTask.access$4(DistributedTask.java:319) ~[classes/:na]
-	at net.tomp2p.mapreduce.DistributedTask$1$1.operationComplete(DistributedTask.java:81) ~[classes/:na]
-	at net.tomp2p.mapreduce.DistributedTask$1$1.operationComplete(DistributedTask.java:1) ~[classes/:na]
-	at net.tomp2p.futures.BaseFutureImpl.callOperationComplete(BaseFutureImpl.java:328) [tomp2p-core-5.0-Beta8.jar:na]
-	at net.tomp2p.futures.BaseFutureImpl.addListener(BaseFutureImpl.java:314) [tomp2p-core-5.0-Beta8.jar:na]
-	at net.tomp2p.mapreduce.DistributedTask$1.operationComplete(DistributedTask.java:77) [classes/:na]
-	at net.tomp2p.mapreduce.DistributedTask$1.operationComplete(DistributedTask.java:1) [classes/:na]
-	at net.tomp2p.futures.BaseFutureImpl.callOperationComplete(BaseFutureImpl.java:328) [tomp2p-core-5.0-Beta8.jar:na]
-	at net.tomp2p.futures.BaseFutureImpl.notifyListeners(BaseFutureImpl.java:361) [tomp2p-core-5.0-Beta8.jar:na]
-	at net.tomp2p.futures.FutureChannelCreator.reserved(FutureChannelCreator.java:51) [tomp2p-core-5.0-Beta8.jar:na]
-	at net.tomp2p.connection.Reservation$WaitReservation.run(Reservation.java:378) [tomp2p-core-5.0-Beta8.jar:na]
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_20]
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_20]
-	at java.lang.Thread.run(Unknown Source) [na:1.8.0_20]
-3886 [main] INFO  net.tomp2p.connection.PeerCreator - Status of external address search: Discover status:  ++lo( /127.0.0.1,/0:0:0:0:0:0:0:1), ++eth0(), ++eth1(), ++wlan0( /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0), ++net0(), ++ppp0(), ++eth2(), ++net1(), ++net2(), ++net3(), ++ppp1(), ++net4(), ++net5(), ++eth3(), ++net6(), ++eth4(), ++eth5(), ++net7(), ++net8( /fe80:0:0:0:0:5efe:c0a8:e%net8), ++net9( /2001:0:9d38:90d7:c17:338f:af24:4a6b,/fe80:0:0:0:c17:338f:af24:4a6b%net9), ++eth6( /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6), ++net10(), ++eth7( /192.168.0.14,/fe80:0:0:0:3847:7a64:f49f:7c19%eth7), ++eth8(), ++wlan1( /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1), ++net11(), ++wlan2(), ++eth9(), ++eth10(), ++eth11(), ++eth12(), ++eth13(), ++eth14(), ++eth15(), ++eth16(), ++eth17(), ++eth18(), ++eth19(), ++wlan3(), ++wlan4(), ++wlan5(), ++wlan6(), ++wlan7(), ++wlan8(), ++wlan9(), ++wlan10(), ++wlan11().
-3886 [main] INFO  net.tomp2p.connection.PeerCreator - Visible address to other peers: paddr[0x1234[/192.168.0.14,8088]]/relay(false)/slow(false)
-4265 [pool-6-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /127.255.255.255:8088
-4269 [pool-6-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /192.168.0.255:8088
-4269 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on wildcard broadcast address 0.0.0.0/0.0.0.0:8088
-4276 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /127.0.0.1 on port tcp: 8088
-4280 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /0:0:0:0:0:0:0:1 on port tcp: 8088
-4283 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0 on port tcp: 8088
-4286 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:0:5efe:c0a8:e%net8 on port tcp: 8088
-4290 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /2001:0:9d38:90d7:c17:338f:af24:4a6b on port tcp: 8088
-4295 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:c17:338f:af24:4a6b%net9 on port tcp: 8088
-4298 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6 on port tcp: 8088
-4301 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /192.168.0.14 on port tcp: 8088
-4303 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:3847:7a64:f49f:7c19%eth7 on port tcp: 8088
-4306 [pool-6-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1 on port tcp: 8088
-4668 [main] INFO  net.tomp2p.connection.PeerCreator - Status of external address search: Discover status:  ++lo( /127.0.0.1,/0:0:0:0:0:0:0:1), ++eth0(), ++eth1(), ++wlan0( /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0), ++net0(), ++ppp0(), ++eth2(), ++net1(), ++net2(), ++net3(), ++ppp1(), ++net4(), ++net5(), ++eth3(), ++net6(), ++eth4(), ++eth5(), ++net7(), ++net8( /fe80:0:0:0:0:5efe:c0a8:e%net8), ++net9( /2001:0:9d38:90d7:c17:338f:af24:4a6b,/fe80:0:0:0:c17:338f:af24:4a6b%net9), ++eth6( /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6), ++net10(), ++eth7( /192.168.0.14,/fe80:0:0:0:3847:7a64:f49f:7c19%eth7), ++eth8(), ++wlan1( /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1), ++net11(), ++wlan2(), ++eth9(), ++eth10(), ++eth11(), ++eth12(), ++eth13(), ++eth14(), ++eth15(), ++eth16(), ++eth17(), ++eth18(), ++eth19(), ++wlan3(), ++wlan4(), ++wlan5(), ++wlan6(), ++wlan7(), ++wlan8(), ++wlan9(), ++wlan10(), ++wlan11().
-4669 [main] INFO  net.tomp2p.connection.PeerCreator - Visible address to other peers: paddr[0x9876[/192.168.0.14,2424]]/relay(false)/slow(false)
-5049 [pool-9-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /127.255.255.255:2424
-5054 [pool-9-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /192.168.0.255:2424
-5054 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on wildcard broadcast address 0.0.0.0/0.0.0.0:2424
-5061 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /127.0.0.1 on port tcp: 2424
-5064 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /0:0:0:0:0:0:0:1 on port tcp: 2424
-5067 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0 on port tcp: 2424
-5071 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:0:5efe:c0a8:e%net8 on port tcp: 2424
-5074 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /2001:0:9d38:90d7:c17:338f:af24:4a6b on port tcp: 2424
-5076 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:c17:338f:af24:4a6b%net9 on port tcp: 2424
-5079 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6 on port tcp: 2424
-5081 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /192.168.0.14 on port tcp: 2424
-5084 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:3847:7a64:f49f:7c19%eth7 on port tcp: 2424
-5086 [pool-9-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1 on port tcp: 2424
-6002 [main] INFO  net.tomp2p.connection.PeerCreator - Status of external address search: Discover status:  ++lo( /127.0.0.1,/0:0:0:0:0:0:0:1), ++eth0(), ++eth1(), ++wlan0( /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0), ++net0(), ++ppp0(), ++eth2(), ++net1(), ++net2(), ++net3(), ++ppp1(), ++net4(), ++net5(), ++eth3(), ++net6(), ++eth4(), ++eth5(), ++net7(), ++net8( /fe80:0:0:0:0:5efe:c0a8:e%net8), ++net9( /2001:0:9d38:90d7:c17:338f:af24:4a6b,/fe80:0:0:0:c17:338f:af24:4a6b%net9), ++eth6( /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6), ++net10(), ++eth7( /192.168.0.14,/fe80:0:0:0:3847:7a64:f49f:7c19%eth7), ++eth8(), ++wlan1( /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1), ++net11(), ++wlan2(), ++eth9(), ++eth10(), ++eth11(), ++eth12(), ++eth13(), ++eth14(), ++eth15(), ++eth16(), ++eth17(), ++eth18(), ++eth19(), ++wlan3(), ++wlan4(), ++wlan5(), ++wlan6(), ++wlan7(), ++wlan8(), ++wlan9(), ++wlan10(), ++wlan11().
-6003 [main] INFO  net.tomp2p.connection.PeerCreator - Visible address to other peers: paddr[0x1234[/192.168.0.14,8088]]/relay(false)/slow(false)
-6393 [pool-12-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /127.255.255.255:8088
-6395 [pool-12-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /192.168.0.255:8088
-6396 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on wildcard broadcast address 0.0.0.0/0.0.0.0:8088
-6401 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /127.0.0.1 on port tcp: 8088
-6404 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /0:0:0:0:0:0:0:1 on port tcp: 8088
-6406 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0 on port tcp: 8088
-6409 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:0:5efe:c0a8:e%net8 on port tcp: 8088
-6411 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /2001:0:9d38:90d7:c17:338f:af24:4a6b on port tcp: 8088
-6413 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:c17:338f:af24:4a6b%net9 on port tcp: 8088
-6415 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6 on port tcp: 8088
-6417 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /192.168.0.14 on port tcp: 8088
-6419 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:3847:7a64:f49f:7c19%eth7 on port tcp: 8088
-6421 [pool-12-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1 on port tcp: 8088
-6782 [main] INFO  net.tomp2p.connection.PeerCreator - Status of external address search: Discover status:  ++lo( /127.0.0.1,/0:0:0:0:0:0:0:1), ++eth0(), ++eth1(), ++wlan0( /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0), ++net0(), ++ppp0(), ++eth2(), ++net1(), ++net2(), ++net3(), ++ppp1(), ++net4(), ++net5(), ++eth3(), ++net6(), ++eth4(), ++eth5(), ++net7(), ++net8( /fe80:0:0:0:0:5efe:c0a8:e%net8), ++net9( /2001:0:9d38:90d7:c17:338f:af24:4a6b,/fe80:0:0:0:c17:338f:af24:4a6b%net9), ++eth6( /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6), ++net10(), ++eth7( /192.168.0.14,/fe80:0:0:0:3847:7a64:f49f:7c19%eth7), ++eth8(), ++wlan1( /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1), ++net11(), ++wlan2(), ++eth9(), ++eth10(), ++eth11(), ++eth12(), ++eth13(), ++eth14(), ++eth15(), ++eth16(), ++eth17(), ++eth18(), ++eth19(), ++wlan3(), ++wlan4(), ++wlan5(), ++wlan6(), ++wlan7(), ++wlan8(), ++wlan9(), ++wlan10(), ++wlan11().
-6783 [main] INFO  net.tomp2p.connection.PeerCreator - Visible address to other peers: paddr[0x9876[/192.168.0.14,2424]]/relay(false)/slow(false)
-7158 [pool-15-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /127.255.255.255:2424
-7166 [pool-15-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /192.168.0.255:2424
-7166 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on wildcard broadcast address 0.0.0.0/0.0.0.0:2424
-7170 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /127.0.0.1 on port tcp: 2424
-7173 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /0:0:0:0:0:0:0:1 on port tcp: 2424
-7174 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0 on port tcp: 2424
-7176 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:0:5efe:c0a8:e%net8 on port tcp: 2424
-7177 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /2001:0:9d38:90d7:c17:338f:af24:4a6b on port tcp: 2424
-7179 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:c17:338f:af24:4a6b%net9 on port tcp: 2424
-7180 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6 on port tcp: 2424
-7182 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /192.168.0.14 on port tcp: 2424
-7183 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:3847:7a64:f49f:7c19%eth7 on port tcp: 2424
-7184 [pool-15-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1 on port tcp: 2424
-12833 [main] INFO  net.tomp2p.connection.PeerCreator - Status of external address search: Discover status:  ++lo( /127.0.0.1,/0:0:0:0:0:0:0:1), ++eth0(), ++eth1(), ++wlan0( /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0), ++net0(), ++ppp0(), ++eth2(), ++net1(), ++net2(), ++net3(), ++ppp1(), ++net4(), ++net5(), ++eth3(), ++net6(), ++eth4(), ++eth5(), ++net7(), ++net8( /fe80:0:0:0:0:5efe:c0a8:e%net8), ++net9( /2001:0:9d38:90d7:c17:338f:af24:4a6b,/fe80:0:0:0:c17:338f:af24:4a6b%net9), ++eth6( /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6), ++net10(), ++eth7( /192.168.0.14,/fe80:0:0:0:3847:7a64:f49f:7c19%eth7), ++eth8(), ++wlan1( /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1), ++net11(), ++wlan2(), ++eth9(), ++eth10(), ++eth11(), ++eth12(), ++eth13(), ++eth14(), ++eth15(), ++eth16(), ++eth17(), ++eth18(), ++eth19(), ++wlan3(), ++wlan4(), ++wlan5(), ++wlan6(), ++wlan7(), ++wlan8(), ++wlan9(), ++wlan10(), ++wlan11().
-12834 [main] INFO  net.tomp2p.connection.PeerCreator - Visible address to other peers: paddr[0xf12bbb4b46ee9d83b52c856daa616abe17610c9a[/192.168.0.14,4444]]/relay(false)/slow(false)
-13203 [pool-19-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /127.255.255.255:4444
-13205 [pool-19-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /192.168.0.255:4444
-13205 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on wildcard broadcast address 0.0.0.0/0.0.0.0:4444
-13209 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /127.0.0.1 on port tcp: 4444
-13211 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /0:0:0:0:0:0:0:1 on port tcp: 4444
-13213 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0 on port tcp: 4444
-13214 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:0:5efe:c0a8:e%net8 on port tcp: 4444
-13216 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /2001:0:9d38:90d7:c17:338f:af24:4a6b on port tcp: 4444
-13217 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:c17:338f:af24:4a6b%net9 on port tcp: 4444
-13220 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6 on port tcp: 4444
-13221 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /192.168.0.14 on port tcp: 4444
-13223 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:3847:7a64:f49f:7c19%eth7 on port tcp: 4444
-13225 [pool-19-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1 on port tcp: 4444
-15391 [NETTY-TOMP2P - worker-client/server - -12-4] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1817637377] GRANTED access to [631384033]) recCntr[3] denCntr[0] for requestor/key : 1817637377_0x2967160ed1baaa1f4b57497c426c5eda25a227e1_0x2967160ed1baaa1f4b57497c426c5eda25a227e1
-17393 [NETTY-TOMP2P - worker-client/server - -12-4] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[554625351] GRANTED access to [631384033]) recCntr[3] denCntr[0] for requestor/key : 554625351_0x2967160ed1baaa1f4b57497c426c5eda25a227e1_0x2967160ed1baaa1f4b57497c426c5eda25a227e1
-18603 [NETTY-TOMP2P - worker-client/server - -12-11] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1278871506] GRANTED access to [631384033]) recCntr[3] denCntr[0] for requestor/key : 1278871506_0x2967160ed1baaa1f4b57497c426c5eda25a227e1_0x2967160ed1baaa1f4b57497c426c5eda25a227e1
-22026 [main] INFO  net.tomp2p.connection.PeerCreator - Status of external address search: Discover status:  ++lo( /127.0.0.1,/0:0:0:0:0:0:0:1), ++eth0(), ++eth1(), ++wlan0( /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0), ++net0(), ++ppp0(), ++eth2(), ++net1(), ++net2(), ++net3(), ++ppp1(), ++net4(), ++net5(), ++eth3(), ++net6(), ++eth4(), ++eth5(), ++net7(), ++net8( /fe80:0:0:0:0:5efe:c0a8:e%net8), ++net9( /2001:0:9d38:90d7:c17:338f:af24:4a6b,/fe80:0:0:0:c17:338f:af24:4a6b%net9), ++eth6( /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6), ++net10(), ++eth7( /192.168.0.14,/fe80:0:0:0:3847:7a64:f49f:7c19%eth7), ++eth8(), ++wlan1( /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1), ++net11(), ++wlan2(), ++eth9(), ++eth10(), ++eth11(), ++eth12(), ++eth13(), ++eth14(), ++eth15(), ++eth16(), ++eth17(), ++eth18(), ++eth19(), ++wlan3(), ++wlan4(), ++wlan5(), ++wlan6(), ++wlan7(), ++wlan8(), ++wlan9(), ++wlan10(), ++wlan11().
-22027 [main] INFO  net.tomp2p.connection.PeerCreator - Visible address to other peers: paddr[0x93b73715acef24540418e396d70173c015190d55[/192.168.0.14,4444]]/relay(false)/slow(false)
-22418 [pool-221-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /127.255.255.255:4444
-22421 [pool-221-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /192.168.0.255:4444
-22421 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on wildcard broadcast address 0.0.0.0/0.0.0.0:4444
-22425 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /127.0.0.1 on port tcp: 4444
-22427 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /0:0:0:0:0:0:0:1 on port tcp: 4444
-22429 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0 on port tcp: 4444
-22431 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:0:5efe:c0a8:e%net8 on port tcp: 4444
-22433 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /2001:0:9d38:90d7:c17:338f:af24:4a6b on port tcp: 4444
-22435 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:c17:338f:af24:4a6b%net9 on port tcp: 4444
-22437 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6 on port tcp: 4444
-22455 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /192.168.0.14 on port tcp: 4444
-22457 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:3847:7a64:f49f:7c19%eth7 on port tcp: 4444
-22459 [pool-221-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1 on port tcp: 4444
-25682 [main] INFO  n.t.mapreduce.TestDistributedTask - 1: MapReduceValue([VALUE1], #execs[3], #current[0])
-25683 [main] INFO  n.t.mapreduce.TestDistributedTask - 2: MapReduceValue([VALUE1], #execs[3], #current[0])
-25684 [main] INFO  n.t.mapreduce.TestDistributedTask - 3: MapReduceValue([VALUE1], #execs[3], #current[0])
-25685 [main] INFO  n.t.mapreduce.TestDistributedTask - 4: MapReduceValue([VALUE1], #execs[3], #current[0])
-25686 [main] INFO  n.t.mapreduce.TestDistributedTask - 5: MapReduceValue([VALUE1], #execs[3], #current[0])
-25686 [main] INFO  n.t.mapreduce.TestDistributedTask - 6: MapReduceValue([VALUE1], #execs[3], #current[0])
+1982 [main] INFO  net.tomp2p.connection.PeerCreator - Status of external address search: Discover status:  ++lo( /127.0.0.1,/0:0:0:0:0:0:0:1), ++eth0(), ++eth1(), ++wlan0( /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0), ++net0(), ++ppp0(), ++eth2(), ++net1(), ++net2(), ++net3(), ++ppp1(), ++net4(), ++net5(), ++eth3(), ++net6(), ++eth4(), ++eth5(), ++net7(), ++net8( /fe80:0:0:0:0:5efe:c0a8:e%net8), ++net9( /2001:0:9d38:90d7:c17:338f:af24:4a6b,/fe80:0:0:0:c17:338f:af24:4a6b%net9), ++eth6( /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6), ++net10(), ++eth7( /192.168.0.14,/fe80:0:0:0:3847:7a64:f49f:7c19%eth7), ++eth8(), ++wlan1( /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1), ++net11(), ++wlan2(), ++eth9(), ++eth10(), ++eth11(), ++eth12(), ++eth13(), ++eth14(), ++eth15(), ++eth16(), ++eth17(), ++eth18(), ++eth19(), ++wlan3(), ++wlan4(), ++wlan5(), ++wlan6(), ++wlan7(), ++wlan8(), ++wlan9(), ++wlan10(), ++wlan11().
+2001 [main] INFO  net.tomp2p.connection.PeerCreator - Visible address to other peers: paddr[0x1[/192.168.0.14,4004]]/relay(false)/slow(false)
+3077 [pool-2-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /127.255.255.255:4004
+3085 [pool-2-thread-1] WARN  net.tomp2p.connection.ChannelServer - cannot bind broadcast UDP /192.168.0.255:4004
+3086 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on wildcard broadcast address 0.0.0.0/0.0.0.0:4004
+3476 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /127.0.0.1 on port tcp: 4004
+3479 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /0:0:0:0:0:0:0:1 on port tcp: 4004
+3484 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:f038:3e05:1fa6:8a68%wlan0 on port tcp: 4004
+3487 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:0:5efe:c0a8:e%net8 on port tcp: 4004
+3490 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /2001:0:9d38:90d7:c17:338f:af24:4a6b on port tcp: 4004
+3493 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:c17:338f:af24:4a6b%net9 on port tcp: 4004
+3496 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:d5b8:9640:9aa6:346c%eth6 on port tcp: 4004
+3499 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /192.168.0.14 on port tcp: 4004
+3502 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:3847:7a64:f49f:7c19%eth7 on port tcp: 4004
+3505 [pool-2-thread-1] INFO  net.tomp2p.connection.ChannelServer - Listening on address: /fe80:0:0:0:2569:9eb9:e4c8:5698%wlan1 on port tcp: 4004
+3967 [Thread-0] INFO  n.t.mapreduce.evaljob.StartTask - >>>>>>>>>>>>>>>>>>>> EXECUTING START TASK 
+11015 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-975076734], v[content of ()])
+11085 [pool-4-thread-8] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-459248061], v[content of ()])
+11291 [pool-1-thread-1] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [0],[-975076734]
+11533 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-1633549540], v[content of ()])
+11992 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[1673782109], v[content of ()])
+12074 [pool-1-thread-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [1],[-1633549540]
+12526 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-975076734] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+12862 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[2141627826], v[content of ()])
+12885 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-1852056802], v[content of ()])
+12933 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[1698494669], v[content of ()])
+13029 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[1316075284], v[content of ()])
+13256 [pool-1-thread-2] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [2],[-459248061]
+13368 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-816862022], v[content of ()])
+13408 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-1618326642], v[content of ()])
+13417 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-749865235], v[content of ()])
+13458 [pool-1-thread-10] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [3],[-1618326642]
+13683 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[212795668], v[content of ()])
+13743 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-2066106826], v[content of ()])
+13782 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1633549540] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+13795 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[450247028], v[content of ()])
+13798 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-1106207378], v[content of ()])
+13916 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-459248061] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+14008 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-153224391], v[content of ()])
+14037 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[1730325525], v[content of ()])
+14089 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-1259703404], v[content of ()])
+14102 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[1675569376], v[content of ()])
+14105 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[640749807], v[content of ()])
+14123 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-96642674], v[content of ()])
+14369 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[853867819], v[content of ()])
+14382 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-459248061] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+14398 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[39373727], v[content of ()])
+14409 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.StartTask - success on put(k[-1553681525], v[content of ()])
+14509 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-975076734]) recCntr[3] denCntr[0] for requestor/key : 1_0xf00eec27476a073e5a9c6d9896092bf2c5e18282_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+14514 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [0] future.isSuccess()?:true
+14544 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-459248061]) recCntr[3] denCntr[0] for requestor/key : 1_0x3fb65357e1aaa51a3467f520f692d61be4a06e43_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+14545 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [2] future.isSuccess()?:true
+14572 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1633549540]) recCntr[3] denCntr[0] for requestor/key : 1_0x174fac16a6ec15d3d5febd6c865c53369ea2031c_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+14573 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [1] future.isSuccess()?:true
+15063 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@3bdb2298 [1]: input produced output[24928] words
+15069 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@1a99a58c [2]: input produced output[22224] words
+15066 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@61c5617e [0]: input produced output[24722] words
+15641 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[2] put future.isSuccess()?true
+15650 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[1] put future.isSuccess()?true
+15651 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [2],[-459248061]
+15855 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [1],[-1633549540]
+15890 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[0] put future.isSuccess()?true
+15901 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [0],[-975076734]
+16008 [pool-1-thread-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [4],[-816862022]
+16059 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1618326642] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+16125 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1633549540] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+16154 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1618326642]) recCntr[3] denCntr[0] for requestor/key : 1_0xdcb14a0d1963d1335183ec4d7694fcc69f8a4b8e_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+16155 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [3] future.isSuccess()?:true
+16260 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@722c8176 [3]: input produced output[20339] words
+16502 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[3] put future.isSuccess()?true
+16507 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [3],[-1618326642]
+16628 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-975076734] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+16953 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-975076734] requested by peer [2] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+18305 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [39373727] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+18744 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [853867819] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+20500 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [39373727] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+20591 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [640749807] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+20778 [pool-1-thread-8] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [5],[1316075284]
+20787 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-816862022] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+20910 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-816862022]) recCntr[3] denCntr[0] for requestor/key : 1_0x590a35281a4d5f2a55481d1f1be21ff4cf4facba_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+20911 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [4] future.isSuccess()?:true
+21009 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@88dbb32 [4]: input produced output[21802] words
+21159 [pool-1-thread-7] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [6],[1698494669]
+21167 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1316075284] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+21230 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[4] put future.isSuccess()?true
+21237 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [4],[-816862022]
+21318 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [1316075284]) recCntr[3] denCntr[0] for requestor/key : 1_0x1e24d719595b855e100af4cbabb1c2224e71b714_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+21319 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [5] future.isSuccess()?:true
+21444 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@47b6c138 [5]: input produced output[19268] words
+21669 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[5] put future.isSuccess()?true
+21673 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [5],[1316075284]
+22798 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1553681525] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+24787 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [853867819] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+25075 [pool-1-thread-6] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [7],[-1852056802]
+25084 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1698494669] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+25205 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [1698494669]) recCntr[3] denCntr[0] for requestor/key : 1_0x1c290faf1e131def136bde631dd80200653cf8cd_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+25205 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [6] future.isSuccess()?:true
+25301 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@33ac4fc3 [6]: input produced output[22985] words
+25536 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[6] put future.isSuccess()?true
+25540 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [6],[1698494669]
+26548 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-96642674] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+26808 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1553681525] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+28551 [pool-1-thread-5] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [8],[2141627826]
+28560 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1852056802] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+28637 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1852056802]) recCntr[3] denCntr[0] for requestor/key : 1_0xf10153eada8d2b5cef6147bed4cac9ea919bdb1e_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+28638 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [7] future.isSuccess()?:true
+28698 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [2141627826] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+28702 [pool-1-thread-4] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [9],[1673782109]
+28767 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@3a361daa [7]: input produced output[22892] words
+28771 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [2141627826]) recCntr[3] denCntr[0] for requestor/key : 1_0xc523bdbfdacca52fea98b3adaa2a62487fa6a5b2_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+28772 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [8] future.isSuccess()?:true
+28888 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@5615f143 [8]: input produced output[22049] words
+28978 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[7] put future.isSuccess()?true
+28983 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [7],[-1852056802]
+29124 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[8] put future.isSuccess()?true
+29126 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [8],[2141627826]
+29287 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1675569376] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+30300 [pool-1-thread-45] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [0]
+30301 [pool-1-thread-45] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30304 [pool-1-thread-45] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1675569376] from sender [2]
+30306 [pool-1-thread-45] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[1]: 
+30311 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1673782109] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+30337 [pool-1-thread-44] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [1]
+30340 [pool-1-thread-44] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30340 [pool-1-thread-44] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [1] messages
+30343 [pool-1-thread-44] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [2141627826] from sender [1]
+30344 [pool-1-thread-44] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[2]: 
+30371 [pool-1-thread-43] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [2]
+30372 [pool-1-thread-43] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30373 [pool-1-thread-43] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [1] messages
+30373 [pool-1-thread-43] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [1] messages
+30376 [pool-1-thread-43] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1852056802] from sender [1]
+30377 [pool-1-thread-43] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[3]: 
+30413 [pool-1-thread-42] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [3]
+30414 [pool-1-thread-42] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30415 [pool-1-thread-42] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [2] messages
+30416 [pool-1-thread-42] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [1] messages
+30418 [pool-1-thread-42] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1553681525] from sender [3]
+30419 [pool-1-thread-42] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[4]: 
+30432 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [1673782109]) recCntr[3] denCntr[0] for requestor/key : 1_0x1a98a1c69ba10912f1ae0c96bf2d57a263c3e35d_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+30433 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [9] future.isSuccess()?:true
+30459 [pool-1-thread-41] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [4]
+30460 [pool-1-thread-41] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30461 [pool-1-thread-41] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [2] messages
+30461 [pool-1-thread-41] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [1] messages
+30461 [pool-1-thread-41] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [1] messages
+30463 [pool-1-thread-41] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-96642674] from sender [2]
+30464 [pool-1-thread-41] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[5]: 
+30516 [pool-1-thread-40] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [5]
+30517 [pool-1-thread-40] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30518 [pool-1-thread-40] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [2] messages
+30518 [pool-1-thread-40] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [2] messages
+30518 [pool-1-thread-40] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [1] messages
+30521 [pool-1-thread-40] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1698494669] from sender [1]
+30522 [pool-1-thread-40] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[6]: 
+30561 [pool-1-thread-39] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [6]
+30562 [pool-1-thread-39] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30563 [pool-1-thread-39] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [3] messages
+30563 [pool-1-thread-39] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [2] messages
+30564 [pool-1-thread-39] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [1] messages
+30566 [pool-1-thread-39] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [853867819] from sender [3]
+30567 [pool-1-thread-39] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[7]: 
+30571 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@3917168e [9]: input produced output[20017] words
+30599 [pool-1-thread-38] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [7]
+30599 [pool-1-thread-38] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30600 [pool-1-thread-38] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [3] messages
+30600 [pool-1-thread-38] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [2] messages
+30600 [pool-1-thread-38] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [2] messages
+30604 [pool-1-thread-38] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1553681525] from sender [2]
+30606 [pool-1-thread-38] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[7]: 
+30647 [pool-1-thread-37] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [8]
+30648 [pool-1-thread-37] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30648 [pool-1-thread-37] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [3] messages
+30649 [pool-1-thread-37] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [3] messages
+30649 [pool-1-thread-37] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [2] messages
+30652 [pool-1-thread-37] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1316075284] from sender [1]
+30653 [pool-1-thread-37] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[8]: 
+30684 [pool-1-thread-36] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [9]
+30685 [pool-1-thread-36] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30685 [pool-1-thread-36] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [4] messages
+30685 [pool-1-thread-36] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [3] messages
+30685 [pool-1-thread-36] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [2] messages
+30687 [pool-1-thread-36] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-816862022] from sender [1]
+30688 [pool-1-thread-36] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[9]: 
+30726 [pool-1-thread-35] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [10]
+30727 [pool-1-thread-35] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30727 [pool-1-thread-35] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [5] messages
+30727 [pool-1-thread-35] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [3] messages
+30728 [pool-1-thread-35] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [2] messages
+30730 [pool-1-thread-35] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [640749807] from sender [2]
+30731 [pool-1-thread-35] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[10]: 
+30771 [pool-1-thread-34] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [11]
+30775 [pool-1-thread-34] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30776 [pool-1-thread-34] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [5] messages
+30776 [pool-1-thread-34] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [4] messages
+30776 [pool-1-thread-34] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [2] messages
+30778 [pool-1-thread-34] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [39373727] from sender [3]
+30780 [pool-1-thread-34] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[11]: 
+30819 [pool-1-thread-33] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [12]
+30820 [pool-1-thread-33] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30821 [pool-1-thread-33] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [5] messages
+30821 [pool-1-thread-33] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [4] messages
+30821 [pool-1-thread-33] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [3] messages
+30823 [pool-1-thread-33] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [853867819] from sender [2]
+30828 [pool-1-thread-33] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[11]: 
+30868 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[9] put future.isSuccess()?true
+30872 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [9],[1673782109]
+30875 [pool-1-thread-32] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [13]
+30877 [pool-1-thread-32] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30878 [pool-1-thread-32] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [5] messages
+30878 [pool-1-thread-32] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [5] messages
+30879 [pool-1-thread-32] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [3] messages
+30881 [pool-1-thread-32] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [39373727] from sender [2]
+30883 [pool-1-thread-32] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[11]: 
+30923 [pool-1-thread-31] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [14]
+30923 [pool-1-thread-31] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30923 [pool-1-thread-31] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [5] messages
+30924 [pool-1-thread-31] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [6] messages
+30924 [pool-1-thread-31] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [3] messages
+30926 [pool-1-thread-31] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-975076734] from sender [3]
+30927 [pool-1-thread-31] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[12]: 
+30962 [pool-1-thread-30] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [15]
+30963 [pool-1-thread-30] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30963 [pool-1-thread-30] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [5] messages
+30963 [pool-1-thread-30] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [6] messages
+30964 [pool-1-thread-30] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [4] messages
+30966 [pool-1-thread-30] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1618326642] from sender [1]
+30967 [pool-1-thread-30] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[13]: 
+30997 [pool-1-thread-29] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [16]
+30997 [pool-1-thread-29] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+30998 [pool-1-thread-29] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [6] messages
+30998 [pool-1-thread-29] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [6] messages
+30998 [pool-1-thread-29] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [4] messages
+31000 [pool-1-thread-29] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1633549540] from sender [3]
+31000 [pool-1-thread-29] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[14]: 
+31035 [pool-1-thread-28] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [17]
+31035 [pool-1-thread-28] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+31035 [pool-1-thread-28] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [6] messages
+31035 [pool-1-thread-28] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [6] messages
+31036 [pool-1-thread-28] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [5] messages
+31037 [pool-1-thread-28] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-459248061] from sender [3]
+31038 [pool-1-thread-28] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[15]: 
+31072 [pool-1-thread-27] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [18]
+31073 [pool-1-thread-27] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+31073 [pool-1-thread-27] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [6] messages
+31074 [pool-1-thread-27] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [6] messages
+31074 [pool-1-thread-27] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [6] messages
+31080 [pool-1-thread-27] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-975076734] from sender [1]
+31082 [pool-1-thread-27] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[15]: 
+31130 [pool-1-thread-26] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [19]
+31131 [pool-1-thread-26] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+31131 [pool-1-thread-26] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [7] messages
+31131 [pool-1-thread-26] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [6] messages
+31132 [pool-1-thread-26] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [6] messages
+31135 [pool-1-thread-26] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1633549540] from sender [1]
+31138 [pool-1-thread-26] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[15]: 
+31181 [pool-1-thread-25] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [20]
+31182 [pool-1-thread-25] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+31182 [pool-1-thread-25] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [8] messages
+31182 [pool-1-thread-25] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [6] messages
+31182 [pool-1-thread-25] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [6] messages
+31185 [pool-1-thread-25] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-459248061] from sender [1]
+31192 [pool-1-thread-25] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[15]: 
+31299 [pool-1-thread-24] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [10],[-1553681525]
+31561 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1259703404] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+33073 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-153224391] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+33263 [pool-1-thread-23] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [11],[39373727]
+33340 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1553681525] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+33342 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [-1553681525]) recCntr[0] denCntr[3] for requestor/key: 1_0xa2e28bb5baac5d7dbeb88996c23f3312a364b38b_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+33343 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [10] future.isSuccess()?:false
+33344 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [-1553681525] already
+34515 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1259703404] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+34773 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1730325525] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+34807 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1675569376] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+35685 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [39373727] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+35686 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [39373727]) recCntr[0] denCntr[3] for requestor/key: 1_0xc3d94ed2b5853a656a5471f66927f7530258cb9f_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+35687 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [11] future.isSuccess()?:false
+35689 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [39373727] already
+35715 [pool-1-thread-22] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [12],[853867819]
+36028 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-2066106826] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+36320 [pool-1-thread-21] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [13],[-96642674]
+36328 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [853867819] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+36329 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [853867819]) recCntr[0] denCntr[3] for requestor/key: 1_0xf9e884f65ba6eeaae11d7af02f74eb7e32e4fd2b_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+36329 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [12] future.isSuccess()?:false
+36329 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [853867819] already
+38813 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-96642674] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+39357 [pool-1-thread-20] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [14],[640749807]
+39370 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-96642674] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+39400 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [-96642674]) recCntr[0] denCntr[3] for requestor/key: 1_0x20326754226b219204dbb3bdeef138e0fa3d598e_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+39401 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [13] future.isSuccess()?:false
+39401 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [-96642674] already
+40015 [pool-1-thread-19] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [15],[1675569376]
+40024 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [640749807] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+40088 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [640749807]) recCntr[3] denCntr[0] for requestor/key : 1_0xe798c9ea541ba17f40e0b25a8b2182bd263110ef_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+40089 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [14] future.isSuccess()?:true
+40201 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.tomp2p.mapreduce.evaljob.MapTask - net.tomp2p.mapreduce.evaljob.MapTask$1@6fd86d81 [14]: input produced output[19489] words
+40449 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAPTASK[14] put future.isSuccess()?true
+40453 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING MAPTASK [14],[640749807]
+40811 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1106207378] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+41613 [pool-1-thread-18] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [16],[-1259703404]
+41624 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1675569376] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+41652 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [1675569376]) recCntr[0] denCntr[3] for requestor/key: 1_0x7581f1a6984feb52af39732d1bc9dc3763df28e0_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+41652 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [15] future.isSuccess()?:false
+41652 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [1675569376] already
+41736 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [450247028] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+42814 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-153224391] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+44702 [pool-1-thread-17] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [17],[1730325525]
+44711 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1259703404] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+44742 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [-1259703404]) recCntr[0] denCntr[3] for requestor/key: 1_0x82df2cf2f93cb0576634f43a3ad72977b4ea7394_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+44742 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [16] future.isSuccess()?:false
+44742 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [-1259703404] already
+45859 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [212795668] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+46804 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [640749807] requested by peer [3] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+47092 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-749865235] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+47738 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1730325525] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+48011 [pool-1-thread-16] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [18],[-153224391]
+48043 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1730325525] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+48085 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [1730325525]) recCntr[0] denCntr[3] for requestor/key: 1_0x3d94d9e3c846952d75cb4e13f05c876c6722ac15_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+48086 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [17] future.isSuccess()?:false
+48086 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [1730325525] already
+48364 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1106207378] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+51773 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1618326642] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+52329 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-2066106826] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+52916 [pool-1-thread-15] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [19],[-1106207378]
+52925 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-153224391] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+52974 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [-153224391]) recCntr[0] denCntr[3] for requestor/key: 1_0x7fc8116b35b741de5753f01dbe395ad5f6ddfb39_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+52974 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [18] future.isSuccess()?:false
+52975 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [-153224391] already
+54631 [pool-1-thread-14] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [20],[450247028]
+54639 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1106207378] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+54640 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [-1106207378]) recCntr[0] denCntr[3] for requestor/key: 1_0x3c46062f0e37031c8031b2f7040d058be109d6e_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+54640 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [19] future.isSuccess()?:false
+54640 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [-1106207378] already
+54817 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-816862022] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+55657 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [450247028] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+57243 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1618326642] requested by peer [3] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+57429 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1316075284] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+58607 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1698494669] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+59162 [pool-1-thread-13] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [21],[-2066106826]
+59170 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [450247028] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+59201 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [450247028]) recCntr[0] denCntr[3] for requestor/key: 1_0xbbbeff05e9a606632d5cb204bdb631251ad63974_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+59201 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [20] future.isSuccess()?:false
+59201 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [450247028] already
+59849 [pool-1-thread-12] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [22],[212795668]
+59858 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-2066106826] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+59859 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [-2066106826]) recCntr[0] denCntr[3] for requestor/key: 1_0xdd681365dea5b8246c9697fffea980e584d9b636_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+59859 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [21] future.isSuccess()?:false
+59859 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [-2066106826] already
+60159 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1852056802] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+60543 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [212795668] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+63366 [pool-1-thread-11] INFO  n.tomp2p.mapreduce.evaljob.MapTask - >>>>>>>>>>>>>>>>>>>> START EXECUTING MAPTASK [23],[-749865235]
+63374 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [212795668] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+63401 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [212795668]) recCntr[0] denCntr[3] for requestor/key: 1_0x94c4842a21ba5ecac946b6fba98b167f0caf0114_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+63402 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [22] future.isSuccess()?:false
+63402 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [212795668] already
+64002 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [2141627826] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+64882 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-749865235] requested by peer [3] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+65866 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1673782109] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+66862 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1633549540] requested by peer [2] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+68021 [pool-1-thread-72] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [21]
+68021 [pool-1-thread-72] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68022 [pool-1-thread-72] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68022 [pool-1-thread-72] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [6] messages
+68022 [pool-1-thread-72] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [6] messages
+68023 [pool-1-thread-72] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1673782109] from sender [2]
+68024 [pool-1-thread-72] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[16]: 
+68031 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-749865235] requested by peer [1] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+68049 [pool-1-thread-71] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [22]
+68050 [pool-1-thread-71] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68050 [pool-1-thread-71] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68050 [pool-1-thread-71] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [7] messages
+68050 [pool-1-thread-71] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [6] messages
+68052 [pool-1-thread-71] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-749865235] from sender [3]
+68053 [pool-1-thread-71] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[17]: 
+68058 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  n.tomp2p.mapreduce.DistributedTask - in !receivedCntr.containsKey(recip) (requestor[1] DENIED access to [-749865235]) recCntr[0] denCntr[3] for requestor/key: 1_0x19039b7f4ca93823c3b23c86ae0becd3d34df6ed_0xee2e8d67ac3ee657e7ed1bce149b8d700f558199
+68058 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  n.tomp2p.mapreduce.evaljob.MapTask - MAP TASK [23] future.isSuccess()?:false
+68058 [NETTY-TOMP2P - worker-client/server - -1-14] INFO  n.tomp2p.mapreduce.evaljob.MapTask - !future.isSuccess(), failed reason: Future (compl/canc):true/false, FAILED, Too many workers on data item for key [-749865235] already
+68088 [pool-1-thread-70] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [23]
+68089 [pool-1-thread-70] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68089 [pool-1-thread-70] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68089 [pool-1-thread-70] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [7] messages
+68090 [pool-1-thread-70] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [7] messages
+68091 [pool-1-thread-70] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [2141627826] from sender [2]
+68093 [pool-1-thread-70] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[17]: 
+68124 [pool-1-thread-69] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [24]
+68124 [pool-1-thread-69] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68125 [pool-1-thread-69] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68125 [pool-1-thread-69] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [8] messages
+68125 [pool-1-thread-69] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [7] messages
+68126 [pool-1-thread-69] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [212795668] from sender [3]
+68127 [pool-1-thread-69] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[18]: 
+68151 [pool-1-thread-68] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [25]
+68152 [pool-1-thread-68] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68152 [pool-1-thread-68] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68152 [pool-1-thread-68] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [8] messages
+68152 [pool-1-thread-68] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [8] messages
+68154 [pool-1-thread-68] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1852056802] from sender [2]
+68156 [pool-1-thread-68] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[18]: 
+68188 [pool-1-thread-67] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [26]
+68189 [pool-1-thread-67] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68189 [pool-1-thread-67] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68189 [pool-1-thread-67] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [9] messages
+68189 [pool-1-thread-67] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [8] messages
+68190 [pool-1-thread-67] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1698494669] from sender [2]
+68192 [pool-1-thread-67] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[18]: 
+68223 [pool-1-thread-66] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [27]
+68223 [pool-1-thread-66] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68223 [pool-1-thread-66] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68224 [pool-1-thread-66] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [10] messages
+68224 [pool-1-thread-66] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [8] messages
+68225 [pool-1-thread-66] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1316075284] from sender [2]
+68227 [pool-1-thread-66] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[18]: 
+68272 [pool-1-thread-65] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [28]
+68273 [pool-1-thread-65] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68273 [pool-1-thread-65] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68273 [pool-1-thread-65] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [11] messages
+68274 [pool-1-thread-65] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [8] messages
+68275 [pool-1-thread-65] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [450247028] from sender [3]
+68276 [pool-1-thread-65] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[19]: 
+68584 [pool-1-thread-64] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [29]
+68584 [pool-1-thread-64] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68584 [pool-1-thread-64] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68585 [pool-1-thread-64] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [11] messages
+68585 [pool-1-thread-64] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [9] messages
+68588 [pool-1-thread-64] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-816862022] from sender [2]
+68590 [pool-1-thread-64] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[19]: 
+68620 [pool-1-thread-63] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [30]
+68620 [pool-1-thread-63] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68620 [pool-1-thread-63] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68621 [pool-1-thread-63] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [12] messages
+68621 [pool-1-thread-63] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [9] messages
+68622 [pool-1-thread-63] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-2066106826] from sender [3]
+68623 [pool-1-thread-63] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[20]: 
+68652 [pool-1-thread-62] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [31]
+68652 [pool-1-thread-62] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68652 [pool-1-thread-62] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68652 [pool-1-thread-62] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [12] messages
+68653 [pool-1-thread-62] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [10] messages
+68654 [pool-1-thread-62] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1618326642] from sender [2]
+68655 [pool-1-thread-62] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[20]: 
+68694 [pool-1-thread-61] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [32]
+68694 [pool-1-thread-61] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68695 [pool-1-thread-61] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68695 [pool-1-thread-61] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [13] messages
+68695 [pool-1-thread-61] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [10] messages
+68697 [pool-1-thread-61] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1106207378] from sender [3]
+68697 [pool-1-thread-61] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[21]: 
+68721 [pool-1-thread-60] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [33]
+68721 [pool-1-thread-60] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68722 [pool-1-thread-60] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68722 [pool-1-thread-60] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [13] messages
+68722 [pool-1-thread-60] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [11] messages
+68723 [pool-1-thread-60] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1730325525] from sender [3]
+68724 [pool-1-thread-60] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[22]: 
+68750 [pool-1-thread-59] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [34]
+68751 [pool-1-thread-59] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68751 [pool-1-thread-59] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68751 [pool-1-thread-59] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [13] messages
+68751 [pool-1-thread-59] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [12] messages
+68753 [pool-1-thread-59] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-749865235] from sender [2]
+68755 [pool-1-thread-59] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[22]: 
+68779 [pool-1-thread-58] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [35]
+68779 [pool-1-thread-58] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68779 [pool-1-thread-58] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68779 [pool-1-thread-58] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [14] messages
+68780 [pool-1-thread-58] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [12] messages
+68781 [pool-1-thread-58] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [212795668] from sender [2]
+68783 [pool-1-thread-58] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[22]: 
+68814 [pool-1-thread-57] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [36]
+68815 [pool-1-thread-57] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68815 [pool-1-thread-57] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68815 [pool-1-thread-57] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [15] messages
+68815 [pool-1-thread-57] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [12] messages
+68817 [pool-1-thread-57] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-153224391] from sender [3]
+68817 [pool-1-thread-57] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[23]: 
+68848 [pool-1-thread-56] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [37]
+68849 [pool-1-thread-56] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68849 [pool-1-thread-56] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68849 [pool-1-thread-56] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [15] messages
+68849 [pool-1-thread-56] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [13] messages
+68851 [pool-1-thread-56] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [450247028] from sender [2]
+68852 [pool-1-thread-56] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[23]: 
+68880 [pool-1-thread-55] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [38]
+68881 [pool-1-thread-55] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68881 [pool-1-thread-55] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68881 [pool-1-thread-55] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [16] messages
+68881 [pool-1-thread-55] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [13] messages
+68883 [pool-1-thread-55] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1106207378] from sender [2]
+68885 [pool-1-thread-55] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[23]: 
+68918 [pool-1-thread-54] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [39]
+68918 [pool-1-thread-54] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68918 [pool-1-thread-54] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [9] messages
+68918 [pool-1-thread-54] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [17] messages
+68919 [pool-1-thread-54] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [13] messages
+68920 [pool-1-thread-54] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [640749807] from sender [1]
+68924 [pool-1-thread-54] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[23]: 
+68955 [pool-1-thread-53] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [40]
+68955 [pool-1-thread-53] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68955 [pool-1-thread-53] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [10] messages
+68956 [pool-1-thread-53] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [17] messages
+68956 [pool-1-thread-53] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [13] messages
+68957 [pool-1-thread-53] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-96642674] from sender [3]
+68958 [pool-1-thread-53] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[23]: 
+68990 [pool-1-thread-52] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [41]
+68991 [pool-1-thread-52] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+68991 [pool-1-thread-52] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [10] messages
+68991 [pool-1-thread-52] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [17] messages
+68991 [pool-1-thread-52] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [14] messages
+68993 [pool-1-thread-52] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-2066106826] from sender [2]
+68993 [pool-1-thread-52] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[23]: 
+69017 [pool-1-thread-51] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [42]
+69017 [pool-1-thread-51] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+69018 [pool-1-thread-51] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [10] messages
+69018 [pool-1-thread-51] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [18] messages
+69018 [pool-1-thread-51] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [14] messages
+69019 [pool-1-thread-51] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1675569376] from sender [3]
+69020 [pool-1-thread-51] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[23]: 
+69045 [pool-1-thread-50] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [43]
+69046 [pool-1-thread-50] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+69046 [pool-1-thread-50] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [10] messages
+69046 [pool-1-thread-50] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [18] messages
+69046 [pool-1-thread-50] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [15] messages
+69047 [pool-1-thread-50] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1730325525] from sender [2]
+69048 [pool-1-thread-50] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Expecting #[24], current #[23]: 
+69073 [pool-1-thread-49] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [44]
+69074 [pool-1-thread-49] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+69074 [pool-1-thread-49] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [10] messages
+69074 [pool-1-thread-49] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [19] messages
+69074 [pool-1-thread-49] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [15] messages
+69075 [pool-1-thread-49] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1259703404] from sender [2]
+69075 [pool-1-thread-49] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Received all #[24] files #[24]: Check if all data files were executed enough times
+69081 [pool-1-thread-49] INFO  n.t.mapreduce.evaljob.ReduceTask - Expecting [2] number of executions, currently holding: [1] domainkeys for this locationkey with values: [[1675569376, 2]
+[-1852056802, 2]
+[-96642674, 2]
+[1730325525, 2]
+[-975076734, 2]
+[1673782109, 1]
+[1316075284, 2]
+[-2066106826, 2]
+[39373727, 2]
+[2141627826, 2]
+[853867819, 2]
+[-459248061, 2]
+[640749807, 2]
+[-1553681525, 2]
+[-749865235, 2]
+[-1633549540, 2]
+[-153224391, 1]
+[-816862022, 2]
+[1698494669, 2]
+[-1618326642, 2]
+[450247028, 2]
+[212795668, 2]
+[-1259703404, 1]
+[-1106207378, 2]
+]
+69102 [pool-1-thread-48] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [45]
+69102 [pool-1-thread-48] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+69102 [pool-1-thread-48] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [10] messages
+69103 [pool-1-thread-48] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [20] messages
+69103 [pool-1-thread-48] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [15] messages
+69104 [pool-1-thread-48] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-153224391] from sender [2]
+69105 [pool-1-thread-48] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Received all #[24] files #[24]: Check if all data files were executed enough times
+69108 [pool-1-thread-48] INFO  n.t.mapreduce.evaljob.ReduceTask - Expecting [2] number of executions, currently holding: [1] domainkeys for this locationkey with values: [[1675569376, 2]
+[-1852056802, 2]
+[-96642674, 2]
+[1730325525, 2]
+[-975076734, 2]
+[1673782109, 1]
+[1316075284, 2]
+[-2066106826, 2]
+[39373727, 2]
+[2141627826, 2]
+[853867819, 2]
+[-459248061, 2]
+[640749807, 2]
+[-1553681525, 2]
+[-749865235, 2]
+[-1633549540, 2]
+[-153224391, 2]
+[-816862022, 2]
+[1698494669, 2]
+[-1618326642, 2]
+[450247028, 2]
+[212795668, 2]
+[-1259703404, 1]
+[-1106207378, 2]
+]
+69139 [pool-1-thread-47] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [46]
+69139 [pool-1-thread-47] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+69139 [pool-1-thread-47] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [10] messages
+69140 [pool-1-thread-47] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [21] messages
+69140 [pool-1-thread-47] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [15] messages
+69141 [pool-1-thread-47] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [-1259703404] from sender [3]
+69142 [pool-1-thread-47] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Received all #[24] files #[24]: Check if all data files were executed enough times
+69142 [pool-1-thread-47] INFO  n.t.mapreduce.evaljob.ReduceTask - Expecting [2] number of executions, currently holding: [1] domainkeys for this locationkey with values: [[1675569376, 2]
+[-1852056802, 2]
+[-96642674, 2]
+[1730325525, 2]
+[-975076734, 2]
+[1673782109, 1]
+[1316075284, 2]
+[-2066106826, 2]
+[39373727, 2]
+[2141627826, 2]
+[853867819, 2]
+[-459248061, 2]
+[640749807, 2]
+[-1553681525, 2]
+[-749865235, 2]
+[-1633549540, 2]
+[-153224391, 2]
+[-816862022, 2]
+[1698494669, 2]
+[-1618326642, 2]
+[450247028, 2]
+[212795668, 2]
+[-1259703404, 2]
+[-1106207378, 2]
+]
+69174 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - > t410 submitter>>>>>>>>>>>>>>>>>>>> START EXECUTING REDUCETASK [47]
+69175 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Currently holding:
+69175 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [10] messages
+69175 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [21] messages
+69175 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [16] messages
+69177 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Added domainkey for location  key [1673782109] from sender [1]
+69177 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - [net.tomp2p.mapreduce.evaljob.ReduceTask@2ffa6851] Received all #[24] files #[24]: Check if all data files were executed enough times
+69178 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Expected [2] finished executions for all [24] files and received it. START REDUCING.
+69178 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Received the following number of messages from these peers:
+69178 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[1] sent [11] messages
+69178 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[2] sent [21] messages
+69178 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Peer[3] sent [16] messages
+69179 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x78a26a1270c73eb5c8ddf48afdd63416f801ddb0, 0x6fe1787c2804f2c00af8880199b42295b165109f]
+69182 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0xb13f036ebf2acf044b476e834d8e62fe0c765219, 0xb6714e5160d2156664a25e4751c2df4b114322e2]
+69252 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0xf68a63d84feab2c0368f7c3e4f23ea1168ba8d86, 0xd1b75b487cc7e6c181f5c15088427b52dd9901d6]
+69280 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x41b17404de752ae27855bebfa313edf5a094223, 0x147f267f0bc698d9846a5105263baba36eead34d]
+69307 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1675569376] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+69360 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0xd06311cb80a8ec29924a5e8060c9b7d0f5e4bf52, 0xed7f1f41b510d796fb4b1c811310423a2d2342c1]
+69448 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0xb54efc3064eef6852ac7e0be9a76699195dfaff8, 0xe0f920f69026eb54169bdad1ef3609dd8f75565a]
+69461 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1852056802] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+69486 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x51406cc79d0f001c9469ec8cf06959ddcab2d348, 0x7afd6331e923cd3865784d80a25c7efa66cced32]
+69508 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1852056802]) recCntr[3] denCntr[0] for requestor/key : 1_0xf10153eada8d2b5cef6147bed4cac9ea919bdb1e_0xb13f036ebf2acf044b476e834d8e62fe0c765219
+69529 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [1675569376]) recCntr[3] denCntr[0] for requestor/key : 1_0x7581f1a6984feb52af39732d1bc9dc3763df28e0_0x78a26a1270c73eb5c8ddf48afdd63416f801ddb0
+69541 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x17bd7c58ee9997f55c12ce6a5b24fe9e78aa250b, 0x740f6f3abfa15cc268fc9ed8372a5ebceaf09de6]
+69566 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-96642674] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+69619 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-96642674]) recCntr[3] denCntr[0] for requestor/key : 1_0x20326754226b219204dbb3bdeef138e0fa3d598e_0xf68a63d84feab2c0368f7c3e4f23ea1168ba8d86
+69634 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x86fe0c98283218447203ecf8238a760d1b2ec84e, 0x928c4fa8cd0154342b3a8127552ac002016deb6b]
+69659 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x942acbbb7a9931bd575cdf6d7bb6da73c71a0967, 0x231672d7135c93bd40c3746dff80f2932a805a28]
+69708 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [22892]
+69714 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x7afbf272d695b181bde4f3a968f2d230dc24f6f9, 0x87910fd7b8db8056541704242b8cf9be4ecc50c5]
+69722 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1730325525] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+69776 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-816862022] requested by peer [3] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+69813 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0xb420a872d24124da60130656983a281d47a04260, 0x54ac7dee0625516c6724ddb4ce80e92867b00aa9]
+69841 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x736d4950fa0517cbc466a8f7581c388365c3af7a, 0x71940a24d97c2e6656ad426d8f2e0e35080dc88a]
+69877 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1316075284] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+69890 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [36462]
+69893 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [1730325525]) recCntr[3] denCntr[0] for requestor/key : 1_0x3d94d9e3c846952d75cb4e13f05c876c6722ac15_0x41b17404de752ae27855bebfa313edf5a094223
+69900 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x2795fe38a8ae8509fe2dbb7d7bad5e99c22cf4e6, 0xf4b8237bf10ab2a26bb0917195c6f59d82ad02b0]
+69930 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0xf74d4fff8092ce2df680c40ba98937bd86d0548a, 0xa519c9f6a7d9db1dd38f3693c764ccd25616603f]
+69942 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x595d76654f4652769b528e98f6787ad8a610a931, 0xa3092dcfea23d2a65204bd882e4e025c2b4d53b1]
+69975 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-975076734] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70006 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-975076734]) recCntr[3] denCntr[0] for requestor/key : 1_0xf00eec27476a073e5a9c6d9896092bf2c5e18282_0xd06311cb80a8ec29924a5e8060c9b7d0f5e4bf52
+70014 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x947e5cae565371f00c60d8ed39fedbfe6088857e, 0xe6a1ea309ce996c5f46151aa9e2692cee101a537]
+70059 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [50951]
+70059 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x69d381ab6d835867145b5ea9395521d438b7864d, 0x874a05c45026c71ed31cfaf29be0719699cd8172]
+70064 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1673782109] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70097 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x28c90faead88c28262dd1009502f6183f54e95a3, 0x718cf2ec907322f1e3b7d6589661e37ba20de4ce]
+70143 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-2066106826] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70170 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x82b4fac63dc7f83283ed7e7eb3828b8c095a5be7, 0xff87e58fd2c0ed43c42fd12944ae648738e72be3]
+70172 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-2066106826]) recCntr[3] denCntr[0] for requestor/key : 1_0xdd681365dea5b8246c9697fffea980e584d9b636_0x17bd7c58ee9997f55c12ce6a5b24fe9e78aa250b
+70191 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [68505]
+70203 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0xc44b5e664ccb3f81d8609a9fe225a86bd70d591c, 0xa3d562abdd75f85fc94ed93eb2d6eb231cb24ed3]
+70227 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-459248061] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70318 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x68b990a33a12469f186b8d3eade6d8a311c47b2d, 0xf0b0d4703359e70c96a0b731886944eceade9b1]
+70354 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [80758]
+70385 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0x7d725211aeb041e0926a1bec8c7ba4b0f12b19d5, 0xd5ff7c5723cfe9529066ec8099c809147b9c4d60]
+70396 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [2141627826] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70466 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [91062]
+70483 [pool-1-thread-46] INFO  n.t.mapreduce.evaljob.ReduceTask - Domain keys: [0xa25baec3711186e464d55661f41f7b172d98934, 0xfacccdce82a9b510ad99c528266a7e7a60b4536e]
+70509 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-749865235] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70575 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-153224391] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70606 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-459248061]) recCntr[3] denCntr[0] for requestor/key : 1_0x3fb65357e1aaa51a3467f520f692d61be4a06e43_0xb420a872d24124da60130656983a281d47a04260
+70658 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1618326642] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70681 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1618326642]) recCntr[3] denCntr[0] for requestor/key : 1_0xdcb14a0d1963d1335183ec4d7694fcc69f8a4b8e_0x82b4fac63dc7f83283ed7e7eb3828b8c095a5be7
+70714 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [103865]
+70756 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1553681525] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70814 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [114249]
+70875 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-816862022] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+70958 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [853867819] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+71026 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [39373727] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+71065 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [39373727]) recCntr[3] denCntr[0] for requestor/key : 1_0xc3d94ed2b5853a656a5471f66927f7530258cb9f_0x86fe0c98283218447203ecf8238a760d1b2ec84e
+71114 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1633549540] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+71146 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [124944]
+71187 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [450247028] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+71244 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1553681525]) recCntr[3] denCntr[0] for requestor/key : 1_0xa2e28bb5baac5d7dbeb88996c23f3312a364b38b_0x2795fe38a8ae8509fe2dbb7d7bad5e99c22cf4e6
+71250 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1106207378] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+71276 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1106207378]) recCntr[3] denCntr[0] for requestor/key : 1_0x3c46062f0e37031c8031b2f7040d058be109d6e_0xa25baec3711186e464d55661f41f7b172d98934
+71387 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1698494669] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+71390 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1633549540]) recCntr[3] denCntr[0] for requestor/key : 1_0x174fac16a6ec15d3d5febd6c865c53369ea2031c_0x595d76654f4652769b528e98f6787ad8a610a931
+71397 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [136563]
+71427 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-153224391]) recCntr[3] denCntr[0] for requestor/key : 1_0x7fc8116b35b741de5753f01dbe395ad5f6ddfb39_0x947e5cae565371f00c60d8ed39fedbfe6088857e
+71463 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1259703404] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+71492 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [153376]
+71503 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-459248061] requested by peer [2] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+71510 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [1316075284]) recCntr[3] denCntr[0] for requestor/key : 1_0x1e24d719595b855e100af4cbabb1c2224e71b714_0x51406cc79d0f001c9469ec8cf06959ddcab2d348
+71575 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [640749807] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+71598 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [162597]
+71616 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [640749807]) recCntr[3] denCntr[0] for requestor/key : 1_0xe798c9ea541ba17f40e0b25a8b2182bd263110ef_0x736d4950fa0517cbc466a8f7581c388365c3af7a
+71617 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-749865235]) recCntr[3] denCntr[0] for requestor/key : 1_0x19039b7f4ca93823c3b23c86ae0becd3d34df6ed_0xf74d4fff8092ce2df680c40ba98937bd86d0548a
+71652 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [2141627826]) recCntr[3] denCntr[0] for requestor/key : 1_0xc523bdbfdacca52fea98b3adaa2a62487fa6a5b2_0x942acbbb7a9931bd575cdf6d7bb6da73c71a0967
+71705 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [171537]
+71710 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-816862022]) recCntr[3] denCntr[0] for requestor/key : 1_0x590a35281a4d5f2a55481d1f1be21ff4cf4facba_0x69d381ab6d835867145b5ea9395521d438b7864d
+71790 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [180688]
+71890 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [190709]
+71997 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [206989]
+71999 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [853867819]) recCntr[3] denCntr[0] for requestor/key : 1_0xf9e884f65ba6eeaae11d7af02f74eb7e32e4fd2b_0x7afbf272d695b181bde4f3a968f2d230dc24f6f9
+72004 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [1698494669]) recCntr[3] denCntr[0] for requestor/key : 1_0x1c290faf1e131def136bde631dd80200653cf8cd_0x28c90faead88c28262dd1009502f6183f54e95a3
+72076 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [215265]
+72173 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [212795668] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+72186 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [224570]
+72278 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [237220]
+72330 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [450247028]) recCntr[3] denCntr[0] for requestor/key : 1_0xbbbeff05e9a606632d5cb204bdb631251ad63974_0xc44b5e664ccb3f81d8609a9fe225a86bd70d591c
+72373 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [212795668]) recCntr[3] denCntr[0] for requestor/key : 1_0x94c4842a21ba5ecac946b6fba98b167f0caf0114_0x68b990a33a12469f186b8d3eade6d8a311c47b2d
+72382 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [248639]
+72434 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1852056802] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+72441 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [-1259703404]) recCntr[3] denCntr[0] for requestor/key : 1_0x82df2cf2f93cb0576634f43a3ad72977b4ea7394_0x7d725211aeb041e0926a1bec8c7ba4b0f12b19d5
+72459 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [257221]
+72519 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1730325525] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+72549 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [267175]
+72624 [NETTY-TOMP2P - worker-client/server - -1-13] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [274425]
+72687 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [1673782109]) recCntr[3] denCntr[0] for requestor/key : 1_0x1a98a1c69ba10912f1ae0c96bf2d57a263c3e35d_0xb54efc3064eef6852ac7e0be9a76699195dfaff8
+72766 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1675569376] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+72794 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  n.t.mapreduce.evaljob.ReduceTask - Intermediate reduceResults: [282487]
+72844 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-2066106826] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73043 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-96642674] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73125 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1673782109] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73214 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-975076734] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73295 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1316075284] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73390 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [853867819] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73589 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-749865235] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73661 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [39373727] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73721 [NETTY-TOMP2P - worker-client/server - -1-4] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1618326642] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73804 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1633549540] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73884 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [640749807] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+73985 [NETTY-TOMP2P - worker-client/server - -1-16] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-459248061] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74079 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [2141627826] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74128 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1316075284] requested by peer [3] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74211 [NETTY-TOMP2P - worker-client/server - -1-7] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [450247028] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74400 [NETTY-TOMP2P - worker-client/server - -1-1] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-153224391] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74483 [NETTY-TOMP2P - worker-client/server - -1-2] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1553681525] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74577 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1259703404] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74656 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-816862022] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74745 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1698494669] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74834 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [212795668] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+74918 [NETTY-TOMP2P - worker-client/server - -1-9] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1106207378] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+77495 [NETTY-TOMP2P - worker-client/server - -1-12] INFO  n.t.mapreduce.evaljob.ReduceTask - >>>>>>>>>>>>>>>>>>>> t410 submitter FINISHED EXECUTING REDUCETASK [47] with [282487] words
+77535 [NETTY-TOMP2P - worker-client/server - -1-15] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1698494669] requested by peer [3] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+82349 [pool-1-thread-74] INFO  n.t.mapreduce.evaljob.PrintTask - Already executed/Executing reduce results >> ignore call
+82905 [NETTY-TOMP2P - worker-client/server - -1-3] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [862501421] requested by peer [2] is [not null], dst.currentNrOfExecutions(): 1, possible nr of executions: [2]
+84341 [NETTY-TOMP2P - worker-client/server - -1-5] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [862501421] requested by peer [1] is [not null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+84530 [NETTY-TOMP2P - worker-client/server - -1-6] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [-1852056802] requested by peer [3] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+85365 [pool-1-thread-75] INFO  n.t.mapreduce.evaljob.ShutdownTask - Received REAL shutdown from ACTUAL PRINTING TASK. shutdown initiated.
+85365 [pool-1-thread-75] INFO  n.t.mapreduce.evaljob.ShutdownTask - Retrieval counter: 1, (1 >= 2)? false
+85365 [pool-1-thread-75] INFO  n.t.mapreduce.evaljob.ShutdownTask - RetrievalCounter is only: 1
+86862 [NETTY-TOMP2P - worker-client/server - -1-10] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [2141627826] requested by peer [3] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+87297 [NETTY-TOMP2P - worker-client/server - -1-11] INFO  net.tomp2p.mapreduce.TaskRPC - value for key [1673782109] requested by peer [3] is [null], dst.currentNrOfExecutions(): 2, possible nr of executions: [2]
+87445 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  n.tomp2p.mapreduce.DistributedTask - in !deniedCntr.containsKey(recip) (requestor[1] GRANTED access to [862501421]) recCntr[3] denCntr[0] for requestor/key : 1_0x2a11726db1dda0c67e1fbf63a55497763368ba2d_0xbb740907637c5e5ca2413ed5a72bbb52fad3918f
+90528 [NETTY-TOMP2P - worker-client/server - -1-8] INFO  n.t.mapreduce.evaljob.PrintTask - >>>>>>>>>>>>>>>>>>>> FINISHED EXECUTING PRINTTASK [0] with [282487] words
+90564 [pool-1-thread-76] INFO  n.t.mapreduce.evaljob.ShutdownTask - Received REAL shutdown from ACTUAL PRINTING TASK. shutdown initiated.
+90564 [pool-1-thread-76] INFO  n.t.mapreduce.evaljob.ShutdownTask - Retrieval counter: 2, (2 >= 2)? true
+90564 [pool-1-thread-76] INFO  n.t.mapreduce.evaljob.ShutdownTask - Received shutdown message. Counter is: 2: SHUTDOWN IN 5 SECONDS
+90566 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [0/10] times slept for 1s
+91568 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [1/10] times slept for 1s
+92568 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [2/10] times slept for 1s
+93568 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [3/10] times slept for 1s
+94569 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [4/10] times slept for 1s
+95569 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [5/10] times slept for 1s
+96569 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [6/10] times slept for 1s
+97570 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [7/10] times slept for 1s
+98570 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [8/10] times slept for 1s
+99570 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - [9/10] times slept for 1s
+100623 [Thread-63] INFO  n.t.mapreduce.evaljob.ShutdownTask - Success on shutdown peer [1]
