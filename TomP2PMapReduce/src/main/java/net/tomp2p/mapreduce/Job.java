@@ -22,7 +22,6 @@ import java.util.NavigableMap;
 import java.util.Random;
 
 import net.tomp2p.mapreduce.utils.JobTransferObject;
-import net.tomp2p.mapreduce.utils.NumberUtils;
 import net.tomp2p.mapreduce.utils.SerializeUtils;
 import net.tomp2p.mapreduce.utils.TransferObject;
 import net.tomp2p.peers.Number640;
@@ -95,10 +94,20 @@ final public class Job {
 		return jTO;
 	}
 
+	/**
+	 * Deserialises the {@link JobTransferObject} and creates an actual {@link Job} again containing all {@link Task}s
+	 * 
+	 * @param jobToDeserialize
+	 *            serialised job
+	 * @return deserialised job
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public static Job deserialize(JobTransferObject jobToDeserialize) throws ClassNotFoundException, IOException {
 		Job job = new Job(jobToDeserialize.id());
 		for (TransferObject taskTransferObject : jobToDeserialize.taskTransferObjects()) {
-			Map<String, Class<?>> taskClasses = SerializeUtils.deserializeClassFiles(taskTransferObject.serialisedClassFiles());
+			Map<String, Class<?>> taskClasses = SerializeUtils
+					.deserializeClassFiles(taskTransferObject.serialisedClassFiles());
 			Task task = (Task) SerializeUtils.deserializeJavaObject(taskTransferObject.serialisedObject(), taskClasses);
 			job.addTask(task);
 		}
@@ -108,10 +117,15 @@ final public class Job {
 	/**
 	 * Main entrance point to start a MapReduce job. The input is the same as for {@link Task#broadcastReceiver()}. This
 	 * is intentional as #start() will determine the first task (whose {@link Task#previousId()} is null) and execute it
-	 * locally, where it will also pass the input and {@link PeerMapReduce} instance for the first task to use it.
+	 * locally, where it will also pass the input and {@link PeerMapReduce} instance for the first task to use it. See
+	 * also {@link Task#broadcastReceiver(NavigableMap, PeerMapReduce)} as it contains the same signature. Job is thus
+	 * similar to a local {@link MapReduceBroadcastHandler} as it invokes the next (first) task to execute locally on
+	 * the node defining the job.  
 	 * 
 	 * @param input
+	 *            initial input to be used within the first task.
 	 * @param pmr
+	 *            access for the first task to the DHT and distribution of broadcasts
 	 * @throws Exception
 	 */
 	public void start(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
@@ -122,10 +136,7 @@ final public class Job {
 			throw new Exception(
 					"No IMapReduceBroadcastReceiver specified. Cannot start distributed execution without any implementation of these.");
 		}
-		List<TransferObject> broadcastReceiversTransferObjects = serializeBroadcastReceivers();
-		input.put(NumberUtils.RECEIVERS, new Data(broadcastReceiversTransferObjects));
-		input.put(NumberUtils.JOB_ID, new Data(id));
-		input.put(NumberUtils.JOB_DATA, new Data(serialize()));
+
 		Task startTask = this.findStartTask();
 		if (startTask == null) {
 			throw new Exception(
@@ -136,7 +147,7 @@ final public class Job {
 
 	}
 
-	private List<TransferObject> serializeBroadcastReceivers() throws IOException {
+	public List<TransferObject> serializeBroadcastReceivers() throws IOException {
 		List<TransferObject> broadcastReceiversTransferObjects = new ArrayList<>();
 		for (IMapReduceBroadcastReceiver receiver : broadcastReceivers) {
 			Map<String, byte[]> bcClassFiles = SerializeUtils.serializeClassFile(receiver.getClass());

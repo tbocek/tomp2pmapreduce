@@ -26,6 +26,7 @@ import net.tomp2p.storage.Data;
 /**
  * Main connection point to the network. Get and Put methods can be used to store and retrieve serialised data to and
  * from the DHT. Furthermore, the contained <code>Peer</code> can directly be accessed to allow for broadcast emissions.
+ * See also the documentation <a href="http://tinyurl.com/csgmtmapred">here</a>, chapter 5.
  * 
  * @author Oliver Zihler
  *
@@ -60,7 +61,7 @@ public class PeerMapReduce {
 	}
 
 	/**
-	 * Puts serialised data into the DHT
+	 * Puts serialised data into the DHT.
 	 * 
 	 * @param locationKey
 	 *            main key, specifies on which peer the data resides
@@ -79,7 +80,7 @@ public class PeerMapReduce {
 	/**
 	 * Get the data from the DHT. If the peer requesting the data fails, the same broadcast as before needs to be
 	 * distributed again for other peers to execute the failed task. This requires the complete input the task that
-	 * invokes this method received.
+	 * invokes this method received via broadcast.
 	 * 
 	 * @param locationKey
 	 *            main key, specifies on which peer the data resides
@@ -106,7 +107,8 @@ public class PeerMapReduce {
 	 * @param domainKey
 	 * @param broadcastInput
 	 * @param waitingTime
-	 *            maximal time in milliseconds to wait until get is invoked.. Will not be stored! If needs to be reused, use the corresponding setter.
+	 *            maximal time in milliseconds to wait until get is invoked.. Will not be stored! If needs to be reused,
+	 *            use the corresponding setter.
 	 * @return
 	 */
 	public MapReduceGetBuilder get(Number160 locationKey, Number160 domainKey,

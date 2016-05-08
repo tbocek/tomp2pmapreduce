@@ -14,7 +14,7 @@
  */
 package net.tomp2p.mapreduce;
 
-import net.tomp2p.dht.GetBuilder;
+import net.tomp2p.dht.PutBuilder;
 import net.tomp2p.mapreduce.utils.MapReduceValue;
 import net.tomp2p.peers.Number160;
 

@@ -44,7 +44,8 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 	private static Set<Number640> messages = Collections.synchronizedSet(new HashSet<>());
 	private List<IMapReduceBroadcastReceiver> receivers = Collections.synchronizedList(new ArrayList<>());;
 	private Set<PeerAddressStorageKeyTuple> receivedButNotFound = Collections.synchronizedSet(new HashSet<>());
-	private List<PeerConnectionActiveFlagRemoveListener> peerConnectionActiveFlagRemoveListeners = Collections.synchronizedList(new ArrayList<>());
+	private List<PeerConnectionActiveFlagRemoveListener> peerConnectionActiveFlagRemoveListeners = Collections
+			.synchronizedList(new ArrayList<>());
 
 	private ThreadPoolExecutor executor;
 	private PeerMapReduce peerMapReduce;
@@ -54,9 +55,11 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 	}
 
 	public MapReduceBroadcastHandler(int threads) {
-		this.executor = new ThreadPoolExecutor(threads, threads, Long.MAX_VALUE, TimeUnit.DAYS, new LinkedBlockingQueue<>());
+		this.executor = new ThreadPoolExecutor(threads, threads, Long.MAX_VALUE, TimeUnit.DAYS,
+				new LinkedBlockingQueue<>());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public StructuredBroadcastHandler receive(Message message) {
 		try {
@@ -72,8 +75,10 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 					}
 				}
 			}
-			// inform peerConnectionActiveFlagRemoveListeners about completed/finished data processing newInput.put(NumberUtils.SENDER, new Data(pmr.peer().peerAddress()));
-			if (input.containsKey(NumberUtils.SENDER) && input.containsKey(NumberUtils.INPUT_STORAGE_KEY)) { // Skips in first execution where there is no input
+			// inform peerConnectionActiveFlagRemoveListeners about completed/finished data processing
+			// newInput.put(NumberUtils.SENDER, new Data(pmr.peer().peerAddress()));
+			// Skips in first execution where there is no input
+			if (input.containsKey(NumberUtils.SENDER) && input.containsKey(NumberUtils.INPUT_STORAGE_KEY)) {
 				PeerAddress peerAddress = (PeerAddress) input.get(NumberUtils.SENDER).object();
 				Number640 storageKey = (Number640) input.get(NumberUtils.INPUT_STORAGE_KEY).object();
 				informPeerConnectionActiveFlagRemoveListeners(peerAddress, storageKey);
@@ -109,7 +114,8 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 	private void instantiateReceivers(List<TransferObject> receiverClasses) {
 		for (TransferObject o : receiverClasses) {
 			Map<String, Class<?>> rClassFiles = SerializeUtils.deserializeClassFiles(o.serialisedClassFiles());
-			IMapReduceBroadcastReceiver receiver = (IMapReduceBroadcastReceiver) SerializeUtils.deserializeJavaObject(o.serialisedObject(), rClassFiles);
+			IMapReduceBroadcastReceiver receiver = (IMapReduceBroadcastReceiver) SerializeUtils
+					.deserializeJavaObject(o.serialisedObject(), rClassFiles);
 			synchronized (receivers) {
 				for (IMapReduceBroadcastReceiver r : receivers) {
 					if (r.id().equals(receiver.id())) {
@@ -122,12 +128,14 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 		}
 	}
 
-	private void informPeerConnectionActiveFlagRemoveListeners(PeerAddress sender, Number640 storageKey) throws ClassNotFoundException, IOException {
+	private void informPeerConnectionActiveFlagRemoveListeners(PeerAddress sender, Number640 storageKey)
+			throws ClassNotFoundException, IOException {
 		List<PeerConnectionActiveFlagRemoveListener> toRemove = Collections.synchronizedList(new ArrayList<>());
 		boolean successOnTurnOff = false;
 		PeerAddressStorageKeyTuple triple = new PeerAddressStorageKeyTuple(sender, storageKey);
 		if (peerMapReduce.peer().peerAddress().equals(sender)) {
-			logger.info("I [" + peerMapReduce.peer().peerID().shortValue() + "] received bc from myself [" + triple + "]. Ignore");
+			logger.info("I [" + peerMapReduce.peer().peerID().shortValue() + "] received bc from myself [" + triple
+					+ "]. Ignore");
 			return;
 		}
 		synchronized (peerConnectionActiveFlagRemoveListeners) {
@@ -154,10 +162,10 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 	}
 
 	public void shutdown() {
-//		List<String> taskDetails = null;
-//		for (IMapReduceBroadcastReceiver r : receivers) {
-//			taskDetails = r.printExecutionDetails();
-//		}
+		// List<String> taskDetails = null;
+		// for (IMapReduceBroadcastReceiver r : receivers) {
+		// taskDetails = r.printExecutionDetails();
+		// }
 		try {
 			executor.shutdown();
 			int cnt = 0;
@@ -168,10 +176,11 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 		} catch (InterruptedException e) {
 			logger.warn("Exception caught", e);
 		}
-//		return taskDetails;
+		// return taskDetails;
 	}
 
-	public void addPeerConnectionRemoveActiveFlageListener(PeerConnectionActiveFlagRemoveListener peerConnectionActiveFlagRemoveListener) {
+	public void addPeerConnectionRemoveActiveFlageListener(
+			PeerConnectionActiveFlagRemoveListener peerConnectionActiveFlagRemoveListener) {
 		logger.info("added listener for connection " + peerConnectionActiveFlagRemoveListener.tupleToAcquire());
 		this.peerConnectionActiveFlagRemoveListeners.add(peerConnectionActiveFlagRemoveListener);
 	}

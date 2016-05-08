@@ -26,7 +26,9 @@ import net.tomp2p.storage.Data;
  * 
  *         Main Abstraction Point for a Map or Reduce Function. Users need to define previousId and currentId. currentId
  *         corresponds to the id of this task. previousId is the id of the task that comes before in the task chain. In
- *         the chain, the first (and presumably locally executed task) has NO previousId (stays null).
+ *         the chain, the first (and presumably locally executed task) has NO previousId (stays null). All actions are
+ *         carried out in {@link #broadcastReceiver(NavigableMap, PeerMapReduce)}. See also the documentation
+ *         <a href="http://tinyurl.com/csgmtmapred">here</a>, chapters 4 (concept) and 5 (implementation documentation).
  *
  * @see StartTask
  * @see MapTask
@@ -34,6 +36,7 @@ import net.tomp2p.storage.Data;
  * @see PrintTask
  * @see ShutdownTask
  * @see ExampleJobBroadcastReceiver
+ * @see <a href="http://tinyurl.com/csgmtmapred">Documentation</a>
  */
 public abstract class Task implements Serializable {
 

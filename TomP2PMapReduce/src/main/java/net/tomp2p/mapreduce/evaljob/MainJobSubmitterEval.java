@@ -39,6 +39,7 @@ import net.tomp2p.mapreduce.Task;
 import net.tomp2p.mapreduce.utils.FileSize;
 import net.tomp2p.mapreduce.utils.FileUtils;
 import net.tomp2p.mapreduce.utils.NumberUtils;
+import net.tomp2p.mapreduce.utils.TransferObject;
 import net.tomp2p.p2p.PeerBuilder;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.peers.Number640;
@@ -50,12 +51,14 @@ public class MainJobSubmitterEval {
 	private static final int waitingTime = 5000;
 	private static final long nrOfNodes = 2;
 
-	private static NavigableMap<Number640, Data> getJob(int nrOfShutdownMessagesToAwait, int nrOfExecutions, String filesPath, int nrOfFiles, Job job) throws IOException {
+	private static NavigableMap<Number640, Data> getJob(int nrOfShutdownMessagesToAwait, int nrOfExecutions,
+			String filesPath, int nrOfFiles, Job job) throws IOException {
 		Task startTask = new StartTaskEval(null, NumberUtils.next(), nrOfExecutions);
 		Task mapTask = new MapTaskEval(startTask.currentId(), NumberUtils.next(), nrOfExecutions);
 		Task reduceTask = new ReduceTaskEval(mapTask.currentId(), NumberUtils.next(), nrOfExecutions);
 		Task writeTask = new PrintTaskEval(reduceTask.currentId(), NumberUtils.next());
-		Task initShutdown = new ShutdownTaskEval(writeTask.currentId(), NumberUtils.next(), nrOfShutdownMessagesToAwait, 10, 1000, nrOfNodes);
+		Task initShutdown = new ShutdownTaskEval(writeTask.currentId(), NumberUtils.next(), nrOfShutdownMessagesToAwait,
+				10, 1000, nrOfNodes);
 
 		job.addTask(startTask);
 		job.addTask(mapTask);
@@ -68,6 +71,11 @@ public class MainJobSubmitterEval {
 		job.addBroadcastReceiver(receiver);
 
 		NavigableMap<Number640, Data> input = new TreeMap<>();
+		List<TransferObject> broadcastReceiversTransferObjects = job.serializeBroadcastReceivers();
+		input.put(NumberUtils.RECEIVERS, new Data(broadcastReceiversTransferObjects));
+		input.put(NumberUtils.JOB_ID, new Data(job.id()));
+		input.put(NumberUtils.JOB_DATA, new Data(job.serialize()));
+		
 		input.put(NumberUtils.allSameKeys("INPUTTASKID"), new Data(startTask.currentId()));
 		input.put(NumberUtils.allSameKeys("MAPTASKID"), new Data(mapTask.currentId()));
 		input.put(NumberUtils.allSameKeys("REDUCETASKID"), new Data(reduceTask.currentId()));
@@ -92,16 +100,17 @@ public class MainJobSubmitterEval {
 		ConnectionBean.DEFAULT_CONNECTION_TIMEOUT_TCP = Integer.MAX_VALUE;
 		// ConnectionBean.DEFAULT_UDP_IDLE_MILLIS = 10000;
 
-		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time (reps*sleepingTime)
+		PeerConnectionCloseListener.WAITING_TIME = Integer.MAX_VALUE; // Should be less than shutdown time
+																		// (reps*sleepingTime)
 
 		int bootstrapperPortToConnectTo = 4004;
 		// String bootstrapperToConnectTo = "192.168.1.172"; //T410
-		 String bootstrapperToConnectTo = "192.168.0.19"; //T410 ANDROID
+		String bootstrapperToConnectTo = "192.168.0.19"; // T410 ANDROID
 		// String bootstrapperToConnectTo = "192.168.43.144"; //T61ANDROID
 		// // String bootstrapperToConnectTo = "130.60.156.102"; //T61 B
 		// String bootstrapperToConnectTo = "192.168.0.17"; // T61 B
 		// String bootstrapperToConnectTo = "192.168.0.15"; // ASUS
-//		String bootstrapperToConnectTo = "130.60.156.102"; // ASUS UNI ETH
+		// String bootstrapperToConnectTo = "130.60.156.102"; // ASUS UNI ETH
 
 		// String bootstrapperToConnectTo = "192.168.1.143"; //T61 B
 		// String bootstrapperToConnectTo = "192.168.1.147"; // ASUS
@@ -117,16 +126,19 @@ public class MainJobSubmitterEval {
 		PeerMapReduce peerMapReduce = new PeerMapReduce(peerBuilder, waitingTime);
 		if (shouldBootstrap) {
 			// int bootstrapperPortToConnectTo = 4004;
-			peerMapReduce.peer().bootstrap().ports(bootstrapperPortToConnectTo).inetAddress(InetAddress.getByName(bootstrapperToConnectTo))
+			peerMapReduce.peer().bootstrap().ports(bootstrapperPortToConnectTo)
+					.inetAddress(InetAddress.getByName(bootstrapperToConnectTo))
 					// .ports(bootstrapperPortToConnectTo)
 					.start().awaitUninterruptibly().addListener(new BaseFutureAdapter<FutureBootstrap>() {
 
 						@Override
 						public void operationComplete(FutureBootstrap future) throws Exception {
 							if (future.isSuccess()) {
-								System.err.println("successfully bootstrapped to " + bootstrapperToConnectTo + "/" + bootstrapperPortToConnectTo);
+								System.err.println("successfully bootstrapped to " + bootstrapperToConnectTo + "/"
+										+ bootstrapperPortToConnectTo);
 							} else {
-								System.err.println("No success on bootstrapping: fail reason: " + future.failedReason());
+								System.err
+										.println("No success on bootstrapping: fail reason: " + future.failedReason());
 							}
 						}
 
@@ -149,14 +161,15 @@ public class MainJobSubmitterEval {
 
 					Thread.sleep(1);
 
-					// String filesPath = new File("").getAbsolutePath() + "/src/test/java/net/tomp2p/mapreduce/testfiles/";
-//					 String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/1MB";
+					// String filesPath = new File("").getAbsolutePath() +
+					// "/src/test/java/net/tomp2p/mapreduce/testfiles/";
+					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/1MB";
 					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/1MB";
 					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/2MB";
 					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/2MB";
 					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1File/2MB";
 					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/4MB";
-//					 String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/4MB";
+					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/4MB";
 					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1File/4MB";
 					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/512kb/8MB";
 					// String filesPath = "C:/Users/Oliver/Desktop/evaluation/1MB/8MB";
@@ -176,12 +189,16 @@ public class MainJobSubmitterEval {
 					// nrOfFiles = ;
 					// String filesPath = "C:/Users/Oliver/Desktop/testFiles/1";
 
-					System.err.println("MainJobSubmitter: nrOfShutdownMessagesToAwait[" + nrOfShutdownMessagesToAwait + "], nrOfExecutions[" + nrOfExecutions + "], ConnectionBean.DEFAULT_TCP_IDLE_MILLIS[" + ConnectionBean.DEFAULT_TCP_IDLE_MILLIS + "], PeerConnectionCloseListener.WAITING_TIME ["
-							+ PeerConnectionCloseListener.WAITING_TIME + "], filesPath[" + filesPath + "], nrOfFiles [" + nrOfFiles + "]");
+					System.err.println("MainJobSubmitter: nrOfShutdownMessagesToAwait[" + nrOfShutdownMessagesToAwait
+							+ "], nrOfExecutions[" + nrOfExecutions + "], ConnectionBean.DEFAULT_TCP_IDLE_MILLIS["
+							+ ConnectionBean.DEFAULT_TCP_IDLE_MILLIS + "], PeerConnectionCloseListener.WAITING_TIME ["
+							+ PeerConnectionCloseListener.WAITING_TIME + "], filesPath[" + filesPath + "], nrOfFiles ["
+							+ nrOfFiles + "]");
 					System.err.println("MainJobSubmitter: START JOB");
 
 					Job job = new Job(new Number640(new Random()));
-					NavigableMap<Number640, Data> input = getJob(nrOfShutdownMessagesToAwait, nrOfExecutions, filesPath, nrOfFiles, job);
+					NavigableMap<Number640, Data> input = getJob(nrOfShutdownMessagesToAwait, nrOfExecutions, filesPath,
+							nrOfFiles, job);
 					job.start(input, pmr);
 
 				} catch (Exception e) {
