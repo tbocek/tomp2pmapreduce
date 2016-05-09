@@ -1,1 +1,4 @@
 /target/
+net.tomp2p.mapreduce*
+localOutput
+p2p.log
