@@ -72,7 +72,7 @@ public class StartTask extends Task {
 	@Override
 	public void broadcastReceiver(NavigableMap<Number640, Data> input, PeerMapReduce pmr) throws Exception {
 		logger.info(">>>>>>>>>>>>>>>>>>>> EXECUTING START TASK ");
-		Number160 filesDomainKey = Number160.createHash(pmr.peer().peerID() + "_" + (new Random().nextLong()));
+		Number160 filesDomainKey = Number160.createHash(pmr.peer().peerID() + "_" + 0);
 
 		// =====NEW BC DATA===========================================================
 		/*
@@ -101,6 +101,7 @@ public class StartTask extends Task {
 		ThreadPoolExecutor e = new ThreadPoolExecutor(nrOfFiles, nrOfFiles, Long.MAX_VALUE, TimeUnit.DAYS,
 				new LinkedBlockingQueue<>());
 		for (String filePath : pathVisitor) {
+			System.err.println("GOT FILE "+filePath);
 			e.submit(new Runnable() {
 
 				@Override

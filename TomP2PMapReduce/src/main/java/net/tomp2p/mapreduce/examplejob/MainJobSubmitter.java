@@ -128,7 +128,7 @@ public class MainJobSubmitter {
 		final int nrOfShutdownMessagesToAwait = tmpNrOfShutdownMessagesToAwait;
 		final int nrOfExecutions = tmpNrOfExecutions;
 
-		String filesPath = new File("").getAbsolutePath().replace("\\", "/") + "/src/main/java/net/tomp2p/mapreduce/evaljob/inputfiles";
+		String filesPath = new File("").getAbsolutePath().replace("\\", "/") + "/src/main/java/net/tomp2p/mapreduce/examplejob/inputfiles";
 		int nrOfFiles = localCalculation(filesPath);
 		ConnectionBean.DEFAULT_SLOW_RESPONSE_TIMEOUT_SECONDS = Integer.MAX_VALUE;
 		ConnectionBean.DEFAULT_TCP_IDLE_MILLIS = Integer.MAX_VALUE;
