@@ -31,8 +31,14 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.peers.PeerAddress;
 import net.tomp2p.storage.Data;
 
+/**
+ * Future for retrieving data for a {@link Task}
+ * 
+ * @author Oliver Zihler
+ *
+ */
 public class FutureMapReduceData extends FutureDone<Void> {
- 
+
 	private final List<FutureResponse> requests = new ArrayList<FutureResponse>(6);
 	private FutureRouting futureRouting;
 
@@ -125,8 +131,9 @@ public class FutureMapReduceData extends FutureDone<Void> {
 	}
 
 	/**
-	 * Returns back those futures that are still running. If 6 storage futures are started at the same time and 5 of them finish, and we specified that we are fine if 5 finishes, then futureDHT returns success. However, the future that may still be running is the one that stores the content to the
-	 * closest peer. For testing this is not acceptable, thus after waiting for futureDHT, one needs to wait for the running futures as well.
+	 * Returns back those futures that are still running. If 6 storage futures are started at the same time and 5 of them finish, and we specified that we are fine if 5 finishes, then futureDHT
+	 * returns success. However, the future that may still be running is the one that stores the content to the closest peer. For testing this is not acceptable, thus after waiting for futureDHT, one
+	 * needs to wait for the running futures as well.
 	 * 
 	 * @return A future that finishes if all running futures are finished.
 	 */
