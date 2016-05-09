@@ -75,6 +75,7 @@ public class PeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
 	@Override
 	public void operationComplete(BaseFuture future) throws Exception {
 		if (future.isSuccess()) {
+                    //TODO: close timer as in: http://stackoverflow.com/questions/1409116/how-to-stop-the-task-scheduled-in-java-util-timer-class
 			this.timer = new Timer();
 			timer.schedule(new TimerTask() {
 
@@ -111,6 +112,7 @@ public class PeerConnectionCloseListener extends BaseFutureAdapter<BaseFuture> {
 				}
 
 			}, WAITING_TIME);
+                        //TODO: test waiting time
 			// LOG.info("Started timer for " + requester + "and task " +
 			// (broadcastData.get(NumberUtils.NEXT_TASK).object()) + " value [ ]");
 

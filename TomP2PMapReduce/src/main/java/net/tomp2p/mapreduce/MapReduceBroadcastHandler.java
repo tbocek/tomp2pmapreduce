@@ -52,6 +52,8 @@ import net.tomp2p.storage.Data;
 public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 	private static Logger logger = LoggerFactory.getLogger(MapReduceBroadcastHandler.class);
 	/** Duplicated messages */
+        //TODO: we don't want to store the duplicates forever, in case of other peers fail, this one may 
+        //need to do the job eventually
 	private static Set<Number640> messages = Collections.synchronizedSet(new HashSet<>());
 	/** All user-defined receivers specifying the actions on receiving a broadcast */
 	private List<IMapReduceBroadcastReceiver> receivers = Collections.synchronizedList(new ArrayList<>());
@@ -121,7 +123,11 @@ public class MapReduceBroadcastHandler extends StructuredBroadcastHandler {
 
 							@Override
 							public void run() {
+                                                            try {
 								receiver.receive(message, peerMapReduce);
+                                                            } catch (Exception e) {
+                                                                e.printStackTrace();
+                                                            }
 							}
 						});
 					}

@@ -59,6 +59,7 @@ public class TaskRPC extends DispatchHandler {
 		super(peerMapReduce.peer().peerBean(), peerMapReduce.peer().connectionBean());
 		this.storage = new StorageMemory();
 		this.peerMapReduce = peerMapReduce;
+                //TODO: introduce proper task for MapReduce
 		register(RPC.Commands.GCM.getNr());
 	}
 
