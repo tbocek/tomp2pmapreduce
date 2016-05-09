@@ -33,13 +33,10 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
- * Exemplary implementation of {@link IMapReduceBroadcastReceiver} that is invoked by {@link MapReduceBroadcastHandler}
- * after receiving a broadcast {@link Message}. This implementation receives the job on every broadcast, deserialises
- * it, and adds it to a set of jobs to assure the same job is only added once. This is required as the
- * {@link ReduceTask} depends on the job as it stores certain result temporarily. If no dependencies are needed,
- * instead, the job would not have to be stored. Once the job is added, the next task to execute is distinguished and
- * invoked using the received broadcast input. Every instance of {@link ExampleJobBroadcastReceiver} is responsible
- * for exactly one job.
+ * Exemplary implementation of {@link IMapReduceBroadcastReceiver} that is invoked by {@link MapReduceBroadcastHandler} after receiving a broadcast {@link Message}. This implementation receives the
+ * job on every broadcast, deserialises it, and adds it to a set of jobs to assure the same job is only added once. This is required as the {@link ReduceTask} depends on the job as it stores certain
+ * result temporarily. If no dependencies are needed, instead, the job would not have to be stored. Once the job is added, the next task to execute is distinguished and invoked using the received
+ * broadcast input. Every instance of {@link ExampleJobBroadcastReceiver} is responsible for exactly one job.
  * 
  * @author Oliver Zihler
  *
@@ -53,8 +50,8 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 	private static Logger logger = LoggerFactory.getLogger(ExampleJobBroadcastReceiver.class);
 
 	/**
-	 * identifier to be declared such that the same IMapReduceBroadcastReceiver is not instantiated multiple times. see
-	 * {@link IMapReduceBroadcastReceiver#id()} private String id; /** Listens to this job only
+	 * identifier to be declared such that the same IMapReduceBroadcastReceiver is not instantiated multiple times. see {@link IMapReduceBroadcastReceiver#id()} private String id; /** Listens to this
+	 * job only
 	 */
 	private String id;
 	/**
@@ -92,8 +89,7 @@ public class ExampleJobBroadcastReceiver implements IMapReduceBroadcastReceiver 
 
 					// If it is not the job this instance is responsible for, simply return
 					if (!job.id().equals(jobId)) {
-						logger.info("Received job for wrong id: observing job [" + jobId.locationKey().shortValue()
-								+ "], received job[" + job.id().locationKey().shortValue() + "]");
+						logger.info("Received job for wrong id: observing job [" + jobId.locationKey().shortValue() + "], received job[" + job.id().locationKey().shortValue() + "]");
 						return;
 					}
 

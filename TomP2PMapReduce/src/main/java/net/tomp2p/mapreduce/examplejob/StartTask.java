@@ -101,8 +101,7 @@ public class StartTask extends Task {
 		ThreadPoolExecutor e = new ThreadPoolExecutor(nrOfFiles, nrOfFiles, Long.MAX_VALUE, TimeUnit.DAYS,
 				new LinkedBlockingQueue<>());
 		for (String filePath : pathVisitor) {
-			System.err.println("GOT FILE "+filePath);
-			e.submit(new Runnable() {
+ 			e.submit(new Runnable() {
 
 				@Override
 				public void run() {

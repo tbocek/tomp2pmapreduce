@@ -43,8 +43,8 @@ import net.tomp2p.peers.Number640;
 import net.tomp2p.storage.Data;
 
 /**
- * This task is invoked after {@link ReduceTask} and prints the resulting word count to a local file. Only in cases of the peer's id to be 1 and 2 this is actually carried out. Else, the
- * invocation will be ignored.
+ * This task is invoked after {@link ReduceTask} and prints the resulting word count to a local file. Only in cases of the peer's id to be 1 and 2 this is actually carried out. Else, the invocation
+ * will be ignored.
  * 
  * @author Oliver Zihler
  *

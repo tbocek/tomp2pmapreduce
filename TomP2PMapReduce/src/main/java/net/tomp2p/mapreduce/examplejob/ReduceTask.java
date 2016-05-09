@@ -25,7 +25,6 @@ import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter.Red;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
